@@ -1,0 +1,2 @@
+class UserAuthority < ApplicationRecord
+end

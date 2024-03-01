@@ -1,0 +1,2 @@
+class AuthorityPage < ApplicationRecord
+end

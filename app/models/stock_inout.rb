@@ -1,0 +1,2 @@
+class StockInout < ApplicationRecord
+end

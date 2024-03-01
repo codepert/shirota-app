@@ -1,2 +1,5 @@
-class Api::V1::PagesController < BaseController
+class Api::V1::PagesController <  Api::V1::BaseController
+  def index
+    render json: PageSerializer.new(Page.all)
+  end
 end

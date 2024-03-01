@@ -13,12 +13,12 @@
 ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
-    t.bigint "pages_id", null: false
+    t.bigint "page_id", null: false
     t.boolean "is_edit", default: false, null: false
     t.boolean "is_read", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pages_id"], name: "index_authority_pages_on_pages_id"
+    t.index ["page_id"], name: "index_authority_pages_on_page_id"
     t.index ["user_authority_id"], name: "index_authority_pages_on_user_authority_id"
   end
 

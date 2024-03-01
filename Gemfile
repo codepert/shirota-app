@@ -67,5 +67,15 @@ group :test do
 end
 
 gem 'devise'
+
 gem 'devise-jwt'
+# Json Serializer
+gem "alba"
+
 gem 'jsonapi-serializer'
+
+# Export PDF
+gem "grover"
+
+# Export CSV
+gem "csv"

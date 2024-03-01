@@ -14,12 +14,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       # resources :authorities
       # resources :user_authorities
-      # resources :authority_pages
+      resources :authority_pages
       # resources :pages
       resources :warehouses
-      # resources :warehouse_fees
+      resources :warehouse_fees
       resources :shippers
-      # resources :products
+      resources :products
       # resources :stocks
       # resources :stock_inouts
       # resources :receive_payments

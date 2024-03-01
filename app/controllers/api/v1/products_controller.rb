@@ -1,22 +1,50 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   require 'grover'
   require 'csv'
+  
+  set_pagination_callback :products, [:index]
 
   def index
-    # products = Product.includes(:warehouse_fee)
-    # products = products.where_name(index_params[:keyword])
-    # count = products.count
-    # products.paginate(pagination_params)
-    # filtered_products = products.offset(offset).limit(limit)
+    q  = Product.ransack(params[:keyword])
+    @products = q.result().paginate(pagination_params)
    
-    # render json: {
-      # data: products.map { |product| ProductSerializer.new(product).as_json },
-      # count: count,
-      # status: :accepted
-
-    # }
+    render json: ProductSerializer.new(@products)
   end
-  def index_params
-    params.permit(:keyword)
+
+  def create
+    product = Product.new(create_or_update_params)
+    if product.save
+      render json: ProductSerializer.new(product), status: :created
+    else
+      render json: {
+        error: product.errors.full_messages.join("\n")
+      }, status: :unprocessable_entity
+    end
+  end
+  
+  def update
+    product = Product.find(params[:id])
+    if product.update(create_or_update_params)
+      render json: ProductSerializer.new(product), status: :ok
+    else
+       render json: {
+        error: product.errors.full_messages.join("\n")
+      }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    product = Product.find(params[:id])
+    if product.destroy
+      head :no_content
+    else
+      render json: {
+        error: product.errors.full_messages.join("\n")
+      }, status: :unprocessable_entity
+    end
+  end
+  
+  def create_or_update_params
+    params.permit(:name, :code, :warehouse_fee_id, :specification)
   end
 end

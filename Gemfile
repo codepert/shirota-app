@@ -79,3 +79,10 @@ gem "grover"
 
 # Export CSV
 gem "csv"
+
+#search
+gem 'ransack'
+
+# pagenation
+gem 'kaminari'
+

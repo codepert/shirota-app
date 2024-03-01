@@ -2,14 +2,6 @@ module PaginationParseable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    #
-    # ページネーションを行うアクションに対して、ページネーションヘッダーを生成するコールバックを設定する
-    #
-    # Usage:
-    #    class Api::V1::AuctionsController < Api::V1::BaseController
-    #      set_pagination_callback :auctions, [:index]
-    #    end
-    #
     def set_pagination_callback(resources_name, actions)
       after_action -> { generate_pagination_header(resources_name) }, only: actions
     end

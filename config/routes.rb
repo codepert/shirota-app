@@ -28,5 +28,4 @@ Rails.application.routes.draw do
       resources :bill_amounts
     end
   end
-
 end

@@ -73,7 +73,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
     t.index ["warehouse_fee_id"], name: "index_products_on_warehouse_fee_id"
   end
 
-  create_table "receive_payments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "received_payments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "shipper_id", null: false, comment: "荷主id"
     t.date "received_on", null: false, comment: "入金日"
     t.integer "amount", null: false, comment: "入金額"
@@ -82,7 +82,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
     t.integer "received", limit: 1, null: false, comment: "入金済みかどうか"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["shipper_id"], name: "index_receive_payments_on_shipper_id"
+    t.index ["shipper_id"], name: "index_received_payments_on_shipper_id"
   end
 
   create_table "shippers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

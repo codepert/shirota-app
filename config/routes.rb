@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       resources :products
       # resources :stocks
       # resources :stock_inouts
-      # resources :receive_payments
+      resources :received_payments
       # resources :bills
       # resources :bill_amounts
     end

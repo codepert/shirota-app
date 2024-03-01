@@ -1,6 +1,6 @@
-class CreateReceivePayments < ActiveRecord::Migration[7.1]
+class CreateReceivedPayments < ActiveRecord::Migration[7.1]
   def change
-    create_table :receive_payments do |t|
+    create_table :received_payments do |t|
       t.belongs_to :shipper,            null:false, comment: '荷主id'
       t.date :received_on,              null:false, comment: '入金日'
       t.integer :amount,                null:false, comment: '入金額'

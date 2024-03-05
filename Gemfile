@@ -86,3 +86,5 @@ gem 'ransack'
 # pagenation
 gem 'kaminari'
 
+
+gem "tailwindcss-rails", "~> 2.3"

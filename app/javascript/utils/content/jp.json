@@ -1,0 +1,225 @@
+{
+  "SiteInfo": {
+    "title": "倉庫管理システム",
+    "description": "倉庫管理システム"
+  },
+  "pages": {
+    "login": "ログイン",
+    "signup": "新規登録",
+    "warning": "このページは表示できません",
+    "confirm": "本当に削除していいですか?"
+  },
+  "LoginFields": {
+    "username": "ログインID",
+    "password": "パスワード",
+    "rememberme": "remember me"
+  },
+  "signupFields": {
+    "username": "ユーザー名",
+    "loginId": "ログインID",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "confirm_password": "パスワードの確認",
+    "passwordLength": "パスワードは6文字以上です。",
+    "passwordPattern": "パスワードは、少なくとも大文字１つ、数字１つ、特殊文字１つが必須です。",
+    "to_login": "ログインページへ",
+    "signup": "登録"
+  },
+  "stock": {
+    "inventory_report": "在庫報告書",
+    "productName": "品名",
+    "packaging": "荷姿",
+    "lotoNumber": "ロット番号",
+    "amount": "数量",
+    "inStockDate": "入庫日",
+    "targetDate": "対象日"
+  },
+  "buttons": {
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "register": "新規登録",
+    "change": "変更",
+    "delete": "削除",
+    "cancel": "キャンセル",
+    "csvExchange": "CSVダウンロード",
+    "confirmDeparture": "出庫確定",
+    "add": "追加",
+    "init": "初期化",
+    "search": "検索",
+    "save": "保管",
+    "return": "戻る",
+    "calculation": " 請求計算",
+    "billingListOutput": "請求一覧表出力",
+    "billingConfirmed": "請求確定",
+    "next": "次へ",
+    "yes": "はい",
+    "no": "いいえ"
+  },
+  "tableCommon": {
+    "no": "NO",
+    "warning": "このフィールドは必須です。"
+  },
+  "listCommon": {
+    "all": "全て"
+  },
+  "shipper": {
+    "name": "荷主名",
+    "main_address": "住所1",
+    "sub_address": "住所2",
+    "tel_number": "電話",
+    "closing_date": "締日",
+    "code": "コード",
+    "mainAddress": "住所"
+  },
+  "billing": {
+    "new": "請求一覧",
+    "YM": "年月",
+    "day": "締日",
+    "month": "月",
+    "year": "年",
+    "yymm": "年/月",
+    "closing_date": "締日",
+    "period": "対象期間",
+    "processDate": "処理日時",
+    "list": "一覧",
+    "productList": "明細",
+    "billingDate": "請求年月",
+    "targetPeriod": "対象期間",
+    "targetShipper": "対象荷主",
+    "targetWarehouse": "対象倉庫",
+    "number": "番号",
+    "lastBilledAmount": "前回請求額",
+    "billingAmout": "請求額",
+    "consumptionTax": "消費税",
+    "output": "出力",
+    "buttons": {
+      "billingList": "請求リスト",
+      "billingCalculation": "請求計算"
+    },
+    "table": {
+      "number": "NO",
+      "productName": "番号",
+      "shipperName": "荷主名",
+      "previousInvoicedAmount": "前回請求額",
+      "receivedAmount": "入金額",
+      "handlingFee": "荷役料",
+      "storageFee": "保管料",
+      "invoiceAmount": "請求額",
+      "consumptionTax": "消費税"
+    }
+  },
+  "Maintenance": {
+    "addNew": "新規登録",
+    "productNumber": "品番",
+    "productName": "品名",
+    "productPacking": "規格・荷姿",
+    "handlingFee": "荷役料",
+    "storageFee": "保管料 ",
+    "change": "変更",
+    "productList": "品名一覧",
+    "productMaster": "品名マスタ",
+    "unitPriceMaster": "単価区分マスタ",
+    "unitPrice": "単価",
+    "packing": "荷姿",
+    "register": "登録",
+    "unitPriceID": "単価ID",
+    "handlingFeeUnitPrice": "荷役料単価",
+    "storageFeeUnitPrice": "保管料単価",
+    "billingClass": "請求区分",
+    "productNameID": "品名id",
+    "shipperID": "荷主ID",
+    "shipperName": "荷主名",
+    "address": "住所",
+    "postCode": "郵便番号",
+    "address1": "住所１",
+    "address2": "住所２",
+    "usedTsubos": "使用坪数",
+    "priceTsubo": "坪単価",
+    "discountRate": "値引率",
+    "calCategory": "計算区分",
+    "telephoneNumber": "電話番号",
+    "telephone": "電話",
+    "endDate": "締日",
+    "shipperlist": "荷主一覧",
+    "shipperMaster": "荷主マスタ",
+    "fullTimeRequest": "全期請求",
+    "firstBilling": "１期請求 "
+  },
+  "inStock": {
+    "lotNumber": "ロット番号",
+    "weight": "重量",
+    "itemNumber": "入庫数",
+    "cargoPrice": "荷役単価",
+    "storagePrice": "保管単価",
+    "packing": "荷姿",
+    "productName": "品名",
+    "productNumber": "品番",
+    "search": "検索",
+    "inStockDate": "入庫日",
+    "shipper": "荷主",
+    "warehouse": "倉庫"
+  },
+  "outStock": {
+    "outStockDate": "出庫日",
+    "outStockAmount": "出庫数",
+    "stockAmount": "現在庫数",
+    "shipmentNumber": "出庫数",
+    "table": {
+      "productName": "品名",
+      "packaging": "荷姿",
+      "lotNumber": "ロット番号",
+      "weight": "重量",
+      "amount": "数量"
+    }
+  },
+  "deposit": {
+    "depositDate": "入金年月日",
+    "received_onFrom": "入金日From",
+    "received_onTo": "入金日To",
+    "received_on": "入金日",
+    "processing_on": "処理日",
+    "processing_onFrom": "処理日From",
+    "processing_onTo": "処理日To",
+    "amount": "入金額",
+    "shipperCode": "荷主コード",
+    "processing_onDate": "処理日時",
+    "description": "摘要",
+    "received": "入金",
+    "shipper": "荷主名"
+  },
+  "UserPage": {
+    "loginNumber": "番号",
+    "user_name": "ユーザー名",
+    "login_id": "ログインID",
+    "email": "メールアドレス",
+    "authority": "権限"
+  },
+
+  "messages": {
+    "type_username": "ユーザー名を入力してください。",
+    "type_loginId": "ログインIDを入力してください。",
+    "type_password": "パスワードを入力してください。",
+    "type_repassword": "パスワードを確認してください。",
+    "type_email": "メールアドレスを入力してください。",
+    "invalid_email": "入力されたメールアドレスは無効です。",
+    "no_matched_password": "入力した新しいパスワードが一致しません。",
+    "something_wrong": "何か問題が発生しました。",
+    "input_lotNumber": "ロット番号を入力してください。",
+    "input_stock": "入庫数を入力してください。",
+    "input_weight": "重量(kg)を入力してください。",
+    "input_in_stock_date": "入庫日を入力してください。",
+    "input_out_stock_date": "出庫日を入力してください。",
+    "input_out_amount": "出庫数を入力してください。",
+    "success": "成功しました",
+    "confirm": "確認",
+    "confirm_delete": "本当に初期化してもよろしいですか。",
+    "empty_data_to_init": "初期化するデータはありません。",
+    "stockAmountError": "出庫量は在庫量より少ない数量を入力してください。",
+    "complete_all_nput_fields": "すべてのフィールドに入力してください。"
+  },
+  "popConrimType": {
+    "success": "成功",
+    "warning": "注意",
+    "error": "エラー"
+  }
+}

@@ -1,15 +1,18 @@
-// Entry point for the build script in your package.json
 import "@hotwired/turbo-rails";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
+import { ConfigProvider } from "antd";
+// import "../assets/stylesheets/application.css";
+// import jaJP from "antd/lib/locale/ja_JP";
+// import enUS from "antd/lib/locale/en_US";
 
-// import Layout from "./layouts/Layout";
-// import Home from "./pages";
-import Page from "./page";
+import { AppRouter } from "./components/router/AppRouter";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Page />
+    <ConfigProvider>
+      <AppRouter />
+    </ConfigProvider>
   </React.StrictMode>
 );

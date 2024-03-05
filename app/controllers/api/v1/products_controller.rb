@@ -33,6 +33,11 @@ class Api::V1::ProductsController < Api::V1::BaseController
     end
   end
 
+  def show
+    product = Product.find(params[:id])
+    render json: ProductSerializer.new(product), status: :ok
+  end
+
   def destroy
     product = Product.find(params[:id])
     if product.destroy

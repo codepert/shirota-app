@@ -146,7 +146,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
     t.string "jti", null: false
     t.string "name", null: false
     t.string "login_id"
-    t.bigint "user_authority_id", null: false
+    t.bigint "user_authority_id", default: 1, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["login_id"], name: "index_users_on_login_id", unique: true

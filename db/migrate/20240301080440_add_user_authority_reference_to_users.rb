@@ -1,6 +1,6 @@
 class AddUserAuthorityReferenceToUsers < ActiveRecord::Migration[7.1]
   def up
-    add_reference :users, :user_authority, foreign_key: { to_table: :user_authorities }, null: false
+    add_reference :users, :user_authority, foreign_key: { to_table: :user_authorities }, null: false, default: 1
   end
 
   def down

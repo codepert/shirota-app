@@ -5,4 +5,15 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
+
+  belongs_to :user_authority, foreign_key: :authority
+
+  scope :user_page_permission, ->(user_id) {
+    joins(user_authority: { authority_page: :page })
+    .where(users: { id: user_id })
+    .select('authority_pages.page_id, 
+              authority_pages.is_edit, 
+              authority_pages.is_read, 
+              pages.path')
+  }
 end

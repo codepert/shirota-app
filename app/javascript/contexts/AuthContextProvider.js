@@ -27,6 +27,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const signupAction = async (payload) => {
+    debugger;
     services
       .signup(payload)
       .then((res) => {
@@ -34,6 +35,7 @@ const AuthContextProvider = ({ children }) => {
         setBeforeRequestAction(false);
       })
       .catch((err) => {
+        debugger;
         authActions.handleSignupErrorAction(err)(dispatch);
         setBeforeRequestAction(false);
       });

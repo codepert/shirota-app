@@ -34,8 +34,8 @@ const LoginForm = () => {
   }, [loginErrors, beforeRequest]);
 
   return (
-    <div style={{ width: 450 }} className="mx-auto">
-      <div className="py-18 flex flex-col justify-center h-full min-h-screen gap-6 xs:gap-7 xs:mt-0 sm">
+    <div className="mx-auto px-6 sm:px-8 md:px-28 lg:px-20 xl:px-0 max-w-screen-sm ">
+      <div className="flex flex-col justify-center h-full min-h-screen gap-6 xs:gap-7 xs:mt-0">
         <Title
           level={4}
           className="text-center"
@@ -43,7 +43,7 @@ const LoginForm = () => {
         >
           {messages.SiteInfo.title}
         </Title>
-        <Card style={{ width: 450 }} className="py-4">
+        <Card className="py-4">
           <Title
             level={5}
             className="text-center"

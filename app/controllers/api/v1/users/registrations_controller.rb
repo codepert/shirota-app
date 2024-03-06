@@ -76,11 +76,14 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  private
+
+      def sign_up_params
+        params.require(:user).permit(:name, :email, :login_id, :password)
+      end
   protected
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name email password login_id])
-    # puts "=======params========"
-    # puts devise_parameter_sanitizer.to_json
     # devise_parameter_sanitizer.permit(:account_update, keys: %i[name ])
   end
 end

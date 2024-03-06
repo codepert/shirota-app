@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 class Api::V1::Users::SessionsController < Devise::SessionsController
+  require 'debug'
   protect_from_forgery with: :exception, except: [:create, :destroy]
   respond_to :json
   before_action :configure_sign_in_params, only: [:create]
-
-  # If you have extra params to permit, append them to the sanitizer.
-  def configure_sign_in_params
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:login_id])
-  end
+  
   private
   def respond_with(current_user, _opts = {})
   #  authority_client_pages = User.joins(user_authority: { authority_client_pages: :client_page })
@@ -43,9 +40,16 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
       }, status: :unauthorized
     end
   end
+
+  # If you have extra params to permit, append them to the sanitizer.
+  def configure_sign_in_params
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:login_id])
+  end
+
   protected
 
   def find_for_database_authentication(warden_conditions)
+    binding.break
     conditions = warden_conditions.dup
     login_id = conditions.delete(:login_id)
     where(conditions.to_h).where(["lower(login_id) = :value", { value: login_id.downcase }]).first

@@ -33,7 +33,9 @@ const Signup = () => {
   const onFinishFailed = (errorInfo) => {};
 
   const onFormSubmit = ({ name, email, login_id, password }) => {
-    signupAction({ user: { name, email, login_id, password } });
+    signupAction({
+      user: { name, email, login_id, password, user_authority_id: "1" },
+    });
   };
 
   useEffect(() => {
@@ -59,8 +61,8 @@ const Signup = () => {
   }, [signupErrors, beforeRequest]);
 
   return (
-    <div style={{ width: 550 }} className="mx-auto">
-      <div className="py-18 flex flex-col justify-center h-full min-h-screen gap-6 xs:gap-7 xs:mt-0 sm">
+    <div className="mx-auto px-6 sm:px-8 md:px-28 lg:px-20 xl:px-0 max-w-screen-sm">
+      <div className="flex flex-col justify-center h-full min-h-screen gap-6 xs:gap-7 xs:mt-0">
         <Title
           level={4}
           className="text-center"
@@ -68,7 +70,7 @@ const Signup = () => {
         >
           {messages.SiteInfo.title}
         </Title>{" "}
-        <Card style={{ width: 550 }} className="py-4">
+        <Card className="py-4">
           <Title
             level={4}
             className="text-center"

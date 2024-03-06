@@ -1,16 +1,16 @@
 import { saveAuthUser, clearStorage } from "../utils/helper";
 import lang from "../utils/content/jp.json";
-const handleLoginErrorAction = (err) => (dispatch) => {
-  dispatch({
-    type: "Error",
-    loginErrors: err?.message ?? lang.messages.something_wrong,
-  });
-};
-const handleSignupErrorAction = (err) => (dispatch) =>
-  dispatch({
-    type: "Error",
-    signupErrors: err?.message ?? lang.messages.something_wrong,
-  });
+// const handleLoginErrorAction = (err) => (dispatch) => {
+//   dispatch({
+//     type: "Error",
+//     loginErrors: err?.message ?? lang.messages.something_wrong,
+//   });
+// };
+// const handleSignupErrorAction = (err) => (dispatch) =>
+//   dispatch({
+//     type: "Error",
+//     signupErrors: err?.message ?? lang.messages.something_wrong,
+//   });
 
 const signupAction = (res) => (dispatch) => {
   dispatch({
@@ -43,22 +43,10 @@ const logoutAction = (dispatch) => {
   dispatch({ type: "Logout" });
 };
 
-const setBeforeRequestAction = (beforeRequest) => (dispatch) => {
-  dispatch({
-    type: "before",
-    payload: {
-      beforeRequest: beforeRequest,
-    },
-  });
-};
-
 const authActions = {
   signupAction,
   loginAction,
   logoutAction,
-  handleLoginErrorAction,
-  handleSignupErrorAction,
-  setBeforeRequestAction,
 };
 
 export default authActions;

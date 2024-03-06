@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Card, Typography } from "antd";
 const { Title } = Typography;
 import { useAuth } from "../../hooks/useAuth";
-import { Link } from "react-router-dom";
 import messages from "../../utils/content/jp.json";
 import { openNotificationWithIcon } from "../common/notification";
 // import AlertComponent from "../common/alert";
@@ -83,9 +82,6 @@ const LoginForm = () => {
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button htmlType="submit" className="btn-bg-black">
                 {messages.buttons.login}
-              </Button>
-              <Button style={{ marginLeft: 10 }}>
-                <Link to="/signup">{messages.buttons.register}</Link>
               </Button>
             </Form.Item>
           </Form>

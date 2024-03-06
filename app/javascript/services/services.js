@@ -9,7 +9,7 @@ const login = async (payload) => {
   return API.post(loginURL, payload);
 };
 
-const signup = async (payload) => API.post(signupURL, payload);
+const signup = (payload) => API.post(signupURL, payload);
 
 const logout = async () => API.delete(logoutURL, getAuthUserToken());
 // makeHttpReq(

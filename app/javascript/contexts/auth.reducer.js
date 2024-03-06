@@ -8,10 +8,9 @@ export const initialAuthState = {
   authUserName: getAuthUsername(),
   token: getAuthUserToken(),
   authority_client_pages: getPermissionPage(),
-
-  loginErrors: null,
-  signupErrors: null,
-  beforeRequest: true,
+  // loginErrors: null,
+  // signupErrors: null,
+  // beforeRequest: true,
 };
 export const AuthReducer = (state = initialAuthState, action) => {
   switch (action.type) {

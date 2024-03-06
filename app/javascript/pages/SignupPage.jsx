@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 // import { useTranslation } from "react-i18next";
-import SignupComponent from "../components/auth/Signup";
+import SignUpForm from "../features/auth/components/signupForm/index.container";
 import { falsy, getAuthUser } from "../utils/helper";
 
 const LoginPage = () => {
@@ -14,7 +14,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <SignupComponent />
+      <SignUpForm />
     </>
   );
 };

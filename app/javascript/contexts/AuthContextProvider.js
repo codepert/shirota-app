@@ -5,40 +5,35 @@ import { AuthReducer, initialAuthState } from "./auth.reducer";
 import services from "../services/services";
 import { hasError, saveAuthUser } from "../utils/helper";
 import authActions from "./auth.actions";
+import { createSuccessState, createFailState } from "../utils/manageRequest";
+import { loginURL, logoutURL, signupURL } from "../utils/constants";
+import { getAuthUserToken, API, makeURLOptionsWtoken } from "../utils/helper";
 
 const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialAuthState);
 
   //const history = useHistory();
 
-  const loginAction = (payload) => {
-    services
+  const loginAction = async (payload) => {
+    await services
       .login(payload)
       .then((res) => {
-        debugger;
-        // if (!hasError(res?.status))
         authActions.loginAction(res)(dispatch);
-        setBeforeRequestAction(false);
       })
       .catch((err) => {
         authActions.handleLoginErrorAction(err)(dispatch);
-        setBeforeRequestAction(false);
+        return err;
       });
   };
 
   const signupAction = async (payload) => {
-    debugger;
-    services
-      .signup(payload)
-      .then((res) => {
-        authActions.signupAction(res)(dispatch);
-        setBeforeRequestAction(false);
-      })
-      .catch((err) => {
-        debugger;
-        authActions.handleSignupErrorAction(err)(dispatch);
-        setBeforeRequestAction(false);
-      });
+    try {
+      await services.signup(payload);
+      return { status: "success" };
+    } catch (err) {
+      debugger;
+      return { status: "error", message: err.code };
+    }
   };
 
   const logoutAction = async () => {

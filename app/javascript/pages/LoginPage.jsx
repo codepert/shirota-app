@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 // import { useTranslation } from "react-i18next";
-import LoginComponent from "../components/auth/Login";
+import SignInForm from "../features/auth/SignInForm";
 import { falsy, getAuthUser } from "../utils/helper";
 
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <LoginComponent />
+      <SignInForm />
     </>
   );
 };

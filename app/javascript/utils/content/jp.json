@@ -196,7 +196,7 @@
   },
 
   "messages": {
-    "type_username": "ユーザー名を入力してください。",
+    "type_username": "ログインIDを入力してください。",
     "type_loginId": "ログインIDを入力してください。",
     "type_password": "パスワードを入力してください。",
     "type_repassword": "パスワードを確認してください。",

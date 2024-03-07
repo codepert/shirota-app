@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Card, Typography } from "antd";
 const { Title } = Typography;
 import { Link } from "react-router-dom";
-import { openNotificationWithIcon } from "../../../../components/common/notification";
+import { openNotificationWithIcon } from "../../components/common/notification";
 // import { useAuth } from "../../hooks/useAuth";
-import { useAuth } from "../../../../hooks/useAuth";
-import $lang from "../../../../utils/content/jp.json";
+import { useAuth } from "../../hooks/useAuth";
+import $lang from "../../utils/content/jp.json";
 
 const SignUpFrom = () => {
   const {

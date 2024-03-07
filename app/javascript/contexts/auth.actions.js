@@ -1,16 +1,4 @@
 import { saveAuthUser, clearStorage } from "../utils/helper";
-import lang from "../utils/content/jp.json";
-// const handleLoginErrorAction = (err) => (dispatch) => {
-//   dispatch({
-//     type: "Error",
-//     loginErrors: err?.message ?? lang.messages.something_wrong,
-//   });
-// };
-// const handleSignupErrorAction = (err) => (dispatch) =>
-//   dispatch({
-//     type: "Error",
-//     signupErrors: err?.message ?? lang.messages.something_wrong,
-//   });
 
 const signupAction = (res) => (dispatch) => {
   dispatch({
@@ -23,6 +11,7 @@ const signupAction = (res) => (dispatch) => {
 };
 
 const loginAction = (res) => (dispatch) => {
+  debugger;
   dispatch({
     type: "Login",
     payload: {
@@ -32,7 +21,7 @@ const loginAction = (res) => (dispatch) => {
     },
   });
   saveAuthUser(
-    res?.data?.data?.user_name,
+    res?.data?.data?.name,
     res?.headers?.authorization,
     res?.data?.authority_client_pages
   );

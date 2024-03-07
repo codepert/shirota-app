@@ -1,57 +1,94 @@
 # frozen_string_literal: true
 
 class Api::V1::Users::SessionsController < Devise::SessionsController
-  require 'debug'
-  protect_from_forgery with: :exception, except: [:create, :destroy]
+  protect_from_forgery with: :exception, except: [:create]
+  before_action :configure_permitted_parameters
   respond_to :json
-  before_action :configure_sign_in_params, only: [:create]
-  
-  private
-  def respond_with(current_user, _opts = {})
-  #  authority_client_pages = User.joins(user_authority: { authority_client_pages: :client_page })
-  #                         .where(users: { id: resource.id })
-  #                         .select('authority_client_pages.client_page_id, 
-  #                                   authority_client_pages.is_edit, 
-  #                                   authority_client_pages.is_read, 
-  #                                   client_pages.path')
-    puts UserSerializer.new(current_user)
-    pemisstion_pages = User.user_page_permission(current_user.id)
-    render json: {
-      status: {code: 200, message: 'Logged in sucessfully.'},
-      data: UserSerializer.new(current_user),
-      authority_client_pages: pemisstion_pages
-    }, status: :ok
-  end
-  def respond_to_on_destroy
-    if request.headers['Authorization'].present?
-      jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.fetch(:secret_key_base)).first
-      current_user = User.find(jwt_payload['sub'])
-    end
-    
-    if current_user
-      render json: {
-        status: 200,
-        message: 'Logged out successfully.'
-      }, status: :ok
-    else
-      render json: {
-        status: 401,
-        message: "Couldn't find an active session."
-      }, status: :unauthorized
-    end
-  end
+  # before_action :configure_sign_up_params, only: [:create]
+  # before_action :configure_account_update_params, only: [:update]
+
+  # GET /resource/sign_up
+  # def new
+  #   super
+  # end
+
+  # POST /resource
+  # def create
+  #   super
+  # end
+
+  # GET /resource/edit
+  # def edit
+  #   super
+  # end
+
+  # PUT /resource
+  # def update
+  #   super
+  # end
+
+  # DELETE /resource
+  # def destroy
+  #   super
+  # end
+
+  # GET /resource/cancel
+  # Forces the session data which is usually expired after sign
+  # in to be expired now. This is useful if the user wants to
+  # cancel oauth signing in/up in the middle of the process,
+  # removing all OAuth session data.
+  # def cancel
+  #   super
+  # end
+
+  # protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  def configure_sign_in_params
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:login_id])
+  # def configure_sign_up_params
+  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
+  # end
+
+  # If you have extra params to permit, append them to the sanitizer.
+  # def configure_account_update_params
+  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
+  # end
+
+  # The path used after sign up.
+  # def after_sign_up_path_for(resource)
+  #   super(resource)
+  # end
+
+  # The path used after sign up for inactive accounts.
+  # def after_inactive_sign_up_path_for(resource)
+  #   super(resource)
+  # end
+
+  #  def create
+  #   self.resource = warden.authenticate!(auth_options)
+  #   set_flash_info
+  #   sign_in(resource_name, resource)
+  #   yield resource if block_given?
+  #   respond_with(resource, serialize_options(resource))
+  # end
+
+  private
+
+  def respond_with(current_user, _opts = {})
+    if resource.persisted?
+      render json: {
+        status: {code: 200, message: 'Signed in successfully.'},
+        data: UserSerializer.new(current_user).serialize
+      }
+    else
+      render json: {
+        status: {message: "User couldn't be created successfully. #{current_user.errors.full_messages.to_sentence}"}
+      }, status: :unprocessable_entity
+    end
   end
 
-  protected
 
-  def find_for_database_authentication(warden_conditions)
-    binding.break
-    conditions = warden_conditions.dup
-    login_id = conditions.delete(:login_id)
-    where(conditions.to_h).where(["lower(login_id) = :value", { value: login_id.downcase }]).first
+  protected
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_in, keys: %i[password login_id])
   end
 end

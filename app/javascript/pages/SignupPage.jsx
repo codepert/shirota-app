@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 // import { useTranslation } from "react-i18next";
-import SignUpForm from "../features/auth/components/signupForm/index.container";
+import SignUpForm from "../features/auth/SignUpForm";
 import { falsy, getAuthUser } from "../utils/helper";
 
 const LoginPage = () => {

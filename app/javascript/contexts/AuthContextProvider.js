@@ -1,29 +1,21 @@
 import React, { useReducer } from "react";
-//import { useHistory } from "react-router-dom";
 import { AuthContext } from "./auth.context";
 import { AuthReducer, initialAuthState } from "./auth.reducer";
 import services from "../services/services";
-import { hasError, saveAuthUser } from "../utils/helper";
 import authActions from "./auth.actions";
-import { createSuccessState, createFailState } from "../utils/manageRequest";
-import { loginURL, logoutURL, signupURL } from "../utils/constants";
-import { getAuthUserToken, API, makeURLOptionsWtoken } from "../utils/helper";
 
 const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialAuthState);
 
-  //const history = useHistory();
-
   const loginAction = async (payload) => {
-    await services
-      .login(payload)
-      .then((res) => {
-        authActions.loginAction(res)(dispatch);
-      })
-      .catch((err) => {
-        authActions.handleLoginErrorAction(err)(dispatch);
-        return err;
-      });
+    try {
+      const res = await services.login(payload);
+      authActions.loginAction(res)(dispatch);
+      return { state: "success" };
+    } catch (err) {
+      debugger;
+      return { state: "error", code: err.code, status: err?.response?.status };
+    }
   };
 
   const signupAction = async (payload) => {
@@ -44,10 +36,6 @@ const AuthContextProvider = ({ children }) => {
     // }
   };
 
-  const setBeforeRequestAction = (flag) => {
-    authActions.setBeforeRequestAction(flag)(dispatch);
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -55,7 +43,6 @@ const AuthContextProvider = ({ children }) => {
         signupAction,
         loginAction,
         logoutAction,
-        setBeforeRequestAction,
       }}
     >
       {children}

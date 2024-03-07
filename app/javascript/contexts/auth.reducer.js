@@ -8,9 +8,6 @@ export const initialAuthState = {
   authUserName: getAuthUsername(),
   token: getAuthUserToken(),
   authority_client_pages: getPermissionPage(),
-  // loginErrors: null,
-  // signupErrors: null,
-  // beforeRequest: true,
 };
 export const AuthReducer = (state = initialAuthState, action) => {
   switch (action.type) {
@@ -38,20 +35,6 @@ export const AuthReducer = (state = initialAuthState, action) => {
         afterSignup: false,
       };
 
-    case "Error":
-      return {
-        ...state,
-        authUserName: "",
-        token: "",
-        authority_client_pages: [],
-        loginErrors: action?.loginErrors ?? null,
-        signupErrors: action?.signupErrors ?? null,
-      };
-    case "before":
-      return {
-        ...state,
-        beforeRequest: action.payload.beforeRequest,
-      };
     default:
       return state;
   }

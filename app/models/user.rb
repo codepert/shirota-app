@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: self
+         :jwt_authenticatable, jwt_revocation_strategy: self, :authentication_keys => [:login_id]
 
   belongs_to :user_authority
 
@@ -18,4 +18,14 @@ class User < ApplicationRecord
   # }
 
    validates :login_id, presence: true, uniqueness: true
+   validates :login_id, uniqueness: true
+
+  # Override the default Devise email authentication methods
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
+  end
 end

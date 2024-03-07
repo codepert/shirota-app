@@ -16,7 +16,7 @@ export const AuthReducer = (state = initialAuthState, action) => {
         ...state,
         authUsername: action.payload.login_id,
         token: action.payload.token,
-        authority_client_pages: action.payload.authority_client_pages,
+        permission_pages: action.payload.permission_pages,
         loginErrors: null,
       };
     case "Signup":

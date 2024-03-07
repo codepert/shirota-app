@@ -74,10 +74,18 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(current_user, _opts = {})
+    permission_pages = User.joins(user_authority: { authority_page: :page })
+                          .where(users: { id: resource.id })
+                          .select('authority_pages.page_id, 
+                                  authority_pages.is_edit, 
+                                  authority_pages.is_read, 
+                                  pages.path')
+
     if resource.persisted?
       render json: {
         status: {code: 200, message: 'Signed in successfully.'},
-        data: UserSerializer.new(current_user).serialize
+        data: UserSerializer.new(current_user).serialize,
+        permission_pages: access_pages
       }
     else
       render json: {

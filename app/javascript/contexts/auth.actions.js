@@ -17,7 +17,7 @@ const loginAction = (res) => (dispatch) => {
     payload: {
       authUserName: res?.data?.data?.name,
       token: res?.headers?.authorization,
-      authority_client_pages: res?.data?.authority_client_pages,
+      permission_pages: res?.data?.permission_pages,
     },
   });
   saveAuthUser(

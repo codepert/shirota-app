@@ -85,7 +85,7 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
       render json: {
         status: {code: 200, message: 'Signed in successfully.'},
         data: UserSerializer.new(current_user).serialize,
-        permission_pages: access_pages
+        permission_pages: permission_pages
       }
     else
       render json: {

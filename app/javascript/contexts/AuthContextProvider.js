@@ -13,7 +13,6 @@ const AuthContextProvider = ({ children }) => {
       authActions.loginAction(res)(dispatch);
       return { state: "success" };
     } catch (err) {
-      debugger;
       return { state: "error", code: err.code, status: err?.response?.status };
     }
   };

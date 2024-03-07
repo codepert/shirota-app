@@ -16,11 +16,6 @@ const LoginForm = () => {
     const res = await loginAction({ user: { login_id, password } });
 
     if (res.state == "success") {
-      openNotificationWithIcon(
-        "success",
-        $lang.popConrimType.success,
-        "success registeration"
-      );
       navigate("/home");
     } else {
       openNotificationWithIcon(

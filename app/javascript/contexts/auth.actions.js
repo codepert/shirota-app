@@ -11,7 +11,6 @@ const signupAction = (res) => (dispatch) => {
 };
 
 const loginAction = (res) => (dispatch) => {
-  debugger;
   dispatch({
     type: "Login",
     payload: {
@@ -23,7 +22,7 @@ const loginAction = (res) => (dispatch) => {
   saveAuthUser(
     res?.data?.data?.name,
     res?.headers?.authorization,
-    res?.data?.authority_client_pages
+    res?.data?.permission_pages
   );
 };
 

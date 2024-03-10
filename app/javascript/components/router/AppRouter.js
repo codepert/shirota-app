@@ -10,6 +10,7 @@ import WarehousePage from "../../pages/WarehousePage";
 import ShipperPage from "../../pages/ShipperPage";
 import ProductPage from "../../pages/ProductPage";
 import UserPage from "../../pages/UserPage";
+import PermissionPage from "../../pages/PermissionPage";
 
 import InStockPage from "../../pages/InStockPage";
 import OutStockPage from "../../pages/OutStockPage";
@@ -24,7 +25,6 @@ import AuthContextProvider from "../../contexts/AuthContextProvider";
 import PrivateRoute from "./PrivateRoute";
 
 import { useAuth } from "../../hooks/useAuth";
-// import PemissionPage from "../../pages/PemissionPage";
 // import ChangePassword from "../../pages/changePasswordPage";
 
 import { navigatiionsURL } from "../../utils/constants";
@@ -122,6 +122,15 @@ export const AppRouter = () => {
               />
             }
           />
+          <Route
+            path="/auth_permission"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={PermissionPage}
+              />
+            }
+          />
           {/*   <Route
             path="/bill_process"
             element={
@@ -147,15 +156,6 @@ export const AppRouter = () => {
             path="/*"
             element={
               <PrivateRoute navigations={navigations} Component={NotFonud} />
-            }
-          />
-          <Route
-            path="/auth_permission"
-            element={
-              <PrivateRoute
-                navigations={navigations}
-                Component={PemissionPage}
-              />
             }
           />
           <Route

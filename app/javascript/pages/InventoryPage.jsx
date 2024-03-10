@@ -191,7 +191,6 @@ const InventoryPage = ({ is_edit }) => {
   };
 
   const exportDataAndDownloadPdf = () => {
-    debugger;
     API.post(
       exportInventoryPdfDataUrl,
       {},
@@ -221,6 +220,12 @@ const InventoryPage = ({ is_edit }) => {
     });
   };
   const exportDataAndDownloadCVS = async () => {
+    openNotificationWithIcon(
+      "warning",
+      $lang.popConfirmType.warning,
+      "現在作業しています。"
+    );
+    return;
     const csvData = getCSVData();
     if (csvData.length == 0) {
       openNotificationWithIcon(

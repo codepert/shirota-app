@@ -5,9 +5,8 @@ class Api::V1::AuthorityPagesController < Api::V1::BaseController
 
   def create_or_update
     ActiveRecord::Base.transaction do
-      # params[:_json].each do |params|
-      create_or_update_params.each do |params|
-        authority_page = AuthorityClientPage.find_or_initialize_by(
+      params[:_json].each do |params|
+        authority_page = AuthorityPage.find_or_initialize_by(
           user_authority_id: params[:user_authority_id],
           page_id: params[:page_id]
         )
@@ -27,10 +26,5 @@ class Api::V1::AuthorityPagesController < Api::V1::BaseController
     #     status: :unprocessable_entity,
     #     errors: e.record.errors.full_messages
     #   }
-  end
-  def create_or_update_params
-    params.require(:authority_pages).map do |authority_pages|
-      create_or_update_params.permit(:user_authority_id, :page_id, :is_edit, :is_read)
-    end
   end
 end

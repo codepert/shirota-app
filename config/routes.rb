@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       end
       resources :user_authorities
       resources :authority_pages
+      post "set_authority_pages"  => "authority_pages#create_or_update"
       resources :pages
       resources :warehouses
       resources :warehouse_fees

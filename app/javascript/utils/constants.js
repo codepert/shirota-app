@@ -48,11 +48,11 @@ export const userURL = baseUrl + "api/v1/users";
 
 export const userAuthURL = baseUrl + "api/v1/user_authorities";
 
-export const getClientPageURL = baseUrl + "api/client_page";
+export const pageURL = baseUrl + "api/v1/pages";
+export const authorityPageURL = baseUrl + "api/v1/authority_pages";
 
-export const getAuthDataURL = baseUrl + "api/get_all_auth_data";
+export const setAuthorityPageURL = baseUrl + "api/v1/set_authority_pages";
 
-export const setAuthDataURL = baseUrl + "api/set_auth_data";
 export const exportDepositCSVDataUrl = baseUrl + "api/received_payment_csv";
 //unit_price urls
 

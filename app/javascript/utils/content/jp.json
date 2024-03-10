@@ -267,7 +267,9 @@
     "input_product_name": "品名を入力してください。",
     "input_packaging": "規格・荷姿を入力してください。",
     "select_warehouse_fee": " 単価区分を選択してください。",
-    "not_register_or_in_stock": "この品名が登録されていないか、入荷されていません。"
+    "not_register_or_in_stock": "この品名が登録されていないか、入荷されていません。",
+    "not_register_product": "この品名が登録されていません。",
+    "confirm_instock": "本当に入庫しますか？"
   },
   "popConfirmType": {
     "success": "成功",
@@ -311,5 +313,10 @@
   "password": "パスワード",
   "confirm_password": "パスワードの確認",
   "passwordLength": "パスワードは6文字以上です。",
-  "passwordPattern": "パスワードは、少なくとも大文字１つ、数字１つ、特殊文字１つが必須です。"
+  "passwordPattern": "パスワードは、少なくとも大文字１つ、数字１つ、特殊文字１つが必須です。",
+  "packaging_set_names": "荷姿 / 荷役単価 / 保管単価",
+  "lotoNumber": "ロット番号",
+  "weight": "重量",
+  "amount": "数量",
+  "yes": "はい"
 }

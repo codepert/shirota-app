@@ -23,10 +23,11 @@ export const warehouseFeeURL = baseUrl + "api/v1/warehouse_fees";
 
 export const navigatiionsURL = baseUrl + "api/v1/pages";
 
-export const productDetailURL = (id) => baseUrl + `api/product_detail?id=${id}`;
+export const productDetailURL = baseUrl + `api/v1/products_by`;
+
 export const productStockURL = baseUrl + `api/product_stock`;
 
-export const saveStockInoutUrl = baseUrl + "api/stock_inout";
+export const saveStockInUrl = baseUrl + "api/v1/stock_in";
 export const saveStockOutUrl = baseUrl + "api/stock_out";
 
 export const exportCSVDataUrl = baseUrl + "api/export_instock_csv";

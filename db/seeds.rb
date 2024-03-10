@@ -55,7 +55,7 @@ Page.create!([
     parent_id: 15
   },
   {
-    name: 'user管理',
+    name: 'ユーザー管理',
     path: '/user_managent',
     parent_id: 15
   },

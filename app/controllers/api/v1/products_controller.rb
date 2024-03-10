@@ -21,7 +21,6 @@ class Api::V1::ProductsController < Api::V1::BaseController
       }, status: :unprocessable_entity
     end
   end
-  
   def update
     product = Product.find(params[:id])
     if product.update(create_or_update_params)
@@ -32,12 +31,16 @@ class Api::V1::ProductsController < Api::V1::BaseController
       }, status: :unprocessable_entity
     end
   end
-
   def show
     product = Product.find(params[:id])
     render json: ProductSerializer.new(product), status: :ok
   end
-
+  def show_by
+    if params[:q].present?
+      product = Product.where("code like '%" + params[:q] + "%' or name like '%" + params[:q] + "%'")
+      render json:  ProductSerializer.new(product)
+    end
+  end
   def destroy
     product = Product.find(params[:id])
     if product.destroy

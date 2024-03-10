@@ -122,26 +122,29 @@ const NavbarSection = () => {
           </Title>
         </div>
         <div className="items-center">
-          <p
-            style={{
-              backgroundColor: "#abd990",
-            }}
-          >
-            ユーザー：<b>{name}</b>
-          </p>
-          <Button
-            className="btn-bg-black"
-            onClick={logoutAction}
-            style={{
-              marginLeft: "10px",
-              border: "none",
-              float: "right",
-            }}
-          >
-            <Link to="/signin" style={{ color: "#000" }}>
-              {$lang.buttons.logout}
-            </Link>
-          </Button>
+          <div className="flex justify-between">
+            <p
+              style={{
+                backgroundColor: "#abd990",
+              }}
+              className="mt-2"
+            >
+              ユーザー：<b>{name}</b>
+            </p>
+            <Button
+              className="btn-bg-black"
+              onClick={logoutAction}
+              style={{
+                marginLeft: "10px",
+                border: "none",
+                float: "right",
+              }}
+            >
+              <Link to="/signin" style={{ color: "#000" }}>
+                {$lang.buttons.logout}
+              </Link>
+            </Button>
+          </div>
         </div>
       </Flex>
       <Flex

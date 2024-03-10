@@ -3,4 +3,6 @@ class ProductSerializer
   attributes :id, :name, :code, :warehouse_fee_id, :specification
   # attributes :warehouse_fee
   one :warehouse_fee, serializer: WarehouseFeeSerializer
+  one :stock, serializer: StockSerializer
+
 end

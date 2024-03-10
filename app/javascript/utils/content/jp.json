@@ -269,7 +269,8 @@
     "select_warehouse_fee": " 単価区分を選択してください。",
     "not_register_or_in_stock": "この品名が登録されていないか、入荷されていません。",
     "not_register_product": "この品名が登録されていません。",
-    "confirm_instock": "本当に入庫しますか？"
+    "confirm_instock": "本当に入庫しますか？",
+    "confirm_outstock": "本当に出庫しますか？"
   },
   "popConfirmType": {
     "success": "成功",
@@ -318,5 +319,7 @@
   "lotoNumber": "ロット番号",
   "weight": "重量",
   "amount": "数量",
-  "yes": "はい"
+  "yes": "はい",
+  "lotNumber": "ロット番号",
+  "confirmDeparture": "出庫確定"
 }

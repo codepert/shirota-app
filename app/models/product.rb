@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   include Paginatable
   belongs_to :warehouse_fee
+  has_many   :stock
+
   # scope: where_name, -> (name) { 
   #   where(name != "" ? "name ILIKE ?", "%#{name}%" : "1=1")
   # }

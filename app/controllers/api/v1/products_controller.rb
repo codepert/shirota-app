@@ -41,6 +41,35 @@ class Api::V1::ProductsController < Api::V1::BaseController
       render json:  ProductSerializer.new(product)
     end
   end
+  def show_with_stock
+    q = params[:q]
+    shipper_id = params[:shipper_id]
+    warehouse_id = params[:warehouse_id]
+
+    product = Product.joins(:stock)
+                    .where(
+                      "(code LIKE :q OR name LIKE :q) AND shipper_id = :shipper_id AND warehouse_id = :warehouse_id",
+                      q: "%#{params[:q]}%",
+                      shipper_id: params[:shipper_id],
+                      warehouse_id: params[:warehouse_id]
+                    )
+                    
+                    
+
+    if product.present?
+      in_stock = StockInout.with_lot_num_amount_for_product(product[0].id)
+
+      render json: {
+        product: ProductSerializer.new(product),
+        in_stock: in_stock 
+      }
+    else
+      render :json => {
+        product: {} ,
+        in_stock: {},
+      }
+    end
+  end
   def destroy
     product = Product.find(params[:id])
     if product.destroy

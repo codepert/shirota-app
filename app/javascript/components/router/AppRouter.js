@@ -12,8 +12,9 @@ import ProductPage from "../../pages/ProductPage";
 import UserPage from "../../pages/UserPage";
 
 import InStockPage from "../../pages/InStockPage";
+import OutStockPage from "../../pages/OutStockPage";
+
 // import WarehouseFee from "../../pages/WarehouseFee";
-// import OutStockPage from "../../pages/OutStockPage";
 // import BillingProcess from "../../pages/BillingProcess";
 // import BillingList from "../../pages/BillingList";
 // import DepositPage from "../../pages/DepositPage";
@@ -102,6 +103,16 @@ export const AppRouter = () => {
               <PrivateRoute navigations={navigations} Component={InStockPage} />
             }
           />
+
+          <Route
+            path="/stock_out"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={OutStockPage}
+              />
+            }
+          />
           {/*   <Route
             path="/bill_process"
             element={
@@ -115,15 +126,6 @@ export const AppRouter = () => {
             path="/bill_list"
             element={
               <PrivateRoute navigations={navigations} Component={BillingList} />
-            }
-          />
-          <Route
-            path="/stock_out"
-            element={
-              <PrivateRoute
-                navigations={navigations}
-                Component={OutStockPage}
-              />
             }
           />
           <Route

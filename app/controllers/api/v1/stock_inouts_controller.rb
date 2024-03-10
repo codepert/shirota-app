@@ -52,6 +52,49 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
         errors: e.record.errors.full_messages
       }
   end
+  def stock_out
+    request_out_params.each do |record|
+      ActiveRecord::Base.transaction do
+
+        stock_out_params = ActionController::Parameters.new(record).permit(
+          :stock_id, :category, :amount, :inout_on,
+          :handling_fee_rate, :storage_fee_rate, :lot_number, :weight
+        )
+        
+        StockInout.create(
+          stock_id:             stock_out_params[:stock_id],
+          category:             stock_out_params[:category],
+          inout_on:             stock_out_params[:inout_on],
+          amount:               stock_out_params[:amount],
+          handling_fee_rate:    stock_out_params[:handling_fee_rate],
+          storage_fee_rate:     stock_out_params[:storage_fee_rate],
+          lot_number:           stock_out_params[:lot_number],
+          weight:               stock_out_params[:weight],
+          user_id:              current_user.id
+        )
+
+        stock = Stock.find(stock_out_params[:stock_id]);
+        existing_total_amount = stock.as_json["total_amount"]
+        category = stock_out_params[:category]
+    
+        adjusted_total_amount = existing_total_amount.to_i - stock_out_params[:amount].to_i
+  
+        stock = stock.update(
+          total_amount: adjusted_total_amount
+        )
+      end
+    end
+    
+    render :json => {
+        status: :accepted
+    }
+
+    rescue ActiveRecord::RecordInvalid => e
+      render :json => {
+        status: :unprocessable_entity,
+        errors: e.record.errors.full_messages
+      }
+  end
 
   private
   def calculate_adjusted_total_amount(stock, stock_inout_params)
@@ -90,6 +133,5 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
         stock_id:             uparams["stock_id"]
       }
     end
-
   end
 end

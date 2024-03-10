@@ -24,10 +24,11 @@ Rails.application.routes.draw do
       resources :shippers
       resources :products
       get "products_by" => "products#show_by"
-
+      get "product_in_stock" => "products#show_with_stock"
       # resources :stocks
       resources :stock_inouts
       post "stock_in" => "stock_inouts#stock_in"
+      post "stock_out" => "stock_inouts#stock_out"
       resources :received_payments
       # resources :bills
       # resources :bill_amounts

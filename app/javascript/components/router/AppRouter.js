@@ -2,27 +2,27 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../../pages/LoginPage";
-import SignupPage from "../../pages/SignupPage";
-import NotFonud from "../../pages/404";
+// import SignupPage from "../../pages/SignupPage";
+// import NotFonud from "../../pages/404";
 
-import TopPage from "../../pages/TopPage";
-import InStockPage from "../../pages/InStockPage";
-import ProductPage from "../../pages/ProductPage";
-import ShipperPage from "../../pages/ShipperPage";
-import WarehouseFee from "../../pages/WarehouseFee";
-import OutStockPage from "../../pages/OutStockPage";
-import BillingProcess from "../../pages/BillingProcess";
-import BillingList from "../../pages/BillingList";
-import DepositPage from "../../pages/DepositPage";
-import UserPage from "../../pages/UserPage";
+// import TopPage from "../../pages/TopPage";
+// import InStockPage from "../../pages/InStockPage";
+// import ProductPage from "../../pages/ProductPage";
+// import ShipperPage from "../../pages/ShipperPage";
+// import WarehouseFee from "../../pages/WarehouseFee";
+// import OutStockPage from "../../pages/OutStockPage";
+// import BillingProcess from "../../pages/BillingProcess";
+// import BillingList from "../../pages/BillingList";
+// import DepositPage from "../../pages/DepositPage";
+// import UserPage from "../../pages/UserPage";
 import AuthContextProvider from "../../contexts/AuthContextProvider";
 
-import InventoryPage from "../../pages/InventoryPage";
+// import InventoryPage from "../../pages/InventoryPage";
 import PrivateRoute from "./PrivateRoute";
 
 import { useAuth } from "../../hooks/useAuth";
-import PemissionPage from "../../pages/PemissionPage";
-import ChangePassword from "../../pages/changePasswordPage";
+// import PemissionPage from "../../pages/PemissionPage";
+// import ChangePassword from "../../pages/changePasswordPage";
 
 import { navigatiionsURL } from "../../utils/constants";
 
@@ -48,7 +48,7 @@ export const AppRouter = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/signin" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          {/* <Route path="/signup" element={<SignupPage />} />
           <Route
             path="/home"
             element={
@@ -127,7 +127,6 @@ export const AppRouter = () => {
               <PrivateRoute navigations={navigations} Component={NotFonud} />
             }
           />
-          <Route path="/" element={<LoginPage />} />
           <Route
             path="/user_managent"
             element={
@@ -151,7 +150,8 @@ export const AppRouter = () => {
                 Component={ChangePassword}
               />
             }
-          />
+          />*/}
+          <Route path="/" element={<LoginPage />} />
         </Routes>
         {/* <FooterSection /> */}
       </BrowserRouter>

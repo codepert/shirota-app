@@ -37,6 +37,9 @@ Page.create!([
     name: '荷主マスタ',
     path: '/shipper',
   },{
+    name: '倉庫マスタ',
+    path: '/warehouse',
+  },{
     name: '単価区分マスタ',
     path: '/warehouse_fee',
   },
@@ -48,22 +51,30 @@ Page.create!([
     name: 'user管理',
     path: '/user_managent',
   },
+  {
+    name: "マスタジ管理",
+    path: "#/master",
+  },
+  {
+    name: "Administrator",
+    path: "#/admin",
+  },
+  {
+    name: "請求処理",
+    path: "#/bill",
+  }
 ])
 
-UserAuthority.create([{
-  id: 1,
+UserAuthority.insert_all([{
   name: '入出庫の入力・編集のみ',
   auth_num: 1,
 },{
-  id: 2,
   name: '1＋請求書発行（締日処理）',
   auth_num: 2,
 },{
-  id: 7,
   name: 'admin',
   auth_num: 7,
 },{
-  id: 9,
   name: '2 + マスタ管理機能',
   auth_num: 9,
 }])
@@ -225,81 +236,93 @@ WarehouseFee.create([
   },
 ])
 
-Warehouse.create([{
-  name: '一般倉庫'
-},{
-  name: '恒温倉庫'
-},{
-  name: '危険物倉庫'
-}])
-
 User.create([{
-  name: 'warehouse',
-  login_id: 'warehouse',
-  user_authority_id: 7,
+  name: 'systemadmin',
+  login_id: 'systemadmin',
+  user_authority_id: 3,
   email: 'warehouse@test.com',
-  password: 'p@ssW0rd!'
+  password: 'admin@pssW0rd!'
 }])
 
 
 AuthorityPage.create([{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 1,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 2,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 3,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 4,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 5,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 6,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 7,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 8,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 9,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 10,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 11,
   is_read: 1,
   is_edit: 1
 },{
-  user_authority_id: 7,
+  user_authority_id: 3,
   page_id: 12,
   is_read: 1,
   is_edit: 1
-},])
+},{
+  user_authority_id: 3,
+  page_id: 13,
+  is_read: 1,
+  is_edit: 1
+},{
+  user_authority_id: 3,
+  page_id: 14,
+  is_read: 1,
+  is_edit: 1
+},{
+  user_authority_id: 3,
+  page_id: 15,
+  is_read: 1,
+  is_edit: 1
+},{
+  user_authority_id: 3,
+  page_id: 16,
+  is_read: 1,
+  is_edit: 1
+}])

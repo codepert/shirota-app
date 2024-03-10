@@ -262,10 +262,7 @@ const InStockPage = ({ is_edit }) => {
     if (!isReadyPrepareProducts()) return;
 
     let selectedProductArr = prepareProducts.slice();
-    const inStockDateStr = new Date(inStockDate.toString())
-      .toISOString()
-      .substring(0, 10)
-      .replace(/\-/g, "/");
+    const inStockDateStr = inStockDate.format("YYYY/MM/DD");
 
     const newData = {
       handling_fee_rate: handlePrice,
@@ -323,10 +320,7 @@ const InStockPage = ({ is_edit }) => {
     updateData.warehouse_name = selectedWarehouse.label;
     updateData.shipper_id = seletedShipper.value;
     updateData.shipper_name = seletedShipper.label;
-    updateData.inout_on = dayjs
-      .tz(new Date(inStockDate), "Asia/Tokyo")
-      .format(dateFormat)
-      .replace(/\-/g, "/");
+    updateData.inout_on = inStockDate.format("YYYY/MM/DD");
 
     updateData.lot_number = lotNumber;
     updateData.weight = weight;

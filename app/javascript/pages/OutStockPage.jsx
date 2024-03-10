@@ -204,7 +204,7 @@ const OutStockPage = ({ is_edit }) => {
   const doPrepareProducts = () => {
     if (!isReadyPrepareProducts()) return;
     let selectedStockInoutArr = prepareProducts.slice();
-    const outStockDateStr = getDateStr(outStockDate, "YYYY/MM/DD");
+    const outStockDateStr = outStockDate.format("YYYY/MM/DD");
 
     const stockInout = stockInoutOptions.filter(
       (item) => item.value == selectedStockInoutId

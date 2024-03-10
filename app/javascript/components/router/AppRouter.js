@@ -27,6 +27,7 @@ import { useAuth } from "../../hooks/useAuth";
 // import ChangePassword from "../../pages/changePasswordPage";
 
 import { navigatiionsURL } from "../../utils/constants";
+import WarehouseFeePage from "../../pages/WarehouseFeePage";
 
 export const AppRouter = () => {
   const [navigations, setNavigations] = useState([]);
@@ -63,6 +64,16 @@ export const AppRouter = () => {
               <PrivateRoute
                 navigations={navigations}
                 Component={WarehousePage}
+              />
+            }
+          />
+
+          <Route
+            path="/warehouse_fee"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={WarehouseFeePage}
               />
             }
           />
@@ -105,15 +116,6 @@ export const AppRouter = () => {
               <PrivateRoute
                 navigations={navigations}
                 Component={OutStockPage}
-              />
-            }
-          />
-          <Route
-            path="/warehouse_fee"
-            element={
-              <PrivateRoute
-                navigations={navigations}
-                Component={WarehouseFee}
               />
             }
           />

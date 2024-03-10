@@ -19,7 +19,7 @@ export const productURL = baseUrl + "api/product";
 
 export const productSetUrl = baseUrl + "api/product_set";
 
-export const warehouseFeeURL = baseUrl + "api/v1/warehouse_fee";
+export const warehouseFeeURL = baseUrl + "api/v1/warehouse_fees";
 
 export const navigatiionsURL = baseUrl + "api/v1/pages";
 

@@ -14,16 +14,15 @@ import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";
 const { Content } = Layout;
 
-const WarehouseList = ({ is_edit }) => {
+const WarehousePage = ({ is_edit }) => {
   const [isposted, setIsPosted] = useState(false);
   const [modalData, setModalData] = useState(null);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeletedModalVisible, setIsDeletedModalVisible] = useState(false);
+  const [handleId, setHandleId] = useState("");
 
   const [allData, setAllData] = useState([]);
-
-  const [handleId, setHandleId] = useState("");
 
   const warehouseListColumns = [
     {
@@ -94,7 +93,7 @@ const WarehouseList = ({ is_edit }) => {
   ];
 
   const getWarehouseList = () => {
-    axios.get(`${warehouseURL}`).then((res) => {
+    API.get(`${warehouseURL}`).then((res) => {
       let index = 1;
       const warehouseData = res.data.map((item) => {
         return {
@@ -114,7 +113,7 @@ const WarehouseList = ({ is_edit }) => {
     setIsModalVisible(true);
   };
 
-  const handleRegisterModal = (data) => {
+  const handleRegister = (data) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {
       createWarehouse(data);
@@ -224,7 +223,7 @@ const WarehouseList = ({ is_edit }) => {
               <WarehouseRegisterModal
                 isOpen={isModalVisible}
                 onClose={handleHideModal}
-                onSave={handleRegisterModal}
+                onSave={handleRegister}
                 initialValues={modalData}
               />{" "}
               <DeleteModal
@@ -248,4 +247,4 @@ const WarehouseList = ({ is_edit }) => {
     </div>
   );
 };
-export default WarehouseList;
+export default WarehousePage;

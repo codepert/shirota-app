@@ -277,5 +277,24 @@
   "string": {
     "start_date": "",
     "end_date": ""
-  }
+  },
+  "code": "コード",
+  "shipperName": "荷主名",
+  "postCode": "郵便番号",
+  "mainAddress": "住所1",
+  "subAddress": "住所2",
+  "telNumber": "電話",
+  "closingDate": "締日",
+  "shipperMaster": "荷主マスタ",
+  "no": "No",
+  "delete": "削除",
+  "change": "変更",
+  "warehouseName": "倉庫名",
+  "packing": "単価区分",
+  "handlingFeeUnitPrice": "荷役料単価",
+  "storageFeeUnitPrice": "保管料単価",
+  "billingClass": "請求区分",
+  "fullTimeRequest": "全期請求",
+  "firstBilling": "１期請求 ",
+  "addNew": "新規登録"
 }

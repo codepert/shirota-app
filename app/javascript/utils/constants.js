@@ -13,9 +13,9 @@ export const logoutURL = baseUrl + "logout";
 
 export const warehouseURL = baseUrl + "api/v1/warehouses";
 
-export const shipperURL = baseUrl + "api/shipper";
+export const shipperURL = baseUrl + "api/v1/shippers";
 
-export const productURL = baseUrl + "api/product";
+export const productURL = baseUrl + "api/v1/product";
 
 export const productSetUrl = baseUrl + "api/product_set";
 

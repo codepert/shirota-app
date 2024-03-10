@@ -7,10 +7,10 @@ import LoginPage from "../../pages/LoginPage";
 
 import TopPage from "../../pages/TopPage";
 import WarehousePage from "../../pages/WarehousePage";
+import ShipperPage from "../../pages/ShipperPage";
 
 // import InStockPage from "../../pages/InStockPage";
 // import ProductPage from "../../pages/ProductPage";
-// import ShipperPage from "../../pages/ShipperPage";
 // import WarehouseFee from "../../pages/WarehouseFee";
 // import OutStockPage from "../../pages/OutStockPage";
 // import BillingProcess from "../../pages/BillingProcess";
@@ -77,6 +77,12 @@ export const AppRouter = () => {
               />
             }
           />
+          <Route
+            path="/shipper"
+            element={
+              <PrivateRoute navigations={navigations} Component={ShipperPage} />
+            }
+          />
           {/*   <Route
             path="/bill_process"
             element={
@@ -102,12 +108,6 @@ export const AppRouter = () => {
             path="/product"
             element={
               <PrivateRoute navigations={navigations} Component={ProductPage} />
-            }
-          />
-          <Route
-            path="/shipper"
-            element={
-              <PrivateRoute navigations={navigations} Component={ShipperPage} />
             }
           />
           <Route

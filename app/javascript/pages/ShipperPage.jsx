@@ -1,61 +1,53 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CTable from "../components/CTable";
-import { feeUrl } from "../utils/constants";
-import { warehouseFeeURL } from "../utils/constants";
+import { Form, Input, Layout, Button, Modal, Select, Card } from "antd";
 
-import {
-  Form,
-  Input,
-  Layout,
-  Select,
-  Button,
-  Modal,
-  notification,
-  Card,
-} from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
-import CustomButton from "../components/common/CustomButton";
-import WarehouseFeeRegisterModal from "../features/warehouseFee/register.modal";
-import DeleteModal from "../components/common/delete.modal";
 import { openNotificationWithIcon } from "../components/common/notification";
+import { shipperURL } from "../utils/constants";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import CustomButton from "../components/common/CustomButton";
+import ShipperRegisterModal from "../features/shipper/register.modal";
+import DeleteModal from "../components/common/delete.modal";
+
 import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";
 
 const { Content } = Layout;
 
-const WarehouseFeePage = ({ is_edit }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalData, setModalData] = useState(null);
+const ShipperList = ({ is_edit }) => {
   const [isposted, setIsPosted] = useState(false);
-  const [allData, setAllData] = useState([]);
+  const [modalData, setModalData] = useState(null);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeletedModalVisible, setIsDeletedModalVisible] = useState(false);
   const [handleId, setHandleId] = useState("");
 
-  const getWarehouseFeeList = () => {
-    API.get(`${warehouseFeeURL}`).then((res) => {
+  const [allData, setAllData] = useState([]);
+
+  const getAllShipper = () => {
+    API.get(`${shipperURL}`).then((res) => {
       let index = 1;
-      const feeData = res.data.map((item) => {
+      const shipperData = res.data.map((item) => {
         return {
           ...item,
           key: index++,
         };
       });
-      setAllData(feeData);
+      setAllData(shipperData);
     });
   };
   const handleRegister = (data) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {
-      createWarehouseFee(data);
+      createShipper(data);
     } else {
-      updateWarehouseFee(data);
+      updateShipper(data);
     }
   };
 
-  const createWarehouseFee = (data) => {
-    API.post(warehouseFeeURL, data)
+  const createShipper = (data) => {
+    API.post(shipperURL, data)
       .then((res) => {
         openNotificationWithIcon(
           "success",
@@ -74,8 +66,8 @@ const WarehouseFeePage = ({ is_edit }) => {
       });
   };
 
-  const updateWarehouseFee = (data) => {
-    API.put(`${warehouseFeeURL}/${data.id}`, data)
+  const updateShipper = (data) => {
+    API.put(`${shipperURL}/${data.id}`, data)
       .then((res) => {
         openNotificationWithIcon(
           "success",
@@ -103,7 +95,7 @@ const WarehouseFeePage = ({ is_edit }) => {
   };
 
   const handleDelete = (deltedId) => {
-    API.delete(`${warehouseFeeURL}/${deltedId}`)
+    API.delete(`${shipperURL}/${deltedId}`)
       .then((res) => {
         openNotificationWithIcon(
           "success",
@@ -130,63 +122,90 @@ const WarehouseFeePage = ({ is_edit }) => {
     setIsModalVisible(true);
   };
 
-  const feeListColumns = [
+  useEffect(() => {
+    getAllShipper();
+  }, [isposted]);
+
+  const shipperListColumns = [
     {
-      title: "No",
+      title: `${$lang.no}`,
       dataIndex: "key",
       align: "center",
       width: "8%",
     },
     {
-      title: `${$lang.packing}`,
-      key: "packaging",
-      dataIndex: "packaging",
+      title: `${$lang.code}`,
+      key: "code",
+      dataIndex: "code",
+      align: "center",
+      width: "15%",
+    },
+    {
+      title: `${$lang.shipperName}`,
+      key: "name",
+      dataIndex: "name",
       align: "center",
       render: (text, record, dataIndex) => {
         return (
           <div>
-            {record.packaging.slice(0, 18)}
+            {record.name.slice(0, 18)}
             {text.length >= 18 ? "..." : ""}
           </div>
         );
       },
     },
     {
-      title: `${$lang.handlingFeeUnitPrice}`,
-      dataIndex: "handling_fee_rate",
-      key: "handling_fee_rate",
+      title: `${$lang.mainAddress}`,
+      dataIndex: "main_address",
+      key: "main_address",
       align: "center",
-    },
-    {
-      title: `${$lang.storageFeeUnitPrice}`,
-      dataIndex: "storage_fee_rate",
-      key: "storage_fee_rate",
-      align: "center",
-    },
-    {
-      title: $lang.billingClass,
-      dataIndex: "fee_category",
-      key: "fee_category",
-      align: "center",
-      render: (text) => {
-        return text == 1 ? $lang.fullTimeRequest : $lang.firstBilling;
+      render: (text, record, dataIndex) => {
+        return (
+          <div>
+            {record.main_address.slice(0, 18)}
+            {text.length >= 18 ? "..." : ""}
+          </div>
+        );
       },
+    },
+    {
+      title: `${$lang.telNumber}`,
+      dataIndex: "tel",
+      key: "tel",
+      align: "center",
+      render: (text, record, dataIndex) => {
+        return (
+          <div>
+            {record.tel.slice(0, 18)}
+            {text.length >= 18 ? "..." : ""}
+          </div>
+        );
+      },
+    },
+    {
+      title: `${$lang.closingDate}`,
+      dataIndex: "closing_date",
+      key: "closing_date",
+      align: "center",
+      width: "10%",
     },
     is_edit === 1 ? (
       {
-        title: `${$lang.change}`,
+        title: `${$lang.buttons.change}`,
         dataIndex: "operation",
         render: (text, record, dataIndex) => {
           return (
             <div className="flex justify-center items-center">
-              <div className="hidden rounded-full"></div>
+              <div className="hidden rounded-full">
+                {/* {(star_color = record.done == true ? "text-yellow-500" : "")} */}
+              </div>
               <div className="p-2 rounded-full cursor-pointer items-center text-center">
                 <CustomButton
                   onClick={() => {
                     setModalData(record);
                     handleShowModal();
                   }}
-                  title={$lang.change}
+                  title={$lang.buttons.change}
                   icon={<EditOutlined />}
                   size="small"
                   className="btn-default btn-hover-black"
@@ -198,10 +217,9 @@ const WarehouseFeePage = ({ is_edit }) => {
                 <CustomButton
                   onClick={() => {
                     handleShowDeleteModal();
-
                     setHandleId(record.id);
                   }}
-                  title={$lang.delete}
+                  title={$lang.buttons.delete}
                   icon={<DeleteOutlined />}
                   style={{ backgroundColor: "transparent", color: "#000" }}
                   size="small"
@@ -219,10 +237,6 @@ const WarehouseFeePage = ({ is_edit }) => {
     ),
   ];
 
-  useEffect(() => {
-    getWarehouseFeeList();
-  }, [isposted]);
-
   return (
     <div>
       <Content
@@ -235,21 +249,21 @@ const WarehouseFeePage = ({ is_edit }) => {
           bordered={false}
         >
           <div>
-            <div className="mt-2" style={{ marginLeft: "880px" }}>
+            <div className="mt-5" style={{ marginLeft: "880px" }}>
               {is_edit === 1 ? (
                 <Button
                   onClick={() => {
                     handleShowModal();
                     setModalData(null);
                   }}
-                  className="px-5 btn-bg-black"
+                  className="btn-bg-black"
                 >
-                  {$lang.addNew}
+                  {$lang?.Maintenance?.addNew}
                 </Button>
               ) : (
                 <div></div>
               )}
-              <WarehouseFeeRegisterModal
+              <ShipperRegisterModal
                 isOpen={isModalVisible}
                 onClose={handleHideModal}
                 onSave={handleRegister}
@@ -266,7 +280,7 @@ const WarehouseFeePage = ({ is_edit }) => {
               <CTable
                 rowKey={(node) => node.id}
                 dataSource={allData}
-                columns={feeListColumns}
+                columns={shipperListColumns}
                 pagination={true}
               />
             </div>
@@ -276,4 +290,4 @@ const WarehouseFeePage = ({ is_edit }) => {
     </div>
   );
 };
-export default WarehouseFeePage;
+export default ShipperList;

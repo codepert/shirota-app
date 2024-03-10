@@ -26,13 +26,13 @@ const WarehousePage = ({ is_edit }) => {
 
   const warehouseListColumns = [
     {
-      title: `${$lang.tableCommon.no}`,
+      title: `${$lang.no}`,
       dataIndex: "key",
       align: "center",
       width: "8%",
     },
     {
-      title: `${$lang.WarehousePage.name}`,
+      title: `${$lang.warehouseName}`,
       key: "name",
       dataIndex: "name",
       align: "center",
@@ -59,7 +59,7 @@ const WarehousePage = ({ is_edit }) => {
                     setModalData(record);
                     handleShowModal();
                   }}
-                  title={$lang.buttons.change}
+                  title={$lang.change}
                   icon={<EditOutlined />}
                   size="small"
                   className="btn-default btn-hover-black"
@@ -74,7 +74,7 @@ const WarehousePage = ({ is_edit }) => {
 
                     setHandleId(record.id);
                   }}
-                  title={$lang.buttons.delete}
+                  title={$lang.delete}
                   icon={<DeleteOutlined />}
                   style={{ backgroundColor: "transparent", color: "#000" }}
                   size="small"
@@ -225,7 +225,7 @@ const WarehousePage = ({ is_edit }) => {
                 onClose={handleHideModal}
                 onSave={handleRegister}
                 initialValues={modalData}
-              />{" "}
+              />
               <DeleteModal
                 isOpen={isDeletedModalVisible}
                 onClose={handleHideDeleteModal}

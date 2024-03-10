@@ -43,9 +43,9 @@ export const feeUrl = baseUrl + "api/warehouse_fee";
 
 export const receivedPaymentURL = baseUrl + "api/received_payment";
 
-export const getUserURL = baseUrl + "api/user";
+export const userURL = baseUrl + "api/v1/users";
 
-export const getUserAuthURL = baseUrl + "api/authorities";
+export const userAuthURL = baseUrl + "api/v1/user_authorities";
 
 export const getClientPageURL = baseUrl + "api/client_page";
 

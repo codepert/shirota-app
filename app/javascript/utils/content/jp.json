@@ -240,7 +240,7 @@
     "yen": "円"
   },
   "messages": {
-    "type_username": "ログインIDを入力してください。",
+    "type_username": "ユーザー名を入力してください。",
     "type_loginId": "ログインIDを入力してください。",
     "type_password": "パスワードを入力してください。",
     "type_repassword": "パスワードを確認してください。",
@@ -300,5 +300,16 @@
   "productName": "品名",
   "productCode": "品名コード",
   "storageFee": "保管料 ",
-  "search": "検索"
+  "search": "検索",
+  "username": "ユーザー名",
+  "loginId": "ログインID",
+  "email": "Eメール",
+  "authority": "権限",
+  "newResiger": "登録",
+  "cancel": "キャンセル",
+  "initPassword": "パスワード初期化",
+  "password": "パスワード",
+  "confirm_password": "パスワードの確認",
+  "passwordLength": "パスワードは6文字以上です。",
+  "passwordPattern": "パスワードは、少なくとも大文字１つ、数字１つ、特殊文字１つが必須です。"
 }

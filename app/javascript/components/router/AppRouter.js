@@ -9,6 +9,7 @@ import TopPage from "../../pages/TopPage";
 import WarehousePage from "../../pages/WarehousePage";
 import ShipperPage from "../../pages/ShipperPage";
 import ProductPage from "../../pages/ProductPage";
+import UserPage from "../../pages/UserPage";
 
 // import InStockPage from "../../pages/InStockPage";
 // import WarehouseFee from "../../pages/WarehouseFee";
@@ -16,7 +17,6 @@ import ProductPage from "../../pages/ProductPage";
 // import BillingProcess from "../../pages/BillingProcess";
 // import BillingList from "../../pages/BillingList";
 // import DepositPage from "../../pages/DepositPage";
-// import UserPage from "../../pages/UserPage";
 import AuthContextProvider from "../../contexts/AuthContextProvider";
 
 // import InventoryPage from "../../pages/InventoryPage";
@@ -90,6 +90,12 @@ export const AppRouter = () => {
               <PrivateRoute navigations={navigations} Component={ProductPage} />
             }
           />
+          <Route
+            path="/user_managent"
+            element={
+              <PrivateRoute navigations={navigations} Component={UserPage} />
+            }
+          />
           {/*   <Route
             path="/bill_process"
             element={
@@ -139,12 +145,6 @@ export const AppRouter = () => {
             path="/*"
             element={
               <PrivateRoute navigations={navigations} Component={NotFonud} />
-            }
-          />
-          <Route
-            path="/user_managent"
-            element={
-              <PrivateRoute navigations={navigations} Component={UserPage} />
             }
           />
           <Route

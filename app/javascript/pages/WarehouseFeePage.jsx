@@ -45,6 +45,7 @@ const WarehouseFeePage = ({ is_edit }) => {
       setAllData(feeData);
     });
   };
+
   const handleRegister = (data) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {

@@ -17,6 +17,11 @@ class User < ApplicationRecord
   #             pages.path')
   # }
 
+  scope :with_authority_info, -> {
+    select('users.id, users.name, users.login_id, users.email, users.user_authority_id, user_authorities.name as authority_name')
+      .joins('LEFT JOIN user_authorities ON users.user_authority_id = user_authorities.id')
+  }
+
    validates :login_id, presence: true, uniqueness: true
    validates :login_id, uniqueness: true
 
@@ -28,4 +33,6 @@ class User < ApplicationRecord
   def email_changed?
     false
   end
+
+
 end

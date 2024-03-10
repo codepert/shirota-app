@@ -13,7 +13,10 @@ Rails.application.routes.draw do
   namespace :api, format: "json" do
     namespace :v1 do
       # resources :authorities
-      # resources :user_authorities
+      resources :users do
+        patch :inititialize_password, on: :member
+      end
+      resources :user_authorities
       resources :authority_pages
       resources :pages
       resources :warehouses

@@ -49,10 +49,10 @@ const WarehouseRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
         <div style={{ textAlign: "right" }}>
           <Button onClick={handleSave} style={{ marginRight: 10 }}>
             {" "}
-            {$lang.buttons.save}
+            {$lang.newResiger}
           </Button>
           <Button onClick={onClose} style={{ marginRight: "10px" }}>
-            {$lang.buttons.cancel}
+            {$lang.cancel}
           </Button>
         </div>
       </Form>

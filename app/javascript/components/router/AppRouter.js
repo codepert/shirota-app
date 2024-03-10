@@ -5,7 +5,9 @@ import LoginPage from "../../pages/LoginPage";
 // import SignupPage from "../../pages/SignupPage";
 // import NotFonud from "../../pages/404";
 
-// import TopPage from "../../pages/TopPage";
+import TopPage from "../../pages/TopPage";
+import WarehousePage from "../../pages/WarehousePage";
+
 // import InStockPage from "../../pages/InStockPage";
 // import ProductPage from "../../pages/ProductPage";
 // import ShipperPage from "../../pages/ShipperPage";
@@ -32,7 +34,7 @@ export const AppRouter = () => {
 
   const getNavigations = () => {
     axios.get(`${navigatiionsURL}`).then((res) => {
-      const allData = res.data.data.map((item) => {
+      const allData = res.data.map((item) => {
         return { ...item, key: item.path, label: item.name, url: item.path };
       });
       setNavigations(allData);
@@ -48,7 +50,7 @@ export const AppRouter = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/signin" element={<LoginPage />} />
-          {/* <Route path="/signup" element={<SignupPage />} />
+          {/* <Route path="/signup" element={<SignupPage />} /> */}
           <Route
             path="/home"
             element={
@@ -56,6 +58,15 @@ export const AppRouter = () => {
             }
           />
           <Route
+            path="/warehouse"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={WarehousePage}
+              />
+            }
+          />
+          {/*   <Route
             path="/bill_process"
             element={
               <PrivateRoute

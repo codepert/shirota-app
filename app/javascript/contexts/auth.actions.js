@@ -19,8 +19,9 @@ const loginAction = (res) => (dispatch) => {
       permission_pages: res?.data?.permission_pages,
     },
   });
+
   saveAuthUser(
-    res?.data?.data?.name,
+    JSON.parse(res.data.data).name,
     res?.headers?.authorization,
     res?.data?.permission_pages
   );

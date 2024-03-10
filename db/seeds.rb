@@ -27,29 +27,37 @@ Page.create!([
   },{
     name: '請求一覧',
     path: '/bill_list',
+    parent_id: 16
   },{
     name: '請求処理',
     path: '/bill_process',
+    parent_id: 16
   },{
     name: '品名一覧',
     path: '/product',
+    parent_id: 14
   },{
     name: '荷主マスタ',
     path: '/shipper',
+    parent_id: 14
   },{
     name: '倉庫マスタ',
     path: '/warehouse',
+    parent_id: 14
   },{
     name: '単価区分マスタ',
     path: '/warehouse_fee',
+    parent_id: 14
   },
   {
     name: '権限別ペジ管理',
     path: '/auth_permission',
+    parent_id: 15
   },
   {
     name: 'user管理',
     path: '/user_managent',
+    parent_id: 15
   },
   {
     name: "マスタジ管理",

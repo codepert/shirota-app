@@ -11,7 +11,7 @@ export const verifyAuthURL = baseUrl + "verify";
 
 export const logoutURL = baseUrl + "logout";
 
-export const warehouseURL = baseUrl + "api/warehouse";
+export const warehouseURL = baseUrl + "api/v1/warehouses";
 
 export const shipperURL = baseUrl + "api/shipper";
 
@@ -19,9 +19,9 @@ export const productURL = baseUrl + "api/product";
 
 export const productSetUrl = baseUrl + "api/product_set";
 
-export const warehouseFeeURL = baseUrl + "api/warehouse_fee";
+export const warehouseFeeURL = baseUrl + "api/v1/warehouse_fee";
 
-export const navigatiionsURL = baseUrl + "api/client_page";
+export const navigatiionsURL = baseUrl + "api/v1/pages";
 
 export const productDetailURL = (id) => baseUrl + `api/product_detail?id=${id}`;
 export const productStockURL = baseUrl + `api/product_stock`;

@@ -3,6 +3,7 @@
     "title": "倉庫管理システム",
     "description": "倉庫管理システム"
   },
+  "date": "日付",
   "pages": {
     "login": "ログイン",
     "signup": "新規登録",
@@ -43,6 +44,7 @@
     "cancel": "キャンセル",
     "csvExchange": "CSVダウンロード",
     "confirmDeparture": "出庫確定",
+    "confirmInStock": "入庫確定",
     "add": "追加",
     "init": "初期化",
     "search": "検索",
@@ -53,21 +55,24 @@
     "billingConfirmed": "請求確定",
     "next": "次へ",
     "yes": "はい",
-    "no": "いいえ"
+    "no": "いいえ",
+    "initPassword": "パスワード初期化",
+    "newResiger": "登録"
   },
   "tableCommon": {
-    "no": "NO",
+    "no": "No",
     "warning": "このフィールドは必須です。"
   },
   "listCommon": {
-    "all": "全て"
+    "all": "ALL"
   },
   "shipper": {
+    "shipper_num": "荷主ID",
     "name": "荷主名",
     "main_address": "住所1",
     "sub_address": "住所2",
     "tel_number": "電話",
-    "closing_date": "締日",
+    "closingDate": "締日",
     "code": "コード",
     "mainAddress": "住所"
   },
@@ -78,7 +83,7 @@
     "month": "月",
     "year": "年",
     "yymm": "年/月",
-    "closing_date": "締日",
+    "closingDate": "締日",
     "period": "対象期間",
     "processDate": "処理日時",
     "list": "一覧",
@@ -94,11 +99,14 @@
     "output": "出力",
     "buttons": {
       "billingList": "請求リスト",
-      "billingCalculation": "請求計算"
+      "billingCalculation": "請求計算",
+      "billingReport": "請求書",
+      "detail": "明細"
     },
     "table": {
       "number": "NO",
       "productName": "番号",
+      "shipperId": "荷主ID",
       "shipperName": "荷主名",
       "previousInvoicedAmount": "前回請求額",
       "receivedAmount": "入金額",
@@ -106,6 +114,18 @@
       "storageFee": "保管料",
       "invoiceAmount": "請求額",
       "consumptionTax": "消費税"
+    },
+    "back": "戻る",
+    "addNew": "新規登録"
+  },
+  "billingList": {
+    "table": {
+      "ym": "年/月",
+      "closingDate": "締日",
+      "count": "件数",
+      "duration": "対象期間",
+      "warehouse": "対象倉庫",
+      "precessDate": "処理日時"
     }
   },
   "Maintenance": {
@@ -113,6 +133,7 @@
     "productNumber": "品番",
     "productName": "品名",
     "productPacking": "規格・荷姿",
+    "productCode": "品名コード",
     "handlingFee": "荷役料",
     "storageFee": "保管料 ",
     "change": "変更",
@@ -120,7 +141,7 @@
     "productMaster": "品名マスタ",
     "unitPriceMaster": "単価区分マスタ",
     "unitPrice": "単価",
-    "packing": "荷姿",
+    "packing": "単価区分",
     "register": "登録",
     "unitPriceID": "単価ID",
     "handlingFeeUnitPrice": "荷役料単価",
@@ -164,6 +185,7 @@
     "outStockAmount": "出庫数",
     "stockAmount": "現在庫数",
     "shipmentNumber": "出庫数",
+    "pakaing_warehouse_fee": "荷姿 / 荷役単価 / 保管単価",
     "table": {
       "productName": "品名",
       "packaging": "荷姿",
@@ -188,13 +210,35 @@
     "shipper": "荷主名"
   },
   "UserPage": {
-    "loginNumber": "番号",
-    "user_name": "ユーザー名",
-    "login_id": "ログインID",
-    "email": "メールアドレス",
-    "authority": "権限"
+    "registerUser": "ユーザー登録",
+    "buttons": {
+      "addNew": "新規登録"
+    },
+    "dataFields": {
+      "username": "ユーザー名",
+      "loginId": "ログインID",
+      "email": "Eメール",
+      "authority": "権限"
+    }
   },
-
+  "WarehousePage": {
+    "name": "倉庫名"
+  },
+  "WarehouseFeePage": {
+    "fullTimeRequest": "全期請求",
+    "firstBilling": "１期請求 "
+  },
+  "ProductPage": {
+    "productNumber": "品番",
+    "productName": "品名",
+    "productPacking": "規格・荷姿",
+    "productCode": "品名コード",
+    "warehouseFee": "単価区分",
+    "registerProduct": "品名登録",
+    "handling_fee": "荷役単価",
+    "storage_fee": "保管単価",
+    "yen": "円"
+  },
   "messages": {
     "type_username": "ログインIDを入力してください。",
     "type_loginId": "ログインIDを入力してください。",
@@ -215,11 +259,23 @@
     "confirm_delete": "本当に初期化してもよろしいですか。",
     "empty_data_to_init": "初期化するデータはありません。",
     "stockAmountError": "出庫量は在庫量より少ない数量を入力してください。",
-    "complete_all_nput_fields": "すべてのフィールドに入力してください。"
+    "complete_all_nput_fields": "すべてのフィールドに入力してください。",
+    "empty_during": "対象期間を入力してください。",
+    "empty_shipper_range": "対象荷主を入力してください。",
+    "select_authority": "ユーザー権利を選択してください。",
+    "input_product_code": "品名コードを入力してください。",
+    "input_product_name": "品名を入力してください。",
+    "input_packaging": "規格・荷姿を入力してください。",
+    "select_warehouse_fee": " 単価区分を選択してください。",
+    "not_register_or_in_stock": "この品名が登録されていないか、入荷されていません。"
   },
-  "popConrimType": {
+  "popConfirmType": {
     "success": "成功",
     "warning": "注意",
     "error": "エラー"
+  },
+  "string": {
+    "start_date": "",
+    "end_date": ""
   }
 }

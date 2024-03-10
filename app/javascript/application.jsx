@@ -2,7 +2,7 @@ import "@hotwired/turbo-rails";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ConfigProvider } from "antd";
-// import "../assets/stylesheets/application.css";
+import "./assets/css/application.css";
 // import jaJP from "antd/lib/locale/ja_JP";
 // import enUS from "antd/lib/locale/en_US";
 

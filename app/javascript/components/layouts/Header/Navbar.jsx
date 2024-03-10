@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useLocation, useMatch, Link } from "react-router-dom";
-import { Typography, Breadcrumb, Button } from "antd";
-import { Layout, Menu, theme } from "antd";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Typography, Breadcrumb, Button, Flex } from "antd";
+import { Layout, Menu } from "antd";
 import { siteInfo } from "../../../utils/content";
 import { useAuth } from "../../../hooks/useAuth";
 import { navigatiionsURL } from "../../../utils/constants";
 import $lang from "../../../utils/content/jp.json";
+import moment from "moment";
+import { getAuthUsername } from "../../../utils/helper";
 
 const NavbarSection = () => {
   const { logoutAction } = useAuth();
@@ -17,6 +19,11 @@ const NavbarSection = () => {
   const [current, setCurrent] = useState("");
   const [title, setTitle] = useState("");
   const [navigations, setNavigations] = useState([]);
+  const [realData, setRealData] = useState([]);
+  const [username, setUserName] = useState("");
+  const user = useAuth();
+
+  const name = getAuthUsername();
 
   const onMenuClick = (e) => {
     const { label } = navigations.find((item) => item.key === e.key) || {};
@@ -24,11 +31,60 @@ const NavbarSection = () => {
     setCurrent(e.key);
     navigate(e.key);
   };
+
   const getNavigations = () => {
     axios.get(`${navigatiionsURL}`).then((res) => {
-      const allData = res.data.data.map((item) => {
-        return { ...item, key: item.path, label: item.name, url: item.path };
+      const allData = res.data.map((item) => {
+        return {
+          id: item.id,
+          label: item.name,
+          key: item.path,
+          parent_id: item.parent_id,
+        };
       });
+
+      const parentArray = allData
+        .map((item) => item.parent_id)
+        .filter((parentId) => parentId !== null);
+
+      const newArray = [];
+
+      allData.forEach((item) => {
+        if (item.parent_id === null) {
+          if (!parentArray.includes(item.id))
+            newArray.push({
+              label: item.label,
+              key: item.key,
+            });
+        } else {
+          const parentItem = newArray.find(
+            (parent) => parent.key === item.parent_id
+          );
+          if (parentItem) {
+            if (!parentItem.children) {
+              parentItem.children = [];
+            }
+            parentItem.children.push({
+              label: item.label,
+              key: item.key,
+            });
+          } else {
+            const newParentItem = {
+              label: allData.find((data) => data.id == item.parent_id).label,
+              key: item.parent_id,
+              children: [
+                {
+                  label: item.label,
+                  key: item.key,
+                },
+              ],
+            };
+            newArray.push(newParentItem);
+          }
+        }
+      });
+
+      setRealData(newArray);
       setNavigations(allData);
     });
   };
@@ -46,52 +102,73 @@ const NavbarSection = () => {
     setTitle(label);
   }, [current, navigations]);
 
+  useEffect(() => {
+    if (user) setUserName(user.state.authUserName);
+  }, [user]);
+
   return (
     <Layout>
-      <Header
+      <Flex
+        justify="space-between"
         style={{
-          display: "flex",
-          alignItems: "right",
-          backgroundColor: "#000",
-          position: "fixed",
-          width: "100%",
-          zIndex: "10",
+          backgroundColor: "#abd090",
         }}
       >
-        <div className="demo-logo " style={{ marginRight: "100px" }}>
-          <Title level={4} style={{ marginTop: 15 }}>
-            <Link to="/" style={{ color: "#fff" }}>
+        <div className="" style={{ backgroundColor: "#abd090" }}>
+          <Title level={5} style={{ marginLeft: "20px" }}>
+            <Link to="/" style={{ color: "#000", fontWeight: 800 }}>
               {siteInfo.title}
             </Link>
           </Title>
         </div>
+        <div className="items-center">
+          <p
+            style={{
+              backgroundColor: "#abd990",
+            }}
+          >
+            ユーザー：<b>{name}</b>
+          </p>
+          <Button
+            className="btn-bg-black"
+            onClick={logoutAction}
+            style={{
+              marginLeft: "10px",
+              border: "none",
+              float: "right",
+            }}
+          >
+            <Link to="/signin" style={{ color: "#000" }}>
+              {$lang.buttons.logout}
+            </Link>
+          </Button>
+        </div>
+      </Flex>
+      <Flex
+        justify="space-between"
+        style={{
+          backgroundColor: "#bfd9ab",
+        }}
+      >
         <Menu
           onClick={onMenuClick}
           selectedKeys={[current]}
           mode="horizontal"
-          items={navigations}
+          items={realData}
           style={{
-            flex: 1,
-            minWidth: 0,
-            backgroundColor: "#000",
-            color: "#fff",
+            marginLeft: 190,
+            backgroundColor: "#bfd9ab",
           }}
         />
-        <Button
-          className="btn-bg-black"
-          onClick={logoutAction}
-          style={{ marginLeft: "300px", marginTop: "15px", border: "none" }}
-        >
-          <Link to="/signin" style={{ color: "#fff" }}>
-            {$lang.buttons.logout}
-          </Link>
-        </Button>
-      </Header>
+        <div style={{ marginTop: 10, marginRight: 20 }}>
+          <span>{$lang.date} : </span>
+          <span>{moment().format("YYYY/MM/DD")}</span>
+        </div>
+      </Flex>
       <Breadcrumb
         items={[{ title }]}
         style={{
-          padding: "20px 50px ",
-          marginTop: "55px",
+          padding: "10px 50px ",
           backgroundColor: "#fff",
         }}
       />

@@ -13,6 +13,7 @@ import UserPage from "../../pages/UserPage";
 
 import InStockPage from "../../pages/InStockPage";
 import OutStockPage from "../../pages/OutStockPage";
+import InventoryPage from "../../pages/InventoryPage";
 
 // import WarehouseFee from "../../pages/WarehouseFee";
 // import BillingProcess from "../../pages/BillingProcess";
@@ -20,7 +21,6 @@ import OutStockPage from "../../pages/OutStockPage";
 // import DepositPage from "../../pages/DepositPage";
 import AuthContextProvider from "../../contexts/AuthContextProvider";
 
-// import InventoryPage from "../../pages/InventoryPage";
 import PrivateRoute from "./PrivateRoute";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -113,6 +113,15 @@ export const AppRouter = () => {
               />
             }
           />
+          <Route
+            path="/stock"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={InventoryPage}
+              />
+            }
+          />
           {/*   <Route
             path="/bill_process"
             element={
@@ -126,15 +135,6 @@ export const AppRouter = () => {
             path="/bill_list"
             element={
               <PrivateRoute navigations={navigations} Component={BillingList} />
-            }
-          />
-          <Route
-            path="/stock"
-            element={
-              <PrivateRoute
-                navigations={navigations}
-                Component={InventoryPage}
-              />
             }
           />
           <Route

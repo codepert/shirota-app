@@ -30,13 +30,13 @@ export const productStockURL = baseUrl + `api/v1/product_in_stock`;
 export const saveStockInUrl = baseUrl + "api/v1/stock_in";
 export const saveStockOutUrl = baseUrl + "api/v1/stock_out";
 
-export const exportCSVDataUrl = baseUrl + "api/export_instock_csv";
+export const exportCSVDataUrl = baseUrl + "api/v1/stock_in_csv_export";
 
 export const exportInventoryPdfDataUrl = baseUrl + "api/inventory_export_pdf";
 
 export const exportStockCSVDataUrl = baseUrl + "api/export_stock_csv";
 
-export const inventoryURL = baseUrl + "api/stock";
+export const inventoryURL = baseUrl + "api/v1/stock_inouts";
 
 //unit_price urls
 

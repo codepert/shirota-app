@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       # resources :stocks
       resources :stock_inouts
       post "stock_in" => "stock_inouts#stock_in"
+      post "stock_in_csv_export" => "stock_inouts#stock_in_csv_export"
       post "stock_out" => "stock_inouts#stock_out"
       resources :received_payments
       # resources :bills

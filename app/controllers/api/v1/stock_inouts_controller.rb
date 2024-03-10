@@ -1,4 +1,16 @@
 class Api::V1::StockInoutsController < Api::V1::BaseController
+  require 'csv'
+  require 'grover'
+  require 'nokogiri'
+  def index
+    shipper_id = params[:shipper_id].presence || ''
+    warehouse_id = params[:warehouse_id].presence || ''
+    out_date = params[:out_date].presence || ''
+
+    result = StockInout.inventory(shipper_id, warehouse_id, out_date)
+
+    render json: result
+  end
   def stock_in
     request_stock_in_params.each do |record|
       ActiveRecord::Base.transaction do
@@ -94,6 +106,17 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
         status: :unprocessable_entity,
         errors: e.record.errors.full_messages
       }
+  end
+  def stock_in_csv_export
+    data = params.require(:data)
+    csv_data = CSV.generate do |csv|
+      csv << ["品名", "荷姿", "ロット番号", "重量", "数量"]
+      data.each do |record|
+        csv << [record.dig(:product_name), record.dig(:product_type), record.dig(:lot_number), record.dig(:weight), record.dig(:amount)]
+      end
+    end
+    
+    send_data csv_data, filename: "stock.csv", type: "text/csv", disposition: "inline"
   end
 
   private

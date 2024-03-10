@@ -270,7 +270,9 @@
     "not_register_or_in_stock": "この品名が登録されていないか、入荷されていません。",
     "not_register_product": "この品名が登録されていません。",
     "confirm_instock": "本当に入庫しますか？",
-    "confirm_outstock": "本当に出庫しますか？"
+    "confirm_outstock": "本当に出庫しますか？",
+    "empty_out_stock_data": "出庫するデータがありません。",
+    "empty_in_stock_data": "入庫するデータがありません。"
   },
   "popConfirmType": {
     "success": "成功",
@@ -321,5 +323,8 @@
   "amount": "数量",
   "yes": "はい",
   "lotNumber": "ロット番号",
-  "confirmDeparture": "出庫確定"
+  "confirmDeparture": "出庫確定",
+  "all": "ALL",
+  "packaging": "荷姿",
+  "inStockDate": "入庫日"
 }

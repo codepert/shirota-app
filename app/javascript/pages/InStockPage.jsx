@@ -185,6 +185,15 @@ const InStockPage = ({ is_edit }) => {
   };
 
   const savePrepareProducts = () => {
+    if (prepareProducts.length == 0) {
+      openNotificationWithIcon(
+        "warning",
+        $lang.popConfirmType.warning,
+        $lang.messages.empty_in_stock_data
+      );
+      return;
+    }
+
     API.post(saveStockInUrl, { stock_inout: prepareProducts })
       .then((res) => {
         setPrepareProducts([]);

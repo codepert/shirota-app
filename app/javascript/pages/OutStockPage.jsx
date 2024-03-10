@@ -335,6 +335,14 @@ const OutStockPage = ({ is_edit }) => {
   };
 
   const savePrepareProducts = () => {
+    if (prepareProducts.length == 0) {
+      openNotificationWithIcon(
+        "warning",
+        $lang.popConfirmType.warning,
+        $lang.messages.empty_out_stock_data
+      );
+      return;
+    }
     console.log(prepareProducts);
     API.post(saveStockOutUrl, { data: prepareProducts })
       .then((res) => {

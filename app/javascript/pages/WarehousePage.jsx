@@ -176,7 +176,7 @@ const WarehousePage = ({ is_edit }) => {
       .catch((err) => {
         openNotificationWithIcon(
           "error",
-          $lang.popConfirmType.success,
+          $lang.popConfirmType.error,
           err.message
         );
       });

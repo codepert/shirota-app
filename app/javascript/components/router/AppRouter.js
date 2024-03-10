@@ -8,9 +8,9 @@ import LoginPage from "../../pages/LoginPage";
 import TopPage from "../../pages/TopPage";
 import WarehousePage from "../../pages/WarehousePage";
 import ShipperPage from "../../pages/ShipperPage";
+import ProductPage from "../../pages/ProductPage";
 
 // import InStockPage from "../../pages/InStockPage";
-// import ProductPage from "../../pages/ProductPage";
 // import WarehouseFee from "../../pages/WarehouseFee";
 // import OutStockPage from "../../pages/OutStockPage";
 // import BillingProcess from "../../pages/BillingProcess";
@@ -83,6 +83,13 @@ export const AppRouter = () => {
               <PrivateRoute navigations={navigations} Component={ShipperPage} />
             }
           />
+
+          <Route
+            path="/product"
+            element={
+              <PrivateRoute navigations={navigations} Component={ProductPage} />
+            }
+          />
           {/*   <Route
             path="/bill_process"
             element={
@@ -102,12 +109,6 @@ export const AppRouter = () => {
             path="/stock_in"
             element={
               <PrivateRoute navigations={navigations} Component={InStockPage} />
-            }
-          />
-          <Route
-            path="/product"
-            element={
-              <PrivateRoute navigations={navigations} Component={ProductPage} />
             }
           />
           <Route

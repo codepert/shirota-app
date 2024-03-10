@@ -15,7 +15,7 @@ export const warehouseURL = baseUrl + "api/v1/warehouses";
 
 export const shipperURL = baseUrl + "api/v1/shippers";
 
-export const productURL = baseUrl + "api/v1/product";
+export const productURL = baseUrl + "api/v1/products";
 
 export const productSetUrl = baseUrl + "api/product_set";
 

@@ -296,5 +296,9 @@
   "billingClass": "請求区分",
   "fullTimeRequest": "全期請求",
   "firstBilling": "１期請求 ",
-  "addNew": "新規登録"
+  "addNew": "新規登録",
+  "productName": "品名",
+  "productCode": "品名コード",
+  "storageFee": "保管料 ",
+  "search": "検索"
 }

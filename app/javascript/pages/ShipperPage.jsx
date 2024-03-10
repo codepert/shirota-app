@@ -25,7 +25,7 @@ const ShipperList = ({ is_edit }) => {
 
   const [allData, setAllData] = useState([]);
 
-  const getAllShipper = () => {
+  const getShpperList = () => {
     API.get(`${shipperURL}`).then((res) => {
       let index = 1;
       const shipperData = res.data.map((item) => {
@@ -37,6 +37,7 @@ const ShipperList = ({ is_edit }) => {
       setAllData(shipperData);
     });
   };
+
   const handleRegister = (data) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {
@@ -108,7 +109,7 @@ const ShipperList = ({ is_edit }) => {
       .catch((err) => {
         openNotificationWithIcon(
           "error",
-          $lang.popConfirmType.success,
+          $lang.popConfirmType.error,
           err.message
         );
       });
@@ -123,7 +124,7 @@ const ShipperList = ({ is_edit }) => {
   };
 
   useEffect(() => {
-    getAllShipper();
+    getShpperList();
   }, [isposted]);
 
   const shipperListColumns = [
@@ -131,14 +132,14 @@ const ShipperList = ({ is_edit }) => {
       title: `${$lang.no}`,
       dataIndex: "key",
       align: "center",
-      width: "8%",
+      // width: "8%",
     },
     {
       title: `${$lang.code}`,
       key: "code",
       dataIndex: "code",
       align: "center",
-      width: "15%",
+      // width: "15%",
     },
     {
       title: `${$lang.shipperName}`,
@@ -187,25 +188,23 @@ const ShipperList = ({ is_edit }) => {
       dataIndex: "closing_date",
       key: "closing_date",
       align: "center",
-      width: "10%",
+      // width: "10%",
     },
     is_edit === 1 ? (
       {
-        title: `${$lang.buttons.change}`,
+        title: `${$lang.change}`,
         dataIndex: "operation",
         render: (text, record, dataIndex) => {
           return (
             <div className="flex justify-center items-center">
-              <div className="hidden rounded-full">
-                {/* {(star_color = record.done == true ? "text-yellow-500" : "")} */}
-              </div>
+              <div className="hidden rounded-full"></div>
               <div className="p-2 rounded-full cursor-pointer items-center text-center">
                 <CustomButton
                   onClick={() => {
                     setModalData(record);
                     handleShowModal();
                   }}
-                  title={$lang.buttons.change}
+                  title={$lang.change}
                   icon={<EditOutlined />}
                   size="small"
                   className="btn-default btn-hover-black"
@@ -219,7 +218,7 @@ const ShipperList = ({ is_edit }) => {
                     handleShowDeleteModal();
                     setHandleId(record.id);
                   }}
-                  title={$lang.buttons.delete}
+                  title={$lang.delete}
                   icon={<DeleteOutlined />}
                   style={{ backgroundColor: "transparent", color: "#000" }}
                   size="small"

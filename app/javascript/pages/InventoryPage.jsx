@@ -217,64 +217,64 @@ const InventoryPage = ({ is_edit }) => {
       };
     });
   };
-  // const exportDataAndDownloadCVS = async () => {
-  //   openNotificationWithIcon(
-  //     "warning",
-  //     $lang.popConfirmType.warning,
-  //     "現在作業しています。"
-  //   );
-  //   return;
-  //   const csvData = getCSVData();
-  //   if (csvData.length == 0) {
-  //     openNotificationWithIcon(
-  //       "warning",
-  //       $lang.messages.warning,
-  //       "empty data to export"
-  //     );
-  //     return;
-  //   }
+  const exportDataAndDownloadCVS = async () => {
+    openNotificationWithIcon(
+      "warning",
+      $lang.popConfirmType.warning,
+      "現在作業しています。"
+    );
+    return;
+    const csvData = getCSVData();
+    if (csvData.length == 0) {
+      openNotificationWithIcon(
+        "warning",
+        $lang.messages.warning,
+        "empty data to export"
+      );
+      return;
+    }
 
-  //   const dateParam = new Date(targetDate.toString())
-  //     .toISOString()
-  //     .substring(0, 10);
-  //   let url = `${exportStockCSVDataUrl}?out_date=${dateParam}`;
+    const dateParam = new Date(targetDate.toString())
+      .toISOString()
+      .substring(0, 10);
+    let url = `${exportStockCSVDataUrl}?out_date=${dateParam}`;
 
-  //   if (seletedShipper.value != "")
-  //     url +=
-  //       seletedShipper.value != "" ? `&shipper_id=${seletedShipper.value}` : "";
-  //   if (selectedWarehouse.value != "")
-  //     url +=
-  //       selectedWarehouse.value != ""
-  //         ? `&warehouse_id=${selectedWarehouse.value}`
-  //         : "";
+    if (seletedShipper.value != "")
+      url +=
+        seletedShipper.value != "" ? `&shipper_id=${seletedShipper.value}` : "";
+    if (selectedWarehouse.value != "")
+      url +=
+        selectedWarehouse.value != ""
+          ? `&warehouse_id=${selectedWarehouse.value}`
+          : "";
 
-  //   API.post(url, { data: csvData, shipper_id: seletedShipper.value })
-  //     .then((response) => {
-  //       const timestamp = Date.now();
-  //       const url = window.URL.createObjectURL(new Blob([response.data]));
-  //       const link = document.createElement("a");
-  //       link.href = url;
-  //       link.setAttribute("download", "在庫_" + timestamp + ".csv");
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
+    API.post(url, { data: csvData, shipper_id: seletedShipper.value })
+      .then((response) => {
+        const timestamp = Date.now();
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "在庫_" + timestamp + ".csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-  //       setTimeout(() => {
-  //         openNotificationWithIcon(
-  //           "success",
-  //           $lang.popConfirmType.success,
-  //           $lang.messages.success
-  //         );
-  //       }, 1000);
-  //     })
-  //     .catch((err) => {
-  //       openNotificationWithIcon(
-  //         "error",
-  //         $lang.popConfirmType.error,
-  //         err.messages
-  //       );
-  //     });
-  // };
+        setTimeout(() => {
+          openNotificationWithIcon(
+            "success",
+            $lang.popConfirmType.success,
+            $lang.messages.success
+          );
+        }, 1000);
+      })
+      .catch((err) => {
+        openNotificationWithIcon(
+          "error",
+          $lang.popConfirmType.error,
+          err.messages
+        );
+      });
+  };
 
   // ----------When rerender, get all data------
   useEffect(() => {

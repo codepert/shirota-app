@@ -55,7 +55,7 @@ const ReceivePaymentTable = ({ data, editRow, deleteRow, is_edit }) => {
               style={{ backgroundColor: "transparent", color: "#000" }}
               visability={true}
             />{" "}
-            <CustomButton
+            {/* <CustomButton
               onClick={() => deleteRow(record.id)}
               title={$lang.buttons.delete}
               icon={<DeleteOutlined />}
@@ -67,7 +67,7 @@ const ReceivePaymentTable = ({ data, editRow, deleteRow, is_edit }) => {
               size="small"
               className="btn-default btn-hover-black"
               visability={true}
-            />
+            /> */}
           </div>
         ),
       }

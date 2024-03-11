@@ -129,7 +129,7 @@ const NavbarSection = () => {
               }}
               className="mt-2"
             >
-              ユーザー：<b>{name}</b>
+              {$lang.user}：<b>{name}</b>
             </p>
             <Button
               className="btn-bg-black"

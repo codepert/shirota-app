@@ -271,7 +271,7 @@ const ReceivedPaymentPage = () => {
     data.processing_on = data.processing_on
       ? data.processing_on.format("YYYY-MM-DD")
       : null;
-    data.received = 0;
+    data.received = data.processing_on ? 1 : 0;
 
     if (typeof data.id == "undefined") {
       createReceivePayment(data);

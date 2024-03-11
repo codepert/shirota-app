@@ -332,5 +332,6 @@
   "receivePaymentDescription": "摘要",
   "receivePaymentProcessingDate": "処理日時",
   "receivePaymentRegister": "入金登録",
-  "shipperCode": "荷主コード"
+  "shipperCode": "荷主コード",
+  "user": "ユーザー"
 }

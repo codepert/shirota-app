@@ -326,5 +326,11 @@
   "confirmDeparture": "出庫確定",
   "all": "ALL",
   "packaging": "荷姿",
-  "inStockDate": "入庫日"
+  "inStockDate": "入庫日",
+  "receivePaymentDate": "入金年月日",
+  "receivePaymentAmount": "入金額",
+  "receivePaymentDescription": "摘要",
+  "receivePaymentProcessingDate": "処理日時",
+  "receivePaymentRegister": "入金登録",
+  "shipperCode": "荷主コード"
 }

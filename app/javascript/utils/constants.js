@@ -34,15 +34,13 @@ export const exportCSVDataUrl = baseUrl + "api/v1/stock_in_csv_export";
 
 export const exportInventoryPdfDataUrl = baseUrl + "api/inventory_export_pdf";
 
-export const exportStockCSVDataUrl = baseUrl + "api/export_stock_csv";
-
 export const inventoryURL = baseUrl + "api/v1/stock_inouts";
 
 //unit_price urls
 
 export const feeUrl = baseUrl + "api/warehouse_fee";
 
-export const receivedPaymentURL = baseUrl + "api/received_payment";
+export const receivedPaymentURL = baseUrl + "api/v1/received_payments";
 
 export const userURL = baseUrl + "api/v1/users";
 
@@ -53,7 +51,8 @@ export const authorityPageURL = baseUrl + "api/v1/authority_pages";
 
 export const setAuthorityPageURL = baseUrl + "api/v1/set_authority_pages";
 
-export const exportDepositCSVDataUrl = baseUrl + "api/received_payment_csv";
+export const exportReceivePaymentCSVDataUrl =
+  baseUrl + "api/v1/received_payments_csv_export";
 //unit_price urls
 
 export const httpErrors = {

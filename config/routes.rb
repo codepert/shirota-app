@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       post "stock_in_csv_export" => "stock_inouts#stock_in_csv_export"
       post "stock_out" => "stock_inouts#stock_out"
       resources :received_payments
+      get "received_payments_csv_export" => "received_payments#csv_export"
       # resources :bills
       # resources :bill_amounts
     end

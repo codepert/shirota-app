@@ -265,6 +265,7 @@ const ProductPage = ({ is_edit }) => {
                       <Input
                         value={searchText}
                         placeholder={$lang.search}
+                        className="py-1 rounded-md focus:box-shadow-none"
                         onChange={handleSearchText}
                         onPressEnter={(e) => {
                           if (e.keyCode === 13) {

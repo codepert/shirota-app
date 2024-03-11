@@ -15,11 +15,11 @@ import PermissionPage from "../../pages/PermissionPage";
 import InStockPage from "../../pages/InStockPage";
 import OutStockPage from "../../pages/OutStockPage";
 import InventoryPage from "../../pages/InventoryPage";
+import ReceivedPaymentPage from "../../pages/ReceivedPaymentPage";
 
 // import WarehouseFee from "../../pages/WarehouseFee";
 // import BillingProcess from "../../pages/BillingProcess";
 // import BillingList from "../../pages/BillingList";
-// import DepositPage from "../../pages/DepositPage";
 import AuthContextProvider from "../../contexts/AuthContextProvider";
 
 import PrivateRoute from "./PrivateRoute";
@@ -131,6 +131,15 @@ export const AppRouter = () => {
               />
             }
           />
+          <Route
+            path="/deposit"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={ReceivedPaymentPage}
+              />
+            }
+          />
           {/*   <Route
             path="/bill_process"
             element={
@@ -144,12 +153,6 @@ export const AppRouter = () => {
             path="/bill_list"
             element={
               <PrivateRoute navigations={navigations} Component={BillingList} />
-            }
-          />
-          <Route
-            path="/deposit"
-            element={
-              <PrivateRoute navigations={navigations} Component={DepositPage} />
             }
           />
           <Route

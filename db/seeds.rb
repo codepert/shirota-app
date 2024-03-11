@@ -23,7 +23,7 @@ Page.create!([
     path: '/stock',
   },{
     name: '入金処理',
-    path: '/deposit',
+    path: '/receive_payment',
   },{
     name: '請求一覧',
     path: '/bill_list',

@@ -54,6 +54,53 @@ class Api::V1::ReceivedPaymentsController < Api::V1::BaseController
       }, status: :unprocessable_entity
     end
   end
+  def csv_export
+    keyword = params[:keyword]
+    offset = params[:offset]
+    limit = params[:limit]
+    
+    instock_from_date = params[:instockFromDate].present? ? Date.strptime(params[:instockFromDate]) : nil
+    instock_to_date = params[:instockToDate].present? ? Date.strptime(params[:instockToDate]) : nil
+
+    process_from_date = params[:processFromDate].present? ? Date.strptime("#{params[:processFromDate]} 00:00:00") : nil
+    process_to_date = params[:processToDate].present? ? Date.strptime("#{params[:processToDate]} 00:00:00") : nil
+
+    shipper = params[:shipper].presence&.to_i
+
+
+    received_payments = ReceivedPayment.with_shipper()
+    count = received_payments.count
+
+    if instock_from_date.present?
+      received_payments = received_payments.where('received_on > ?',instock_from_date)
+    end
+    if instock_to_date.present?
+      received_payments = received_payments.where('received_on < ?',instock_to_date)
+  
+    end
+    if process_from_date.present?
+      received_payments = received_payments.where('process_on > ?', process_from_date)
+    
+    end
+    if process_to_date.present?
+      received_payments = received_payments.where('process_on < ?',process_to_date)
+    end
+
+    if shipper.present?
+      received_payments = received_payments.where('shipper_id ', shipper)
+    end
+
+    # received_payments = received_payments.offset(offset).limit(limit)
+    received_payments= ReceivedPaymentSerializer.new(received_payments).as_json
+    csv_data = CSV.generate do |csv|
+      csv << ["入金日", "荷主コード", "荷主名", "入金額", "摘要", "処理日時"]
+      received_payments.each do |record|
+        csv << [(record['received_on']).strftime("%Y/%m/%d"), record['shipper']['name'], record['shipper']['code'], record['amount'], record['description'] , record['processing_on'].presence.try(:strftime, "%Y/%m/%d")]
+      end
+    end
+
+    send_data csv_data, filename: "receivepayment.csv", type: "text/csv", disposition: "inline"
+  end
   def create_or_update_params
     params.permit(:shipper_id, :received_on, :amount, :description, :processing_on, :received)
   end

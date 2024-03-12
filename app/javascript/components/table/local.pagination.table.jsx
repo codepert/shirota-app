@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Pagination } from "antd";
 import PropTypes from "prop-types";
-const CTable = (props) => {
+const LocalPaginationTable = (props) => {
   const [page, setPage] = useState({ pn: 1, ps: 10 });
   const [data, setData] = useState([]);
   const { pn, ps } = page;
@@ -30,16 +30,28 @@ const CTable = (props) => {
       <Table
         {...props}
         dataSource={data}
-        pagination={false}
         sticky
+        pagination={false}
         className="h-full overflow-auto pr-1"
       />
+      <div className="flex justify-center w-full bg-base-200 rounded-md mt-5">
+        <Pagination
+          pageSizeOptions={[10, 20, 50, 100]}
+          current={pn}
+          pageSize={ps}
+          showSizeChanger
+          className="p-1"
+          defaultPageSize={100}
+          onChange={(pn, ps) => setPage({ pn, ps })}
+          total={props.dataSource?.length}
+        />
+      </div>
     </div>
   );
 };
 
-CTable.propTypes = {
+LocalPaginationTable.propTypes = {
   dataSource: PropTypes.array.isRequired,
 };
 
-export default CTable;
+export default LocalPaginationTable;

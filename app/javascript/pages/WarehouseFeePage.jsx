@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import CTable from "../components/CTable";
-import { feeUrl } from "../utils/constants";
 import { warehouseFeeURL } from "../utils/constants";
 
-import {
-  Form,
-  Input,
-  Layout,
-  Select,
-  Button,
-  Modal,
-  notification,
-  Card,
-} from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Layout, Button, Card, Row, Col } from "antd";
 
-import CustomButton from "../components/common/CustomButton";
 import WarehouseFeeRegisterModal from "../features/warehouseFee/register.modal";
+import WarehouseFeeTable from "../features/warehouseFee/index.table";
+
 import DeleteModal from "../components/common/delete.modal";
 import { openNotificationWithIcon } from "../components/common/notification";
+
 import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";
 
@@ -34,7 +23,7 @@ const WarehouseFeePage = ({ is_edit }) => {
   const [handleId, setHandleId] = useState("");
 
   const getWarehouseFeeList = () => {
-    API.get(`${warehouseFeeURL}`).then((res) => {
+    API.get(warehouseFeeURL).then((res) => {
       let index = 1;
       const feeData = res.data.map((item) => {
         return {
@@ -95,14 +84,6 @@ const WarehouseFeePage = ({ is_edit }) => {
       });
   };
 
-  const handleShowDeleteModal = () => {
-    setIsDeletedModalVisible(true);
-  };
-
-  const handleHideDeleteModal = () => {
-    setIsDeletedModalVisible(false);
-  };
-
   const handleDelete = (deltedId) => {
     API.delete(`${warehouseFeeURL}/${deltedId}`)
       .then((res) => {
@@ -123,102 +104,31 @@ const WarehouseFeePage = ({ is_edit }) => {
       });
   };
 
-  const handleHideModal = () => {
-    setIsModalVisible(false);
+  const handleShowDeleteModal = () => {
+    setIsDeletedModalVisible(true);
+  };
+
+  const handleHideDeleteModal = () => {
+    setIsDeletedModalVisible(false);
   };
 
   const handleShowModal = () => {
     setIsModalVisible(true);
   };
 
-  const feeListColumns = [
-    {
-      title: "No",
-      dataIndex: "key",
-      align: "center",
-      width: "8%",
-    },
-    {
-      title: `${$lang.packing}`,
-      key: "packaging",
-      dataIndex: "packaging",
-      align: "center",
-      render: (text, record, dataIndex) => {
-        return (
-          <div>
-            {record.packaging.slice(0, 18)}
-            {text.length >= 18 ? "..." : ""}
-          </div>
-        );
-      },
-    },
-    {
-      title: `${$lang.handlingFeeUnitPrice}`,
-      dataIndex: "handling_fee_rate",
-      key: "handling_fee_rate",
-      align: "center",
-    },
-    {
-      title: `${$lang.storageFeeUnitPrice}`,
-      dataIndex: "storage_fee_rate",
-      key: "storage_fee_rate",
-      align: "center",
-    },
-    {
-      title: $lang.billingClass,
-      dataIndex: "fee_category",
-      key: "fee_category",
-      align: "center",
-      render: (text) => {
-        return text == 1 ? $lang.fullTimeRequest : $lang.firstBilling;
-      },
-    },
-    is_edit === 1 ? (
-      {
-        title: `${$lang.change}`,
-        dataIndex: "operation",
-        render: (text, record, dataIndex) => {
-          return (
-            <div className="flex justify-center items-center">
-              <div className="hidden rounded-full"></div>
-              <div className="p-2 rounded-full cursor-pointer items-center text-center">
-                <CustomButton
-                  onClick={() => {
-                    setModalData(record);
-                    handleShowModal();
-                  }}
-                  title={$lang.change}
-                  icon={<EditOutlined />}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  style={{ backgroundColor: "transparent", color: "#000" }}
-                  visability={true}
-                />{" "}
-              </div>
-              <div className="p-2 rounded-full cursor-pointer items-center text-center ml-2">
-                <CustomButton
-                  onClick={() => {
-                    handleShowDeleteModal();
+  const handleHideModal = () => {
+    setIsModalVisible(false);
+  };
 
-                    setHandleId(record.id);
-                  }}
-                  title={$lang.delete}
-                  icon={<DeleteOutlined />}
-                  style={{ backgroundColor: "transparent", color: "#000" }}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  visability={true}
-                />
-              </div>
-            </div>
-          );
-        },
-        align: "center",
-      }
-    ) : (
-      <div></div>
-    ),
-  ];
+  const editRow = (row) => {
+    setModalData(row);
+    handleShowModal();
+  };
+
+  const deleteRow = (row) => {
+    handleShowDeleteModal();
+    setHandleId(row.id);
+  };
 
   useEffect(() => {
     getWarehouseFeeList();
@@ -235,43 +145,42 @@ const WarehouseFeePage = ({ is_edit }) => {
           className="py-2 my-2"
           bordered={false}
         >
-          <div>
-            <div className="mt-2" style={{ marginLeft: "880px" }}>
+          <Row style={{ marginBottom: 10 }}>
+            <Col span={12}></Col>
+            <Col span={12}>
               {is_edit === 1 ? (
                 <Button
                   onClick={() => {
-                    handleShowModal();
                     setModalData(null);
+                    handleShowModal();
                   }}
                   className="px-5 btn-bg-black"
                 >
                   {$lang.addNew}
                 </Button>
               ) : (
-                <div></div>
+                <></>
               )}
-              <WarehouseFeeRegisterModal
-                isOpen={isModalVisible}
-                onClose={handleHideModal}
-                onSave={handleRegister}
-                initialValues={modalData}
-              />
-              <DeleteModal
-                isOpen={isDeletedModalVisible}
-                onClose={handleHideDeleteModal}
-                onDelete={handleDelete}
-                deletedId={handleId}
-              />
-            </div>
-            <div className="mt-5">
-              <CTable
-                rowKey={(node) => node.id}
-                dataSource={allData}
-                columns={feeListColumns}
-                pagination={true}
-              />
-            </div>
-          </div>
+            </Col>
+          </Row>
+          <WarehouseFeeTable
+            editRow={editRow}
+            deleteRow={deleteRow}
+            data={allData}
+            isEdit={is_edit}
+          />
+          <WarehouseFeeRegisterModal
+            isOpen={isModalVisible}
+            onClose={handleHideModal}
+            onSave={handleRegister}
+            initialValues={modalData}
+          />
+          <DeleteModal
+            isOpen={isDeletedModalVisible}
+            onClose={handleHideDeleteModal}
+            onDelete={handleDelete}
+            deletedId={handleId}
+          />
         </Card>
       </Content>
     </div>

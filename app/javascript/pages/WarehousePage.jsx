@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { warehouseURL } from "../utils/constants";
-import CTable from "../components/CTable";
-import { Form, Input, Layout, Button, Modal, Card } from "antd";
+import { Layout, Button, Card, Row, Col } from "antd";
 
 import { openNotificationWithIcon } from "../components/common/notification";
 
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import CustomButton from "../components/common/CustomButton";
 import WarehouseRegisterModal from "../features/warehouse/register.modal";
+import WarehouseTable from "../features/warehouse/index.table";
 import DeleteModal from "../components/common/delete.modal";
+
 import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";
 const { Content } = Layout;
@@ -22,78 +20,10 @@ const WarehousePage = ({ is_edit }) => {
   const [isDeletedModalVisible, setIsDeletedModalVisible] = useState(false);
   const [handleId, setHandleId] = useState("");
 
-  const [allData, setAllData] = useState([]);
-
-  const warehouseListColumns = [
-    {
-      title: `${$lang.no}`,
-      dataIndex: "key",
-      align: "center",
-      width: "8%",
-    },
-    {
-      title: `${$lang.warehouseName}`,
-      key: "name",
-      dataIndex: "name",
-      align: "center",
-      render: (text, record, dataIndex) => {
-        return (
-          <div>
-            {record.name.slice(0, 18)}
-            {text.length >= 18 ? "..." : ""}
-          </div>
-        );
-      },
-    },
-    is_edit === 1 ? (
-      {
-        title: `#`,
-        dataIndex: "operation",
-        render: (text, record, dataIndex) => {
-          return (
-            <div className="flex justify-center items-center">
-              <div className="hidden rounded-full"></div>
-              <div className="p-2 rounded-full cursor-pointer items-center text-center">
-                <CustomButton
-                  onClick={() => {
-                    setModalData(record);
-                    handleShowModal();
-                  }}
-                  title={$lang.change}
-                  icon={<EditOutlined />}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  style={{ backgroundColor: "transparent", color: "#000" }}
-                  visability={true}
-                />{" "}
-              </div>
-              <div className="p-2 rounded-full cursor-pointer items-center text-center ml-2">
-                <CustomButton
-                  onClick={() => {
-                    handleShowDeleteModal();
-
-                    setHandleId(record.id);
-                  }}
-                  title={$lang.delete}
-                  icon={<DeleteOutlined />}
-                  style={{ backgroundColor: "transparent", color: "#000" }}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  visability={true}
-                />
-              </div>
-            </div>
-          );
-        },
-        align: "center",
-      }
-    ) : (
-      <div></div>
-    ),
-  ];
+  const [tableData, setTableData] = useState([]);
 
   const getWarehouseList = () => {
-    API.get(`${warehouseURL}`).then((res) => {
+    API.get(warehouseURL).then((res) => {
       let index = 1;
       const warehouseData = res.data.map((item) => {
         return {
@@ -101,7 +31,7 @@ const WarehousePage = ({ is_edit }) => {
           key: index++,
         };
       });
-      setAllData(warehouseData);
+      setTableData(warehouseData);
     });
   };
 
@@ -115,7 +45,7 @@ const WarehousePage = ({ is_edit }) => {
 
   const handleRegister = (data) => {
     console.log("register data", data);
-    if (typeof data.id == "undefined") {
+    if (data.id == null) {
       createWarehouse(data);
     } else {
       updateWarehouse(data);
@@ -190,6 +120,16 @@ const WarehousePage = ({ is_edit }) => {
     setIsDeletedModalVisible(false);
   };
 
+  const editRow = (row) => {
+    setModalData(row);
+    handleShowModal();
+  };
+
+  const deleteRow = (row) => {
+    handleShowDeleteModal();
+    setHandleId(row.id);
+  };
+
   useEffect(() => {
     getWarehouseList();
   }, [isposted]);
@@ -205,43 +145,50 @@ const WarehousePage = ({ is_edit }) => {
           className="py-2 my-2"
           bordered={false}
         >
-          <div>
-            <div className="mt-5" style={{ marginLeft: "880px" }}>
+          <Row style={{ marginBottom: 10 }}>
+            <Col span={12}></Col>
+            <Col span={12}>
               {is_edit === 1 ? (
                 <Button
                   onClick={() => {
+                    setModalData({
+                      id: null,
+                      name: null,
+                      packaging: null,
+                      code: null,
+                      handling_fee_rate: null,
+                      storage_fee_rate: null,
+                      fee_category: null,
+                    });
                     handleShowModal();
-                    setModalData(null);
                   }}
                   className="btn-bg-black"
                 >
                   {$lang?.Maintenance?.addNew}
                 </Button>
               ) : (
-                <div></div>
+                <></>
               )}
-              <WarehouseRegisterModal
-                isOpen={isModalVisible}
-                onClose={handleHideModal}
-                onSave={handleRegister}
-                initialValues={modalData}
-              />
-              <DeleteModal
-                isOpen={isDeletedModalVisible}
-                onClose={handleHideDeleteModal}
-                onDelete={handleDelete}
-                deletedId={handleId}
-              />
-            </div>
-            <div className="mt-5">
-              <CTable
-                rowKey={(node) => node.id}
-                dataSource={allData}
-                columns={warehouseListColumns}
-                pagination={true}
-              />
-            </div>
-          </div>
+            </Col>
+          </Row>
+          <WarehouseTable
+            data={tableData}
+            editRow={editRow}
+            deleteRow={deleteRow}
+            isEdit={is_edit}
+          />
+          <WarehouseRegisterModal
+            isOpen={isModalVisible}
+            onClose={handleHideModal}
+            onSave={handleRegister}
+            initialValues={modalData}
+          />
+          <DeleteModal
+            isOpen={isDeletedModalVisible}
+            onClose={handleHideDeleteModal}
+            onDelete={handleDelete}
+            deletedId={handleId}
+          />
         </Card>
       </Content>
     </div>

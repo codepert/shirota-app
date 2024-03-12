@@ -7,6 +7,7 @@ import LoginPage from "../../pages/LoginPage";
 
 import TopPage from "../../pages/TopPage";
 import WarehousePage from "../../pages/WarehousePage";
+import WarehouseFeePage from "../../pages/WarehouseFeePage";
 import ShipperPage from "../../pages/ShipperPage";
 import ProductPage from "../../pages/ProductPage";
 import UserPage from "../../pages/UserPage";
@@ -16,9 +17,9 @@ import InStockPage from "../../pages/InStockPage";
 import OutStockPage from "../../pages/OutStockPage";
 import InventoryPage from "../../pages/InventoryPage";
 import ReceivedPaymentPage from "../../pages/ReceivedPaymentPage";
+// import BillingProcessPage from "../../pages/BillingProcess";
 
 // import WarehouseFee from "../../pages/WarehouseFee";
-// import BillingProcess from "../../pages/BillingProcess";
 // import BillingList from "../../pages/BillingList";
 import AuthContextProvider from "../../contexts/AuthContextProvider";
 
@@ -28,7 +29,6 @@ import { useAuth } from "../../hooks/useAuth";
 // import ChangePassword from "../../pages/changePasswordPage";
 
 import { navigatiionsURL } from "../../utils/constants";
-import WarehouseFeePage from "../../pages/WarehouseFeePage";
 
 export const AppRouter = () => {
   const [navigations, setNavigations] = useState([]);
@@ -140,15 +140,16 @@ export const AppRouter = () => {
               />
             }
           />
-          {/*   <Route
+          {/* <Route
             path="/bill_process"
             element={
               <PrivateRoute
                 navigations={navigations}
-                Component={BillingProcess}
+                Component={BillingProcessPage}
               />
             }
-          />
+          /> */}
+          {/*   
           <Route
             path="/bill_list"
             element={

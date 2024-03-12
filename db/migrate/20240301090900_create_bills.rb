@@ -7,8 +7,6 @@ class CreateBills < ActiveRecord::Migration[7.1]
       t.integer :closing_date,            null:false, comment: '締日'
       t.date :duration_from,              null:false, comment: '対象期間 From'
       t.date :duration_to,                null:false, comment: '対象期間 To'
-      t.date :shipper_from,               null:false, comment: '対象荷主 From'
-      t.date :shipper_to,                 null:false, comment: '対象荷主 To'
       t.integer :billed,                  null:false, comment: '請求したかどうか',        limit: 1 
       t.integer :printed,                 null:false, comment: '請求書を作成したかどうか', limit: 1
       t.timestamps

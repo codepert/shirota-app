@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Input, Layout, Pagination, Card, Flex, Button } from "antd";
+import { Input, Layout, Pagination, Card, Flex, Button, Row, Col } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { openNotificationWithIcon } from "../components/common/notification";
-import CustomButton from "../components/common/CustomButton";
 import ProductRegisterModal from "../features/product/register.modal";
+import ProductTable from "../features/product/index.table";
 import DeleteModal from "../components/common/delete.modal";
-import CTable from "../components/CTable/CCTable";
+// import CTable from "../components/CTable/CCTable";
 import $lang from "../utils/content/jp.json";
 import { productURL } from "../utils/constants";
 import { API } from "../utils/helper";
@@ -23,8 +23,15 @@ const ProductPage = ({ is_edit }) => {
   const [productData, setProductData] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemPerPage] = useState(10);
+  const [itemsPerPage, setItemPerPage] = useState(1);
   const [total, setTotal] = useState(0);
+
+  const [paginationConfig, setPaginationConfig] = useState({
+    current: 1,
+    pageSize: 1,
+  });
+
+  const [loading, setLoading] = useState(false);
 
   const [isDeletedModalVisible, setIsDeletedModalVisible] = useState(false);
   const [handleId, setHandleId] = useState("");
@@ -35,6 +42,7 @@ const ProductPage = ({ is_edit }) => {
   };
 
   const getProducts = () => {
+    // setLoading(true);
     const urlParam = `${productURL}?offset=${currentPage}&limit=${itemsPerPage}&keyword=${searchText}`;
     API.get(urlParam).then((res) => {
       let index = 1;
@@ -53,8 +61,12 @@ const ProductPage = ({ is_edit }) => {
           warehouse_fee_id: feeData.id,
         };
       });
-
-      setTotal(res.data.count);
+      // setLoading(false);
+      setTotal(res.headers["x-total-count"]);
+      // setPaginationConfig({
+      //   ...paginationConfig,
+      //   total: res.headers["x-total-count"],
+      // });
       setProductData(products);
     });
   };
@@ -148,100 +160,27 @@ const ProductPage = ({ is_edit }) => {
     setIsModalVisible(true);
   };
 
-  const productListColumns = [
-    // {
-    //   title: "No",
-    //   dataIndex: "key",
-    //   align: "center",
-    //   width: "8%",
-    // },
-    {
-      title: $lang.productCode,
-      dataIndex: "code",
-      align: "left",
-      width: "20%",
-      key: "code",
-    },
-    {
-      title: `${$lang.productName}`,
-      key: "name",
-      width: "20%",
-      dataIndex: "name",
-      align: "left",
-    },
-    {
-      title: `${$lang.packing}`,
-      dataIndex: "packaging",
-      key: "packaging",
-      align: "left",
-    },
-    {
-      title: `${$lang.storageFee}`,
-      dataIndex: "storage_fee_rate",
-      key: "storage_fee_rate",
-      align: "left",
-    },
-    {
-      title: `${$lang.billingClass}`,
-      dataIndex: "fee_category",
-      align: "left",
-      key: "fee_category",
-      render: (text) => {
-        return text == 1 ? $lang.fullTimeRequest : $lang.firstBilling;
-      },
-    },
-    is_edit === 1 ? (
-      {
-        title: `${$lang.change}`,
-        dataIndex: "operation",
-        render: (text, record, dataIndex) => {
-          return (
-            <div className="flex justify-center">
-              <div className="hidden rounded-full">
-                {/* {(star_color = record.done == true ? "text-yellow-500" : "")} */}
-              </div>
-              <div className="p-2 rounded-full cursor-pointer text-center">
-                <CustomButton
-                  onClick={() => {
-                    setModalData(record);
-                    handleShowModal();
-                  }}
-                  title={$lang.change}
-                  icon={<EditOutlined />}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  style={{ backgroundColor: "transparent", color: "#000" }}
-                  visability={true}
-                />{" "}
-              </div>
-              <div className="p-2 rounded-full cursor-pointer items-center text-center ml-2">
-                <CustomButton
-                  onClick={() => {
-                    handleShowDeleteModal();
-                    setHandleId(record.id);
-                  }}
-                  title={$lang.delete}
-                  icon={<DeleteOutlined />}
-                  style={{ backgroundColor: "transparent", color: "#000" }}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  visability={true}
-                />
-              </div>
-            </div>
-          );
-        },
-        align: "center",
-        width: "15%",
-      }
-    ) : (
-      <div></div>
-    ),
-  ];
+  const editRow = (row) => {
+    setModalData(row);
+    handleShowModal();
+  };
 
-  useEffect(() => {
-    getProducts();
-  }, [currentPage, itemsPerPage, isposted]);
+  const deleteRow = (row) => {
+    handleShowDeleteModal();
+    setHandleId(row.id);
+  };
+  const handleTableChange = (pagination, _, sorter) => {
+    setPaginationConfig({
+      ...paginationConfig,
+      current: pagination.current,
+    });
+  };
+  // useEffect(() => {
+  //   getProducts();
+  // }, [currentPage, itemsPerPage, isposted]);
+  // useEffect(() => {
+  //   getProducts();
+  // }, [paginationConfig]);
 
   return (
     <div>
@@ -265,7 +204,7 @@ const ProductPage = ({ is_edit }) => {
                       <Input
                         value={searchText}
                         placeholder={$lang.search}
-                        className="py-1 rounded-md focus:box-shadow-none"
+                        className="py-1 rounded-md box-shadow-none"
                         onChange={handleSearchText}
                         onPressEnter={(e) => {
                           if (e.keyCode === 13) {
@@ -291,11 +230,24 @@ const ProductPage = ({ is_edit }) => {
                 </Flex>
               </div>
             </div>
+            <ProductTable
+              editRow={editRow}
+              deleteRow={deleteRow}
+              // data={productData}
+              isEdit={is_edit}
+              isposted={isposted}
+              // current={currentPage}
+              // pageSize={itemsPerPage}
+              // totalCount={total}
+              // onPageChange={handlePageChange}
+            />
+            {/* <ProductTable isEdit={is_edit} /> */}
             <ProductRegisterModal
               isOpen={isModalVisible}
               onClose={handleHideModal}
               onSave={handleRegister}
               initialValues={modalData}
+              style={{ float: "right" }}
             />
             <DeleteModal
               isOpen={isDeletedModalVisible}
@@ -303,25 +255,6 @@ const ProductPage = ({ is_edit }) => {
               onDelete={handleDelete}
               deletedId={handleId}
             />
-            <div className="mt-5">
-              <CTable
-                rowKey={(node) => node.key}
-                dataSource={productData}
-                columns={productListColumns}
-              />
-              <div className="flex justify-center w-full bg-base-200 rounded-md mt-5">
-                <Pagination
-                  current={currentPage}
-                  pageSize={itemsPerPage}
-                  total={total}
-                  onChange={handlePageChange}
-                  pageSizeOptions={[10, 20, 50, 100]}
-                  showSizeChanger
-                  className="p-1"
-                  style={{ float: "right" }}
-                />
-              </div>
-            </div>
           </div>
         </Card>
       </Content>

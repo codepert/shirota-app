@@ -12,7 +12,7 @@ const UserTable = ({ data, editRow, isEdit }) => {
       dataIndex: "key",
       key: "key",
       render: (text) => <a>{text}</a>,
-      width: "5%",
+      width: "8%",
     },
     {
       title: $lang.username,

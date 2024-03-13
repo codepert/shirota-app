@@ -50,7 +50,10 @@ export const pageURL = baseUrl + "api/v1/pages";
 export const authorityPageURL = baseUrl + "api/v1/authority_pages";
 
 export const setAuthorityPageURL = baseUrl + "api/v1/set_authority_pages";
-
+export const confirmBillURL = "";
+export const computeBillURL = "";
+export const exportBillOne = "";
+export const billListURL = "";
 export const exportReceivePaymentCSVDataUrl =
   baseUrl + "api/v1/received_payments_csv_export";
 //unit_price urls

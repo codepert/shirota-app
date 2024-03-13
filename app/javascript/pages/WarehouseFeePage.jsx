@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { warehouseFeeURL } from "../utils/constants";
 
-import { Layout, Button, Card, Row, Col } from "antd";
+import { Layout, Button, Card, Flex } from "antd";
 
 import WarehouseFeeRegisterModal from "../features/warehouseFee/register.modal";
 import WarehouseFeeTable from "../features/warehouseFee/index.table";
@@ -135,55 +135,50 @@ const WarehouseFeePage = ({ is_edit }) => {
   }, [isposted]);
 
   return (
-    <div>
-      <Content
-        style={{ width: 1024 }}
-        className="mx-auto flex flex-col content-h"
+    <Content
+      style={{ width: 1024 }}
+      className="mx-auto flex flex-col content-h"
+    >
+      <Card
+        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
+        className="py-2 my-2"
+        bordered={false}
       >
-        <Card
-          style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-          className="py-2 my-2"
-          bordered={false}
-        >
-          <Row style={{ marginBottom: 10 }}>
-            <Col span={12}></Col>
-            <Col span={12}>
-              {is_edit === 1 ? (
-                <Button
-                  onClick={() => {
-                    setModalData(null);
-                    handleShowModal();
-                  }}
-                  className="px-5 btn-bg-black"
-                >
-                  {$lang.addNew}
-                </Button>
-              ) : (
-                <></>
-              )}
-            </Col>
-          </Row>
-          <WarehouseFeeTable
-            editRow={editRow}
-            deleteRow={deleteRow}
-            data={allData}
-            isEdit={is_edit}
-          />
-          <WarehouseFeeRegisterModal
-            isOpen={isModalVisible}
-            onClose={handleHideModal}
-            onSave={handleRegister}
-            initialValues={modalData}
-          />
-          <DeleteModal
-            isOpen={isDeletedModalVisible}
-            onClose={handleHideDeleteModal}
-            onDelete={handleDelete}
-            deletedId={handleId}
-          />
-        </Card>
-      </Content>
-    </div>
+        <Flex justify="flex-end" className="mb-5">
+          {is_edit === 1 ? (
+            <Button
+              onClick={() => {
+                setModalData(null);
+                handleShowModal();
+              }}
+              className="px-5 btn-bg-black"
+            >
+              {$lang.addNew}
+            </Button>
+          ) : (
+            <></>
+          )}
+        </Flex>
+        <WarehouseFeeTable
+          editRow={editRow}
+          deleteRow={deleteRow}
+          data={allData}
+          isEdit={is_edit}
+        />
+        <WarehouseFeeRegisterModal
+          isOpen={isModalVisible}
+          onClose={handleHideModal}
+          onSave={handleRegister}
+          initialValues={modalData}
+        />
+        <DeleteModal
+          isOpen={isDeletedModalVisible}
+          onClose={handleHideDeleteModal}
+          onDelete={handleDelete}
+          deletedId={handleId}
+        />
+      </Card>
+    </Content>
   );
 };
 export default WarehouseFeePage;

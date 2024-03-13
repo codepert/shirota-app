@@ -18,7 +18,7 @@ import {} from "antd";
 
 import dayjs from "dayjs";
 import CustomButton from "../components/common/CustomButton";
-import CTable from "../components/CTable/CCTable";
+// import CTable from "../components/CTable/CCTable";
 
 import { API } from "../utils/helper";
 import {
@@ -579,11 +579,11 @@ const BillingProcess = ({ is_edit }) => {
           </Col>
         </Row>
         <Row className="my-2">
-          <CTable
+          {/* <CTable
             rowKey={(node) => node.key}
             dataSource={allData}
             columns={billingProcessColumns}
-          />
+          /> */}
           <div className="flex flex-col w-full">
             <div className="flex justify-center w-full bg-base-200 rounded-md mt-5">
               <Pagination

@@ -5,7 +5,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
   set_pagination_callback :products, [:index]
 
   def index
-    q  = Product.ransack(params[:keyword])
+    q  = Product.ransack({ name_cont: params[:keyword] }.merge(code_cont: params[:keyword]))
     @products = q.result().paginate(pagination_params)
    
     render json: ProductSerializer.new(@products)

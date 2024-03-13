@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Pagination } from "antd";
+import { Table, Pagination, Flex } from "antd";
 import PropTypes from "prop-types";
 const LocalPaginationTable = (props) => {
   const [page, setPage] = useState({ pn: 1, ps: 10 });
@@ -26,7 +26,7 @@ const LocalPaginationTable = (props) => {
   }, [props]);
 
   return (
-    <div className="flex h-full flex-col w-full">
+    <Flex vertical gap={"middle"}>
       <Table
         {...props}
         dataSource={data}
@@ -34,7 +34,7 @@ const LocalPaginationTable = (props) => {
         pagination={false}
         className="h-full overflow-auto pr-1"
       />
-      <div className="flex justify-center w-full bg-base-200 rounded-md mt-5">
+      <Flex justify="flex-end">
         <Pagination
           pageSizeOptions={[10, 20, 50, 100]}
           current={pn}
@@ -45,8 +45,8 @@ const LocalPaginationTable = (props) => {
           onChange={(pn, ps) => setPage({ pn, ps })}
           total={props.dataSource?.length}
         />
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 };
 

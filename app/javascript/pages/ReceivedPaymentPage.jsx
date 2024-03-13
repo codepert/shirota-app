@@ -31,27 +31,17 @@ const { Search } = Input;
 const { Content } = Layout;
 
 const { RangePicker } = DatePicker;
-const ReceivedPaymentPage = () => {
+const ReceivedPaymentPage = ({ is_edit }) => {
   const [shipperOptions, setShipperOptions] = useState([]);
-  const [editShipperOptions, setEditShipperOptions] = useState([]);
   const [shipperDisctription, setShipperDescription] = useState({
     code: "",
     closingDate: "",
-  });
-  const [registerShipper, setRegisterShipper] = useState({
-    value: "",
-    label: "",
   });
   const [searchShipper, setSearchShipper] = useState({
     value: "",
     label: "",
   });
-  const [depositData, setDepositData] = useState([]);
   const [receivedPaymentData, setReceivedPaymentData] = useState([]);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [registerDate, setRegisterDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
   const [isposted, setIsPosted] = useState(false);
   const currentDate = dayjs().tz("Asia/Tokyo");
 
@@ -64,13 +54,9 @@ const ReceivedPaymentPage = () => {
   const [processDate, setProcessDate] = useState(
     dayjs(currentDate, dateFormat)
   );
-  const [editMode, setEditMode] = useState("new");
-
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [total, setTotal] = useState(0);
-  const [seletedId, setSelectedId] = useState("");
-  const [isDelete, setIsDelelte] = useState("true");
   const [inStockRangeDates, setInstockRangeDates] = useState([]);
   const [processRangeDates, setProcessRangeDates] = useState([]);
 
@@ -133,7 +119,7 @@ const ReceivedPaymentPage = () => {
         : "";
     const searchShipperParam =
       searchShipper.value != "" ? `&shipper=${searchShipper.value}` : "";
-    const urlParam = `${receivedPaymentURL}?offset=${currentPage}&limit=${itemsPerPage}${inStockDateParam}${processDateParam}${searchShipperParam}`;
+    const urlParam = `${receivedPaymentURL}?page=${currentPage}&limit=${itemsPerPage}${inStockDateParam}${processDateParam}${searchShipperParam}`;
 
     API.get(urlParam).then((res) => {
       let index = 0;
@@ -147,10 +133,8 @@ const ReceivedPaymentPage = () => {
         };
       });
 
+      setTotal(res.headers["x-total-count"]);
       setReceivedPaymentData(receivedPayment);
-      setTotal(res.data.count);
-
-      // setShowData(receivedPayment);
     });
   };
 
@@ -175,7 +159,7 @@ const ReceivedPaymentPage = () => {
   };
 
   const handlePageChange = (page, pageSize) => {
-    setCurrentPage((page - 1) * pageSize);
+    setCurrentPage(page);
     setItemPerPage(pageSize);
   };
 
@@ -362,126 +346,112 @@ const ReceivedPaymentPage = () => {
   }, [currentPage, itemsPerPage, isposted]);
 
   return (
-    <div>
-      <Content
-        style={{ width: 1280 }}
-        className="mx-auto flex flex-col justify-content content-h s-content"
+    <Content
+      style={{ width: 1280 }}
+      className="mx-auto flex flex-col justify-content content-h s-content"
+    >
+      <Card
+        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
+        className="py-2 my-2"
+        bordered={false}
       >
-        <Card
-          style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-          className="py-2 my-2"
-          bordered={false}
-        >
-          <Row className="my-2">
-            <Col span={1}>{$lang.deposit.received_on}:</Col>
-            <DatePicker.RangePicker
-              style={{ width: 250 }}
-              value={inStockRangeDates}
-              onChange={onchangeInStorkRangeDates}
-            />
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.inStock.shipper}:</label>
-            </Col>
-            <Col span={6}>
-              <Select
-                style={{ width: 250 }}
-                options={shipperOptions}
-                value={searchShipper.value}
-                onChange={onChangeSearchShipper}
-              />
-              <p>
-                {shipperOptions.length > 0 && (
-                  <span className="" style={{ marginLeft: 0 }}>
-                    {$lang.inStock.shipper} :&nbsp;&nbsp;
-                    {shipperDisctription.code} &nbsp;/ &nbsp;
-                    {shipperDisctription.closingDate}
-                  </span>
-                )}{" "}
-              </p>
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>{$lang.deposit.processing_on}:</Col>
-            <DatePicker.RangePicker
-              style={{ width: 250 }}
-              value={processRangeDates}
-              onChange={onchangeProcessRangeDates}
-            />
-          </Row>
-          <Divider />
-          <Row>
-            <Space align="center">
-              {" "}
-              <Button
-                className="btn-bg-black"
-                style={{ marginLeft: 40 }}
-                onClick={getReceivePayment}
-              >
-                {$lang.buttons.search}
-              </Button>
-              <Button
-                className="btn-bg-black ml-1"
-                onClick={exportDataAndDownloadCVS}
-              >
-                {$lang.buttons.csvExchange}
-              </Button>
-            </Space>
-          </Row>
-        </Card>
-        <Card bordered={false} className="py-4 " style={{ marginTop: "20px" }}>
-          <Row>
-            <Col span={12}></Col>
-            <Col span={12}>
-              <Button
-                className="btn-bg-black"
-                style={{ float: "right" }}
-                onClick={() => {
-                  setModalData(null);
-                  handleShowModal();
-                }}
-              >
-                {$lang.buttons.register}
-              </Button>
-            </Col>
-          </Row>
-          <ReceivedPaymentRegisterModal
-            isOpen={isModalVisible}
-            onClose={handleHideModal}
-            onSave={handleRegister}
-            initialValues={modalData}
+        <Row className="my-2">
+          <Col span={1}>{$lang.deposit.received_on}:</Col>
+          <DatePicker.RangePicker
+            style={{ width: 250 }}
+            value={inStockRangeDates}
+            onChange={onchangeInStorkRangeDates}
           />
-
-          <DeleteModal
-            isOpen={isDeletedModalVisible}
-            onClose={handleHideDeleteModal}
-            onDelete={deleteReceivePayment}
-            deletedId={handleId}
-          />
-          <div className="my-2">
-            <ReceivedPaymentTable
-              data={receivedPaymentData}
-              editRow={(key) => editRow(key)}
-              deleteRow={deleteRow}
-              is_edit={1}
+        </Row>
+        <Row className="my-2">
+          <Col span={1}>
+            <label>{$lang.inStock.shipper}:</label>
+          </Col>
+          <Col span={6}>
+            <Select
+              style={{ width: 250 }}
+              options={shipperOptions}
+              value={searchShipper.value}
+              onChange={onChangeSearchShipper}
             />
-            <div className="flex justify-center w-full bg-base-200 rounded-md mt-5">
-              <Pagination
-                current={currentPage}
-                pageSize={itemsPerPage}
-                total={total}
-                onChange={handlePageChange}
-                pageSizeOptions={[10, 20, 50, 100]}
-                showSizeChanger
-                className="p-1"
-                style={{ float: "right" }}
-              />
-            </div>
-          </div>
-        </Card>
-      </Content>
-    </div>
+            <p>
+              {shipperOptions.length > 0 && (
+                <span className="" style={{ marginLeft: 0 }}>
+                  {$lang.inStock.shipper} :&nbsp;&nbsp;
+                  {shipperDisctription.code} &nbsp;/ &nbsp;
+                  {shipperDisctription.closingDate}
+                </span>
+              )}{" "}
+            </p>
+          </Col>
+        </Row>
+        <Row className="my-2">
+          <Col span={1}>{$lang.deposit.processing_on}:</Col>
+          <DatePicker.RangePicker
+            style={{ width: 250 }}
+            value={processRangeDates}
+            onChange={onchangeProcessRangeDates}
+          />
+        </Row>
+        <Divider />
+        <Row>
+          <Space align="center">
+            {" "}
+            <Button
+              className="btn-bg-black"
+              style={{ marginLeft: 40 }}
+              onClick={getReceivePayment}
+            >
+              {$lang.buttons.search}
+            </Button>
+            <Button
+              className="btn-bg-black ml-1"
+              onClick={exportDataAndDownloadCVS}
+            >
+              {$lang.buttons.csvExchange}
+            </Button>
+          </Space>
+        </Row>
+      </Card>
+      <Card bordered={false} className="py-4 " style={{ marginTop: "20px" }}>
+        <Row className="mb-5">
+          <Col span={12}></Col>
+          <Col span={12}>
+            <Button
+              className="btn-bg-black"
+              style={{ float: "right" }}
+              onClick={() => {
+                setModalData(null);
+                handleShowModal();
+              }}
+            >
+              {$lang.buttons.register}
+            </Button>
+          </Col>
+        </Row>
+        <ReceivedPaymentRegisterModal
+          isOpen={isModalVisible}
+          onClose={handleHideModal}
+          onSave={handleRegister}
+          initialValues={modalData}
+        />
+        <DeleteModal
+          isOpen={isDeletedModalVisible}
+          onClose={handleHideDeleteModal}
+          onDelete={deleteReceivePayment}
+          deletedId={handleId}
+        />
+        <ReceivedPaymentTable
+          editRow={editRow}
+          dataSource={receivedPaymentData}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          total={total}
+          onChange={handlePageChange}
+          isEdit={is_edit}
+        />
+      </Card>
+    </Content>
   );
 };
 

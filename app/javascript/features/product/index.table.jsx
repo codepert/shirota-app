@@ -1,29 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Flex, Table } from "antd";
+import React from "react";
+import { Flex, Table, Pagination } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomButton from "../../components/common/CustomButton";
-import PaginationTable from "../../components/table/ajax.pagination.table";
 import $lang from "../../utils/content/jp.json";
-import { productURL } from "../../utils/constants";
-import { API } from "../../utils/helper";
 
 const ProductTable = ({
-  // data,
   editRow,
   deleteRow,
+  dataSource,
+  total,
+  currentPage,
+  itemsPerPage,
+  onChange,
   isEdit,
-  isposted,
-  // paginationConfig,
-  // handleTableChange,
-  // tloading,
 }) => {
-  const tableColumns = [
-    {
-      title: "No",
-      dataIndex: "key",
-      align: "center",
-      width: "6%",
-    },
+  const columns = [
+    // {
+    //   title: "No",
+    //   dataIndex: "key",
+    //   align: "center",
+    //   width: "6%",
+    // },
     {
       title: $lang.productCode,
       dataIndex: "code",
@@ -100,60 +97,27 @@ const ProductTable = ({
       <div></div>
     ),
   ];
-  const [isLoading, setIsLoading] = useState(false);
-  const [dataSource, setDataSource] = useState([]);
-  const [pagination, setPagination] = useState({});
-
-  const loadTableData = async () => {
-    setIsLoading(true);
-    //  const urlParam = `${productURL}?offset=${paginationConfig.current}&limit=${paginationConfig.pageSize}&keyword=${searchText}`;
-    const urlParam = `${productURL}?offset=${pagination.current}&limit=${pagination.pageSize}`;
-    API.get(urlParam).then((res) => {
-      let index = 1;
-      let products = res.data.map((item) => {
-        let feeData = item.warehouse_fee;
-        return {
-          id: item.id,
-          key: index++,
-          name: item.name,
-          packaging: feeData.packaging,
-          storage_fee_rate: feeData.storage_fee_rate,
-          handling_fee_rate: feeData.handling_fee_rate,
-          fee_category: feeData.fee_category,
-          code: item.code,
-          specification: item.specification,
-          warehouse_fee_id: feeData.id,
-        };
-      });
-      setIsLoading(false);
-      // setPaginationConfig({
-      //   ...paginationConfig,
-      //   total: res.headers["x-total-count"],
-      // });
-      setTotal(parseInt(res.headers["x-total-count"]));
-      setDataSource(products);
-    });
-  };
-  const handleTableChange = (pagination, filters, sorter) => {
-    console.log(pagination, sorter);
-    setPagination(pagination);
-    loadTableData();
-  };
-
-  useEffect(() => {
-    loadTableData();
-  }, [isposted]);
 
   return (
-    <Table
-      columns={tableColumns}
-      dataSource={dataSource}
-      loading={isLoading}
-      onChange={handleTableChange}
-      pagination={pagination}
-      rowKey={(record) => record.id}
-      scroll={{ x: "max-content", y: 600 }}
-    />
+    <>
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        className="h-full overflow-auto pr-1"
+      />
+      <Flex justify="flex-end" className="my-5">
+        <Pagination
+          current={currentPage}
+          pageSize={itemsPerPage}
+          total={total}
+          onChange={onChange}
+          showSizeChanger
+          className="p-1"
+          defaultPageSize={10}
+        />
+      </Flex>
+    </>
   );
 };
 

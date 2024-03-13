@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Button, Card, Row, Col } from "antd";
+import { Layout, Button, Card, Flex } from "antd";
 
 import { openNotificationWithIcon } from "../components/common/notification";
 import ShipperRegisterModal from "../features/shipper/register.modal";
@@ -134,55 +134,50 @@ const ShipperList = ({ is_edit }) => {
   }, [isposted]);
 
   return (
-    <div>
-      <Content
-        style={{ width: 1024 }}
-        className="mx-auto flex flex-col content-h"
+    <Content
+      style={{ width: 1024 }}
+      className="mx-auto flex flex-col content-h"
+    >
+      <Card
+        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
+        className="py-2 my-2"
+        bordered={false}
       >
-        <Card
-          style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-          className="py-2 my-2"
-          bordered={false}
-        >
-          <Row style={{ marginBottom: 10 }}>
-            <Col span={12}></Col>
-            <Col span={12}>
-              {is_edit === 1 ? (
-                <Button
-                  onClick={() => {
-                    handleShowModal();
-                    setModalData(null);
-                  }}
-                  className="btn-bg-black"
-                >
-                  {$lang?.Maintenance?.addNew}
-                </Button>
-              ) : (
-                <></>
-              )}
-            </Col>
-          </Row>
-          <ShipperTable
-            editRow={editRow}
-            deleteRow={deleteRow}
-            data={allData}
-            isEdit={is_edit}
-          />{" "}
-          <ShipperRegisterModal
-            isOpen={isModalVisible}
-            onClose={handleHideModal}
-            onSave={handleRegister}
-            initialValues={modalData}
-          />
-          <DeleteModal
-            isOpen={isDeletedModalVisible}
-            onClose={handleHideDeleteModal}
-            onDelete={handleDelete}
-            deletedId={handleId}
-          />
-        </Card>
-      </Content>
-    </div>
+        <Flex justify="flex-end" className="mb-5">
+          {is_edit === 1 ? (
+            <Button
+              onClick={() => {
+                handleShowModal();
+                setModalData(null);
+              }}
+              className="btn-bg-black"
+            >
+              {$lang?.Maintenance?.addNew}
+            </Button>
+          ) : (
+            <></>
+          )}
+        </Flex>
+        <ShipperTable
+          editRow={editRow}
+          deleteRow={deleteRow}
+          data={allData}
+          isEdit={is_edit}
+        />{" "}
+        <ShipperRegisterModal
+          isOpen={isModalVisible}
+          onClose={handleHideModal}
+          onSave={handleRegister}
+          initialValues={modalData}
+        />
+        <DeleteModal
+          isOpen={isDeletedModalVisible}
+          onClose={handleHideDeleteModal}
+          onDelete={handleDelete}
+          deletedId={handleId}
+        />
+      </Card>
+    </Content>
   );
 };
 export default ShipperList;

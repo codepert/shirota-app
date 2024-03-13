@@ -1,10 +1,18 @@
-import React from "react";
-import { Table } from "antd";
+import React, { useEffect } from "react";
+import { Table, Pagination, Flex } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomButton from "../../components/common/CustomButton";
 import $lang from "../../utils/content/jp.json";
 
-const ReceivePaymentTable = ({ data, editRow, deleteRow, is_edit }) => {
+const ReceivePaymentTable = ({
+  editRow,
+  dataSource,
+  total,
+  currentPage,
+  itemsPerPage,
+  onChange,
+  isEdit,
+}) => {
   const columns = [
     {
       title: $lang.receivePaymentDate,
@@ -38,7 +46,7 @@ const ReceivePaymentTable = ({ data, editRow, deleteRow, is_edit }) => {
       key: "processing_on",
       render: (val) => (val != undefined ? val.replace(/\-/g, "/") : ""),
     },
-    is_edit === 1 ? (
+    isEdit === 1 ? (
       {
         title: "#",
         key: "action",
@@ -75,9 +83,30 @@ const ReceivePaymentTable = ({ data, editRow, deleteRow, is_edit }) => {
       <div></div>
     ),
   ];
+
+  useEffect(() => {
+    console.log("total", total);
+  }, [total]);
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
-    // <Pagination pageSizeOptions={5} defaultPageSize={5}/>
+    <>
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        className="h-full overflow-auto pr-1"
+      />
+      <Flex justify="flex-end" className="my-5">
+        <Pagination
+          current={currentPage}
+          pageSize={itemsPerPage}
+          total={total}
+          onChange={onChange}
+          showSizeChanger
+          className="p-1"
+          defaultPageSize={10}
+        />
+      </Flex>
+    </>
   );
 };
 

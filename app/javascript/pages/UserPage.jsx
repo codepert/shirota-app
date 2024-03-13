@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Layout, Card, Button, Row, Col } from "antd";
+import { Layout, Card, Button, Flex } from "antd";
 
 import UserRegisterModal from "../features/user/register.modal";
 import UserTable from "../features/user/index.table";
@@ -133,25 +133,21 @@ const UserPage = ({ is_edit }) => {
           className="py-4 my-2"
           bordered={false}
         >
-          <Row style={{ marginBottom: 10 }}>
-            <Col span={12}></Col>
-            <Col span={12}>
-              {is_edit === 1 ? (
-                <Button
-                  onClick={() => {
-                    handleShowModal();
-                    setEditMode("create");
-                    setModalData(null);
-                  }}
-                  style={{ float: "right" }}
-                >
-                  {$lang.UserPage.buttons.addNew}
-                </Button>
-              ) : (
-                <></>
-              )}
-            </Col>
-          </Row>
+          <Flex justify="flex-end" className="mb-5">
+            {is_edit === 1 ? (
+              <Button
+                onClick={() => {
+                  handleShowModal();
+                  setEditMode("create");
+                  setModalData(null);
+                }}
+              >
+                {$lang.UserPage.buttons.addNew}
+              </Button>
+            ) : (
+              <></>
+            )}
+          </Flex>
           <UserTable editRow={editRow} data={userList} isEdit={is_edit} />
           <UserRegisterModal
             isOpen={isModalVisible}

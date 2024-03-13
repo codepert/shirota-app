@@ -17,7 +17,7 @@ import InStockPage from "../../pages/InStockPage";
 import OutStockPage from "../../pages/OutStockPage";
 import InventoryPage from "../../pages/InventoryPage";
 import ReceivedPaymentPage from "../../pages/ReceivedPaymentPage";
-// import BillingProcessPage from "../../pages/BillingProcess";
+import BillingProcessPage from "../../pages/BillingProcess";
 
 // import WarehouseFee from "../../pages/WarehouseFee";
 // import BillingList from "../../pages/BillingList";
@@ -137,6 +137,15 @@ export const AppRouter = () => {
               <PrivateRoute
                 navigations={navigations}
                 Component={ReceivedPaymentPage}
+              />
+            }
+          />
+          <Route
+            path="/bill_process"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={BillingProcessPage}
               />
             }
           />

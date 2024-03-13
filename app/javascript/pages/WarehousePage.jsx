@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { warehouseURL } from "../utils/constants";
-import { Layout, Button, Card, Row, Col } from "antd";
+import { Layout, Button, Card, Flex } from "antd";
 
 import { openNotificationWithIcon } from "../components/common/notification";
 
@@ -135,63 +135,58 @@ const WarehousePage = ({ is_edit }) => {
   }, [isposted]);
 
   return (
-    <div>
-      <Content
-        style={{ width: 1024 }}
-        className="mx-auto flex flex-col content-h"
+    <Content
+      style={{ width: 1024 }}
+      className="mx-auto flex flex-col content-h"
+    >
+      <Card
+        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
+        className="py-2 my-2"
+        bordered={false}
       >
-        <Card
-          style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-          className="py-2 my-2"
-          bordered={false}
-        >
-          <Row style={{ marginBottom: 10 }}>
-            <Col span={12}></Col>
-            <Col span={12}>
-              {is_edit === 1 ? (
-                <Button
-                  onClick={() => {
-                    setModalData({
-                      id: null,
-                      name: null,
-                      packaging: null,
-                      code: null,
-                      handling_fee_rate: null,
-                      storage_fee_rate: null,
-                      fee_category: null,
-                    });
-                    handleShowModal();
-                  }}
-                  className="btn-bg-black"
-                >
-                  {$lang?.Maintenance?.addNew}
-                </Button>
-              ) : (
-                <></>
-              )}
-            </Col>
-          </Row>
-          <WarehouseTable
-            data={tableData}
-            editRow={editRow}
-            deleteRow={deleteRow}
-            isEdit={is_edit}
-          />
-          <WarehouseRegisterModal
-            isOpen={isModalVisible}
-            onClose={handleHideModal}
-            onSave={handleRegister}
-            initialValues={modalData}
-          />
-          <DeleteModal
-            isOpen={isDeletedModalVisible}
-            onClose={handleHideDeleteModal}
-            onDelete={handleDelete}
-            deletedId={handleId}
-          />
-        </Card>
-      </Content>
-    </div>
+        <Flex justify="flex-end" className="mb-5">
+          {is_edit === 1 ? (
+            <Button
+              onClick={() => {
+                setModalData({
+                  id: null,
+                  name: null,
+                  packaging: null,
+                  code: null,
+                  handling_fee_rate: null,
+                  storage_fee_rate: null,
+                  fee_category: null,
+                });
+                handleShowModal();
+              }}
+              className="btn-bg-black"
+            >
+              {$lang?.Maintenance?.addNew}
+            </Button>
+          ) : (
+            <></>
+          )}
+        </Flex>
+        <WarehouseTable
+          data={tableData}
+          editRow={editRow}
+          deleteRow={deleteRow}
+          isEdit={is_edit}
+        />
+        <WarehouseRegisterModal
+          isOpen={isModalVisible}
+          onClose={handleHideModal}
+          onSave={handleRegister}
+          initialValues={modalData}
+        />
+        <DeleteModal
+          isOpen={isDeletedModalVisible}
+          onClose={handleHideDeleteModal}
+          onDelete={handleDelete}
+          deletedId={handleId}
+        />
+      </Card>
+    </Content>
   );
 };
 export default WarehousePage;

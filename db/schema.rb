@@ -24,12 +24,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
 
   create_table "bill_amounts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "bill_id", null: false, comment: "請求id"
-    t.integer "last_amount", null: false, comment: "前回請求額"
-    t.integer "received_payment_amount", null: false, comment: "入金額"
-    t.integer "handling_fee", null: false, comment: "荷役料"
-    t.integer "storage_fee", null: false, comment: "保管料"
-    t.integer "tax", null: false, comment: "消費税"
-    t.integer "current_amount", null: false, comment: "請求額"
+    t.integer "product_id", null: false, comment: "品番"
+    t.integer "lot_number", null: false, comment: "ロット番号"
+    t.integer "previous_period_carryover", null: false, comment: "前期繰越"
+    t.integer "first_half_instock", null: false, comment: "上期入庫"
+    t.integer "first_half_outstock", null: false, comment: "上期出庫"
+    t.integer "mid_instock", null: false, comment: "中期入庫"
+    t.integer "mid_outstock", null: false, comment: "中期出庫"
+    t.integer "second_half_instock", null: false, comment: "下期入庫"
+    t.integer "second_half_outstock", null: false, comment: "下期出庫"
+    t.integer "product_count", null: false, comment: "総積数"
+    t.float "storage_fee_rate", null: false, comment: "保管単価"
+    t.integer "instock_count", null: false, comment: "入庫数"
+    t.integer "outstock_count", null: false, comment: "出庫数"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_bill_amounts_on_bill_id"
@@ -38,14 +45,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
   create_table "bills", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "shipper_id", null: false, comment: "荷主id"
     t.bigint "warehouse_id", null: false, comment: "倉庫id"
+    t.float "last_amount", null: false, comment: "前回請求額"
+    t.float "deposit_amount", null: false, comment: "入金額"
+    t.float "handling_cost", null: false, comment: "荷役料"
+    t.float "storage_cost", null: false, comment: "保管料"
+    t.float "current_amount", null: false, comment: "今回請求額"
+    t.float "tax", null: false, comment: "消費税"
     t.date "billed_on", null: false, comment: "請求年月日"
     t.integer "closing_date", null: false, comment: "締日"
-    t.date "duration_from", null: false, comment: "対象期間 From"
-    t.date "duration_to", null: false, comment: "対象期間 To"
-    t.date "shipper_from", null: false, comment: "対象荷主 From"
-    t.date "shipper_to", null: false, comment: "対象荷主 To"
-    t.integer "billed", limit: 1, null: false, comment: "請求したかどうか"
-    t.integer "printed", limit: 1, null: false, comment: "請求書を作成したかどうか"
+    t.integer "billed", limit: 1, null: false, comment: "確定フラグ"
+    t.integer "printed", limit: 1, null: false, comment: "出力フラグ"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shipper_id"], name: "index_bills_on_shipper_id"
@@ -90,7 +99,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
     t.string "code", null: false, comment: "荷主コード"
     t.string "post_code", null: false, comment: "郵便番号"
     t.string "main_address", null: false, comment: "住所1"
-    t.string "sub_address", null: false, comment: "住所2"
+    t.string "sub_address", comment: "住所2"
     t.string "tel", null: false, comment: "電話番号"
     t.integer "closing_date", null: false, comment: "締日"
     t.datetime "created_at", null: false

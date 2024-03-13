@@ -73,7 +73,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
           closingDate: item.closing_date,
         };
       });
-      setEditShipperOptions(shippers);
+      setShipperOptions(shippers);
       const shippersWithAll = res.data.map((item) => {
         return {
           value: item.id,

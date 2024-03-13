@@ -132,7 +132,7 @@ export const AppRouter = () => {
             }
           />
           <Route
-            path="/deposit"
+            path="/receive_payment"
             element={
               <PrivateRoute
                 navigations={navigations}

@@ -6,8 +6,7 @@ import {
   Row,
   Col,
   Divider,
-  Pagination,
-  Form,
+  Flex,
   Input,
   Layout,
   Select,
@@ -24,123 +23,28 @@ import { API } from "../utils/helper";
 import {
   warehouseURL,
   shipperURL,
-  billListURL,
+  billAmountURL,
   exportBillOne,
+  billReportURL,
   computeBillURL,
   confirmBillURL,
+  calculateBillURL,
+  BillURL,
 } from "../utils/constants";
 import $lang from "../utils/content/jp.json";
 
 const { RangePicker } = DatePicker;
 
 import { openNotificationWithIcon } from "../components/common/notification";
+import ConfirmModal from "../components/modal/confirm.modal";
+import BillListTable from "../features/bill/list.table";
 
 const { Content } = Layout;
 const BillingProcess = ({ is_edit }) => {
-  const billingProcessColumns = [
-    {
-      title: `${$lang.billing.table.productName}`,
-      key: "product_name",
-      width: "8%",
-      dataIndex: "product_name",
-      align: "center",
-    },
-    {
-      title: `${$lang.billing.table.shipperId}`,
-      key: "shipper_id",
-      width: "8%",
-      dataIndex: "shipper_id",
-      align: "center",
-    },
-    {
-      title: `${$lang.billing.table.shipperName}`,
-      key: "shipper_name",
-      width: "8%",
-      dataIndex: "shipper_name",
-      align: "center",
-    },
-    {
-      title: `${$lang.billing.table.receivedAmount}`,
-      key: "received_payment_amount",
-      width: "10%",
-      dataIndex: "received_payment_amount",
-      align: "center",
-    },
-    {
-      title: `${$lang.billing.table.handlingFee}`,
-      key: "handling_cost",
-      width: "10%",
-      dataIndex: "handling_cost",
-      align: "center",
-    },
-    {
-      title: `${$lang.billing.table.storageFee}`,
-      key: "total_storage_fee",
-      width: "10%",
-      dataIndex: "total_storage_fee",
-      align: "center",
-    },
-    {
-      title: `${$lang.billing.table.invoiceAmount}`,
-      dataIndex: "bill_payment_amount",
-      key: "bill_payment_amount",
-      align: "center",
-    },
-    {
-      title: `${$lang.billing.table.consumptionTax}`,
-      dataIndex: "tax",
-      key: "tax",
-      align: "center",
-    },
-    {
-      title: "",
-      dataIndex: "operation",
-      align: "center",
-      render: (text, record, dataIndex) => (
-        <div className="flex justify-center">
-          <div className="hidden rounded-full"></div>
-          <div className="p-2 rounded-full cursor-pointer text-center">
-            <CustomButton
-              // onClick={() => {
-              //   exportDataAndDownloadPdf(record);
-              // }}
-
-              onClick={() => {
-                openNotificationWithIcon("warning", "warning", "please wait");
-              }}
-              title={$lang.billing.buttons.billingReport}
-              size="small"
-              className="btn-default btn-hover-black"
-              style={{ backgroundColor: "transparent", color: "#000" }}
-              visability={true}
-            />{" "}
-            <CustomButton
-              onClick={() => {
-                openNotificationWithIcon("warning", "warning", "please wait");
-              }}
-              title={$lang.billing.buttons.detail}
-              style={{
-                backgroundColor: "transparent",
-                color: "#000",
-                marginLeft: 10,
-              }}
-              size="small"
-              className="btn-default btn-hover-black"
-              visability={true}
-            />
-          </div>
-          {/* <div className="p-2 rounded-full cursor-pointer items-center text-center"></div> */}
-        </div>
-      ),
-    },
-  ];
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [total, setTotal] = useState(0);
-  const [form] = Form.useForm();
-  const [allData, setAllData] = useState([]);
-  const [showData, setShowData] = useState([]);
-  const [dValue, setDValue] = useState();
+  const [billData, setBillList] = useState([]);
   const [processRangeDates, setProcessRangeDates] = useState([]);
   const [shipperOptions, setShipperOptions] = useState();
   const [warehouseOptions, setWarehouseOptions] = useState([]);
@@ -155,50 +59,18 @@ const BillingProcess = ({ is_edit }) => {
   });
 
   const monthOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  const dateOptions = [20, 28, 29, 30, 31];
 
   const [selectedYear, setSelectedYear] = useState(2024);
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedDay, setSelectedDay] = useState(1);
-  const [shipperFrom, setShipperFrom] = useState("");
-  const [shipperTo, setShipperTo] = useState("");
+  const [dateOptions, setDateOptions] = useState([]);
+  const [isBillData, setIsBillData] = useState(false);
+  const [lastBillDate, setLastBillDate] = useState("");
+  const [isModalVisible, setIsConfirmModalVisible] = useState(false);
 
-  const onChangeDateValue = () => {
-    console.log("log");
-  };
-  const handlePageChange = (page, pageSize) => {
-    setCurrentPage((page - 1) * pageSize);
-    setItemPerPage(pageSize);
-  };
-
-  const handleSelectedDay = (value) => {
-    setSelectedDay(value);
-    if (value === 20) {
-      let fromDate = dayjs(`${selectedYear}/${selectedMonth}/21`);
-      let toDate = dayjs(`${selectedYear}/${selectedMonth}/20`);
-      setProcessRangeDates([fromDate, toDate]);
-      console.log("first", fromDate);
-    } else {
-      let fromDate = dayjs(`${selectedYear}/${selectedMonth}/1`);
-      let toDate = dayjs(`${selectedYear}/${selectedMonth}/${value}`);
-      setProcessRangeDates([fromDate, toDate]);
-      console.log("first", fromDate);
-    }
-  };
-  const handleOnchangeTargetPeriod = (_, dateStrings) => {
-    if (!dateStrings[0] || !dateStrings[1]) {
-      setProcessDate([]);
-      // setPaymentData([]);
-      return;
-    }
-    const fromDate = dayjs(dateStrings[0], "YYYY-MM-DD").add(1, "day").utc();
-    const toDate = dayjs(dateStrings[1], "YYYY-MM-DD").add(1, "day").utc();
-    setProcessRangeDates([fromDate, toDate]);
-  };
-  //  -------Get warehouse names--------
   const getWarehouses = () => {
     API.get(warehouseURL).then((res) => {
-      const warehouses = res.data.data.map((item) => {
+      const warehouses = res.data.map((item) => {
         return {
           value: item.id,
           label: item.name,
@@ -215,10 +87,9 @@ const BillingProcess = ({ is_edit }) => {
     });
   };
 
-  // --------Get shipper data--------
   const getShippers = () => {
     API.get(shipperURL).then((res) => {
-      const shippers = res.data.data.map((item) => {
+      const shippers = res.data.map((item) => {
         return {
           value: item.id,
           label: item.name,
@@ -253,19 +124,15 @@ const BillingProcess = ({ is_edit }) => {
       "-" +
       (selectedDay < 10 ? "0" + selectedDay : selectedDay);
 
-    console.log("bill date", billDate);
     const processDateParam =
       processRangeDates.length > 0
-        ? `&processFromDate=${new Date(processRangeDates[0].toString())
-            .toISOString()
-            .substring(0, 10)}&processToDate=${new Date(
-            processRangeDates[1].toString()
-          )
-            .toISOString()
-            .substring(0, 10)}`
+        ? `&from_date=${processRangeDates[0].format(
+            "YYYY-MM-DD"
+          )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
-    // const urlParam = `${billListURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
-    const urlParam = `${billListURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}&closing_date=${selectedDay}`;
+    // const urlParam = `${billAmountURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
+    const urlParam = `${billAmountURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
+    console.log("get urlParam", urlParam);
 
     API.get(urlParam)
       .then((res) => {
@@ -273,22 +140,129 @@ const BillingProcess = ({ is_edit }) => {
         const data = res.data.data.map((item) => {
           return {
             shipper_name: item.shipper_name,
+            shipper_code: item.shipper_code,
             product_name: item.product_name,
-            handling_cost: item.handling_cost,
-            received_payment_amount: item.received_payment_amount,
-            total_storage_fee: item.total_storage_fee,
-            bill_payment_amount: item.bill_payment_amount,
-            tax: item.tax,
+            handling_cost: item.handling_cost_sum,
+            received_payment_amount: item.received_payments_amount,
+            total_storage_fee: item.storage_fee,
+            bill_payment_amount: item.bill_amount,
+            last_bill_amount: item.last_bill_amount,
+            tax: parseInt(item.bill_amount) * 0.1,
             key: index++,
             shipper_id: item.shipper_id,
           };
         });
-        setAllData(data);
+        setIsBillData(res.data.is_bill_data);
+        setBillList(data);
         setTotal(res.data.count);
+        setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
+        // if (res.data.is_bill_data) {
+        //   openNotificationWithIcon(
+        //     "warning",
+        //     $lang.popConfirmType.warning,
+        //     $lang.messages.empty_data
+        //   );
+        // }
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const getCalculateBillList = () => {
+    if (processRangeDates.length == 0) {
+      openNotificationWithIcon(
+        "warning",
+        $lang.popConfirmType.warning,
+        $lang.messages.empty_during
+      );
+
+      return;
+    }
+
+    const billDate =
+      selectedYear +
+      "-" +
+      (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
+      "-" +
+      (selectedDay < 10 ? "0" + selectedDay : selectedDay);
+
+    const processDateParam =
+      processRangeDates.length > 0
+        ? `&from_date=${processRangeDates[0].format(
+            "YYYY-MM-DD"
+          )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
+        : "";
+    // const urlParam = `${billAmountURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
+    const urlParam = `${calculateBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}&closing_date=${selectedDay}`;
+    console.log("urlParam", urlParam);
+    API.get(urlParam)
+      .then((res) => {
+        let index = 1;
+        const data = res.data.data.map((item) => {
+          return {
+            shipper_name: item.shipper_name,
+            shipper_code: item.shipper_code,
+            product_name: item.product_name,
+            handling_cost: item.handling_cost_sum,
+            received_payment_amount: item.received_payments_amount,
+            total_storage_fee: item.storage_fee,
+            bill_payment_amount: item.bill_amount,
+            last_bill_amount: item.last_bill_amount,
+            tax: parseInt(item.bill_amount) * 0.1,
+            key: index++,
+            shipper_id: item.shipper_id,
+          };
+        });
+
+        // if (res.is_bill_data) {
+        //   openNotificationWithIcon(
+        //     "warning",
+        //     $lang.popConfirmType.warning,
+        //     $lang.messages.empty_data
+        //   );
+        // }
+        setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
+
+        setBillList(data);
+        setTotal(res.data.count);
+        setLastBillDate(res.data.last_bill_date);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage((page - 1) * pageSize);
+    setItemPerPage(pageSize);
+  };
+
+  const handleSelectedDay = (value) => {
+    setSelectedDay(value);
+  };
+
+  const setTargetRangeDates = (y, m, d) => {
+    if (d === 20) {
+      let fromDate = dayjs(`${y}/${m - 1}/21`);
+      let toDate = dayjs(`${y}/${m}/20`);
+      setProcessRangeDates([fromDate, toDate]);
+    } else {
+      let fromDate = dayjs(`${y}/${m}/1`);
+      let toDate = dayjs(`${y}/${m}/${d}`);
+      setProcessRangeDates([fromDate, toDate]);
+    }
+  };
+
+  const handleOnchangeTargetPeriod = (_, dateStrings) => {
+    if (!dateStrings[0] || !dateStrings[1]) {
+      setProcessDate([]);
+      // setPaymentData([]);
+      return;
+    }
+    const fromDate = dayjs(dateStrings[0], "YYYY-MM-DD").add(1, "day").utc();
+    const toDate = dayjs(dateStrings[1], "YYYY-MM-DD").add(1, "day").utc();
+    setProcessRangeDates([fromDate, toDate]);
   };
 
   const computeBill = () => {
@@ -330,37 +304,47 @@ const BillingProcess = ({ is_edit }) => {
       });
   };
 
-  const confirmBill = () => {
+  const createBill = () => {
     const billDate =
       selectedYear +
       "-" +
       (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
       "-" +
       (selectedDay < 10 ? "0" + selectedDay : selectedDay);
+
     const params = {
+      from_date: processRangeDates[0].format("YYYY-MM-DD"),
+      to_date: processRangeDates[1].format("YYYY-MM-DD"),
       billed_on: billDate,
       closing_date: selectedDay,
       warehouse_id: selectedWarehouse.value,
       shipper_id: seletedShipper.value,
+      y: selectedYear,
+      m: selectedMonth,
+      d: selectedDay,
     };
-    API.post(confirmBillURL, {
-      billed_on: billDate,
-      closing_date: selectedDay,
-      warehouse_id: selectedWarehouse.value,
-      shipper_id: seletedShipper.value,
-    })
+
+    console.log("create urlParam", params);
+    API.post(BillURL, params)
       .then((res) => {
         getBillList();
+        openNotificationWithIcon(
+          "success",
+          $lang.popConfirmType.success,
+          $lang.messages.finish_bill
+        );
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
+        openNotificationWithIcon("error", $lang.popConfirmType.error, err);
       });
   };
 
   const onChangeWarehouse = (value, option) => {
     setSelectedWarehouse({ value: value, label: option.label });
   };
+
   const onChangeShipper = (value, option) => {
     setSeletedShipper({ value: value, label: option.label });
   };
@@ -376,6 +360,7 @@ const BillingProcess = ({ is_edit }) => {
     a.setAttribute("download", fileName);
     a.click();
   };
+
   const exportDataAndDownloadPdf = (record) => {
     console.log("record", record);
     API.post(
@@ -401,11 +386,45 @@ const BillingProcess = ({ is_edit }) => {
         console.error(err);
       });
   };
+
+  const exportBillPDF = (record) => {
+    const param = {
+      shipper_id: record.shipper_id,
+      bill_payment_amount: record.bill_payment_amount,
+      handling_cost: record.handling_cost,
+      last_bill_amount: record.last_bill_amount,
+      product_name: record.product_name,
+      received_payment_amount: record.received_payment_amount,
+      tax: record.tax,
+      total_storage_fee: record.total_storage_fee,
+    };
+    API.post(billReportURL, param, {
+      responseType: "arraybuffer",
+    })
+      .then((res) => {
+        downloadPDF(res);
+      })
+      .catch((err) => {});
+  };
+
+  const exportBillAmountPDF = (record) => {
+    console.log("record", record);
+  };
+
+  const handleHideConfirmModal = () => {
+    setIsConfirmModalVisible(false);
+  };
+
   useEffect(() => {
     getWarehouses();
     getShippers();
-    // getBillList();
   }, []);
+
+  useEffect(() => {
+    const nextMonth = new Date(selectedYear, selectedMonth, 1);
+    const endDay = new Date(nextMonth - 1);
+    setDateOptions([20, endDay.getDate()]);
+  }, [selectedYear, selectedMonth]);
 
   return (
     <Content
@@ -429,6 +448,11 @@ const BillingProcess = ({ is_edit }) => {
                 defaultValue={2024}
                 onChange={(e) => {
                   setSelectedYear(e.target.value);
+                  setTargetRangeDates(
+                    e.target.value,
+                    selectedMonth,
+                    selectedDay
+                  );
                 }}
               ></Input>
             </Space>
@@ -442,8 +466,9 @@ const BillingProcess = ({ is_edit }) => {
                   };
                 })}
                 defaultValue={1}
-                onChange={(val) => {
-                  setSelectedMonth(val);
+                onChange={(v) => {
+                  setSelectedMonth(v);
+                  setTargetRangeDates(selectedYear, v, selectedDay);
                 }}
                 style={{ width: 80 }}
               />
@@ -457,7 +482,10 @@ const BillingProcess = ({ is_edit }) => {
                     label: item,
                   };
                 })}
-                onChange={handleSelectedDay}
+                onChange={(v) => {
+                  handleSelectedDay(v);
+                  setTargetRangeDates(selectedYear, selectedMonth, v);
+                }}
                 style={{ width: 80 }}
               />
             </Space>
@@ -484,40 +512,6 @@ const BillingProcess = ({ is_edit }) => {
           <Space direction="horizontal">
             <label>{$lang.billing.targetShipper}:</label>
             <Space.Compact block>
-              {/* <Input
-                style={{
-                  width: 100,
-                  textAlign: "center",
-                }}
-                placeholder=""
-                value={shipperFrom}
-                onChange={(e) => {
-                  setShipperFrom(e.target.value);
-                }}
-              />
-              <Input
-                className="site-input-split"
-                style={{
-                  width: 30,
-                  borderLeft: 0,
-                  borderRight: 0,
-                  pointerEvents: "none",
-                }}
-                placeholder="~"
-                disabled
-              />
-              <Input
-                className="site-input-right"
-                style={{
-                  width: 100,
-                  textAlign: "center",
-                }}
-                placeholder=""
-                value={shipperTo}
-                onChange={(e) => {
-                  setShipperTo(e.target.value);
-                }}
-              /> */}
               <Select
                 style={{ width: 300 }}
                 onChange={onChangeShipper}
@@ -542,62 +536,65 @@ const BillingProcess = ({ is_edit }) => {
           </Space>
         </Row>
         <Divider />
-        <Row>
-          <Space align="center">
-            {" "}
+        <Flex justify="item-start">
+          {" "}
+          <Space>
             <Button
               className="btn-bg-black"
               style={{ marginLeft: 60 }}
-              onClick={computeBill}
+              onClick={getCalculateBillList}
             >
               {$lang.billing.buttons.billingCalculation}
             </Button>
-            <Button className="btn-bg-black ml-1" onClick={getBillList}>
-              {$lang.billing.buttons.billingList}
-            </Button>
           </Space>
-        </Row>
+          <Button className="btn-bg-black ml-1" onClick={getBillList}>
+            {$lang.billing.buttons.billingList}
+          </Button>
+        </Flex>
       </Card>
-      <Card>
-        <Row>
-          <Col span={12}>
-            <div>{$lang.billing.new}</div>
-          </Col>
-          <Col span={12}>
+      <Card className="mb-5">
+        <Flex vertical>
+          <div>{$lang.billing.new}</div>
+          <Flex justify="space-between" className="mb-5 mt-5">
             {is_edit === 1 ? (
-              <Space className="" style={{ float: "right" }}>
-                <Button className="btn-bg-black">
-                  {$lang.buttons.billingListOutput}
-                </Button>
-                <Button className="btn-bg-black" onClick={confirmBill}>
+              <>
+                <Space className="" style={{ float: "right" }}>
+                  <Button className="btn-bg-black">
+                    {$lang.buttons.billingListOutput}
+                  </Button>
+                  {$lang.processDate} :{lastBillDate}
+                </Space>
+                <Button
+                  className="btn-bg-black"
+                  onClick={setIsConfirmModalVisible}
+                >
                   {$lang.buttons.billingConfirmed}
                 </Button>
-              </Space>
+              </>
             ) : (
               <></>
             )}
-          </Col>
-        </Row>
-        <Row className="my-2">
-          {/* <CTable
-            rowKey={(node) => node.key}
-            dataSource={allData}
-            columns={billingProcessColumns}
-          /> */}
-          <div className="flex flex-col w-full">
-            <div className="flex justify-center w-full bg-base-200 rounded-md mt-5">
-              <Pagination
-                current={currentPage}
-                pageSize={itemsPerPage}
-                total={total}
-                onChange={handlePageChange}
-                pageSizeOptions={[10, 20, 50, 100]}
-                showSizeChanger
-                className="p-1"
-              />
-            </div>
-          </div>{" "}
-        </Row>
+          </Flex>
+        </Flex>
+        <ConfirmModal
+          isOpen={isModalVisible}
+          onConfirm={() => {
+            handleHideConfirmModal();
+            createBill();
+          }}
+          onClose={handleHideConfirmModal}
+          message={$lang.messages.confirm_bill}
+        />
+        <BillListTable
+          exportBillPDF={exportBillPDF}
+          exportBillAmountPDF={exportBillAmountPDF}
+          dataSource={billData}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          total={total}
+          onChange={handlePageChange}
+          isEdit={is_edit}
+        />
       </Card>
     </Content>
   );

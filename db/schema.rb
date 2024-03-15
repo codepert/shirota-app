@@ -25,18 +25,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
   create_table "bill_amounts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "bill_id", null: false, comment: "請求id"
     t.integer "product_id", null: false, comment: "品番"
-    t.integer "lot_number", null: false, comment: "ロット番号"
-    t.integer "previous_period_carryover", null: false, comment: "前期繰越"
-    t.integer "first_half_instock", null: false, comment: "上期入庫"
-    t.integer "first_half_outstock", null: false, comment: "上期出庫"
-    t.integer "mid_instock", null: false, comment: "中期入庫"
-    t.integer "mid_outstock", null: false, comment: "中期出庫"
-    t.integer "second_half_instock", null: false, comment: "下期入庫"
-    t.integer "second_half_outstock", null: false, comment: "下期出庫"
-    t.integer "product_count", null: false, comment: "総積数"
-    t.float "storage_fee_rate", null: false, comment: "保管単価"
-    t.integer "instock_count", null: false, comment: "入庫数"
-    t.integer "outstock_count", null: false, comment: "出庫数"
+    t.string "lot_number", null: false, comment: "lot number"
+    t.integer "previous_period_carryover", default: 0, null: false, comment: "前期繰起"
+    t.integer "first_half_instock_amount", default: 0, null: false, comment: "上期入庫"
+    t.integer "first_half_outstock_amount", default: 0, null: false, comment: "上期出庫"
+    t.integer "mid_instock_amount", default: 0, null: false, comment: "中期入庫"
+    t.integer "mid_outstock_amount", default: 0, null: false, comment: "中期出庫"
+    t.integer "second_half_instock_amount", default: 0, null: false, comment: "下期入庫"
+    t.integer "second_half_outstock_amount", default: 0, null: false, comment: "下期出庫"
+    t.integer "current_period_balance", default: 0, null: false, comment: "当期残高"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_bill_amounts_on_bill_id"
@@ -51,10 +48,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
     t.float "storage_cost", null: false, comment: "保管料"
     t.float "current_amount", null: false, comment: "今回請求額"
     t.float "tax", null: false, comment: "消費税"
+    t.date "duration_from", null: false
+    t.date "duration_to", null: false
     t.date "billed_on", null: false, comment: "請求年月日"
     t.integer "closing_date", null: false, comment: "締日"
-    t.integer "billed", limit: 1, null: false, comment: "確定フラグ"
-    t.integer "printed", limit: 1, null: false, comment: "出力フラグ"
+    t.integer "billed", limit: 1, default: 1, null: false, comment: "確定フラグ"
+    t.integer "printed", limit: 1, comment: "出力フラグ"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shipper_id"], name: "index_bills_on_shipper_id"

@@ -118,3 +118,9 @@ export const getDateStr = (date, dateFormat) => {
   utcDate.setMinutes(utcDate.getMinutes() - utcDate.getTimezoneOffset());
   return moment(utcDate).format(dateFormat);
 };
+
+export function formatNumberManualInsertion(x) {
+  var parts = x.toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return parts.join(",");
+}

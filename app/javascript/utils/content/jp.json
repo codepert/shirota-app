@@ -254,7 +254,7 @@
     "input_in_stock_date": "入庫日を入力してください。",
     "input_out_stock_date": "出庫日を入力してください。",
     "input_out_amount": "出庫数を入力してください。",
-    "success": "成功しました",
+    "success": "成功。",
     "confirm": "確認",
     "confirm_delete": "本当に初期化してもよろしいですか。",
     "empty_data_to_init": "初期化するデータはありません。",
@@ -272,7 +272,10 @@
     "confirm_instock": "本当に入庫しますか？",
     "confirm_outstock": "本当に出庫しますか？",
     "empty_out_stock_data": "出庫するデータがありません。",
-    "empty_in_stock_data": "入庫するデータがありません。"
+    "empty_in_stock_data": "入庫するデータがありません。",
+    "confirm_bill": "請求を確定しますか？",
+    "empty_data": "データはありません。",
+    "finish_bill": "請求が確定しました。"
   },
   "popConfirmType": {
     "success": "成功",
@@ -333,5 +336,12 @@
   "receivePaymentProcessingDate": "処理日時",
   "receivePaymentRegister": "入金登録",
   "shipperCode": "荷主コード",
-  "user": "ユーザー"
+  "user": "ユーザー",
+  "shipperId": "荷主ID",
+  "handlingFee": "荷役料",
+  "invoiceAmount": "請求額",
+  "consumptionTax": "消費税",
+  "billingReport": "請求書",
+  "billingReportDetail": "明細",
+  "processDate": "処理日時"
 }

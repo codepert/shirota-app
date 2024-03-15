@@ -249,7 +249,7 @@ User.create([{
   login_id: 'systemadmin',
   user_authority_id: 3,
   email: 'warehouse@test.com',
-  password: 'admin@pssW0rd!'
+  password: 'p@ssW0rd!'
 }])
 
 

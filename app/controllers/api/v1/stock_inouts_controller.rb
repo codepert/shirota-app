@@ -122,8 +122,8 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
   private
   def calculate_adjusted_total_amount(stock, stock_inout_params)
     existing_total_amount = stock[0].total_amount
-    category = stock_inout_params[:category]
-    new_total_amount = category == 0 ? (existing_total_amount.to_i + stock_inout_params[:amount].to_i) : (existing_total_amount.to_i - stock_inout_params[:amount].to_i)
+    category              = stock_inout_params[:category]
+    new_total_amount      = category == 0 ? (existing_total_amount.to_i + stock_inout_params[:amount].to_i) : (existing_total_amount.to_i - stock_inout_params[:amount].to_i)
     new_total_amount
   end
   def request_stock_in_params

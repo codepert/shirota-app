@@ -26,14 +26,18 @@ Rails.application.routes.draw do
       resources :products
       get "products_by" => "products#show_by"
       get "product_in_stock" => "products#show_with_stock"
-      # resources :stocks
+      resources :stocks
+      get "prepare_bill_amounts" => "stocks#prepare_bill_amounts"
+      get "calculate_bill" => "stocks#calculate_bill"
       resources :stock_inouts
       post "stock_in" => "stock_inouts#stock_in"
       post "stock_in_csv_export" => "stock_inouts#stock_in_csv_export"
       post "stock_out" => "stock_inouts#stock_out"
       resources :received_payments
       get "received_payments_csv_export" => "received_payments#csv_export"
-      # resources :bills
+      resources :bills
+      post "export_bill_report" => "bills#export_bill_report"
+      
       # resources :bill_amounts
     end
   end

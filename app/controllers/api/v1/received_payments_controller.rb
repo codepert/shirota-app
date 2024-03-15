@@ -3,10 +3,10 @@ class Api::V1::ReceivedPaymentsController < Api::V1::BaseController
 
   def index
     instock_from_date = Date.strptime(params[:instockFromDate]) if params[:instockFromDate].present?
-    instock_to_date = Date.strptime(params[:instockToDate]) if params[:instockToDate].present?
+    instock_to_date   = Date.strptime(params[:instockToDate]) if params[:instockToDate].present?
     process_from_date = Date.strptime("#{params[:processFromDate]} 00:00:00") if params[:processFromDate].present?
-    process_to_date = Date.strptime("#{params[:processToDate]} 00:00:00") if params[:processToDate].present?
-    shipper = params[:shipper].presence&.to_i
+    process_to_date   = Date.strptime("#{params[:processToDate]} 00:00:00") if params[:processToDate].present?
+    shipper           = params[:shipper].presence&.to_i
     
     search = ReceivedPayment.ransack(
       received_on_gteq:     instock_from_date,
@@ -60,10 +60,10 @@ class Api::V1::ReceivedPaymentsController < Api::V1::BaseController
     limit = params[:limit]
     
     instock_from_date = params[:instockFromDate].present? ? Date.strptime(params[:instockFromDate]) : nil
-    instock_to_date = params[:instockToDate].present? ? Date.strptime(params[:instockToDate]) : nil
+    instock_to_date   = params[:instockToDate].present? ? Date.strptime(params[:instockToDate]) : nil
 
     process_from_date = params[:processFromDate].present? ? Date.strptime("#{params[:processFromDate]} 00:00:00") : nil
-    process_to_date = params[:processToDate].present? ? Date.strptime("#{params[:processToDate]} 00:00:00") : nil
+    process_to_date   = params[:processToDate].present? ? Date.strptime("#{params[:processToDate]} 00:00:00") : nil
 
     shipper = params[:shipper].presence&.to_i
 

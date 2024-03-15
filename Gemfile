@@ -86,5 +86,12 @@ gem 'ransack'
 # pagenation
 gem 'kaminari'
 
-
 gem "tailwindcss-rails", "~> 2.3"
+
+# for exporting pdf
+gem "grover"
+
+#for exporting csv
+gem "csv"
+
+gem "nokogiri"

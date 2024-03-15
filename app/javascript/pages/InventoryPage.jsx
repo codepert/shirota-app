@@ -66,7 +66,6 @@ const InventoryPage = ({ is_edit }) => {
     {
       title: "No",
       dataIndex: "key",
-      align: "center",
       width: "5%",
     },
     {
@@ -74,31 +73,26 @@ const InventoryPage = ({ is_edit }) => {
       key: "product_name",
       width: "20%",
       dataIndex: "product_name",
-      align: "center",
     },
     {
       title: `${$lang.packaging}`,
       dataIndex: "packaging",
       key: "packaging",
-      align: "center",
     },
     {
       title: `${$lang.lotoNumber}`,
       dataIndex: "lot_number",
       key: "lot_number",
-      align: "center",
     },
     {
       title: `${$lang.amount}`,
       dataIndex: "amount",
       key: "amount",
-      align: "center",
     },
     {
       title: `${$lang.inStockDate}`,
       dataIndex: "inout_on",
       key: "amount",
-      align: "center",
       render: (val) => (val != undefined ? val.replace(/\-/g, "/") : ""),
     },
   ];

@@ -71,4 +71,49 @@ class StockInout < ApplicationRecord
 
      ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, shipper_id, warehouse_id, out_date]))
   }
+  scope :prepare_bill_amounts, -> (from_date, to_date, shipper_id, warehouse_id) {
+    query = <<-SQL
+        SELECT product_id, lot_number,
+            SUM(CASE 
+                WHEN category = 0 AND DAY(inout_on) >= 1 AND DAY(inout_on) <= 10 
+                THEN amount 
+                ELSE NULL 
+            END) AS first_half_instock_amount,
+            SUM(CASE 
+                WHEN category = 0 AND DAY(inout_on) >= 11 AND DAY(inout_on) <= 20 
+                THEN amount 
+                ELSE NULL 
+            END) AS mid_instock_amount,
+            SUM(CASE 
+                WHEN category = 0 AND DAY(inout_on) >= 21 AND DAY(inout_on) <= 31 
+                THEN amount 
+                ELSE NULL 
+            END) AS second_half_instock_amount,
+
+            SUM(CASE 
+                WHEN category = 1 AND DAY(inout_on) >= 1 AND DAY(inout_on) <= 10 
+                THEN amount 
+                ELSE NULL 
+            END) AS first_half_outstock_amount,
+            SUM(CASE 
+                WHEN category = 1 AND DAY(inout_on) >= 11 AND DAY(inout_on) <= 20 
+                THEN amount 
+                ELSE NULL 
+            END) AS mid_outstock_amount,
+            SUM(CASE 
+                WHEN category = 1 AND DAY(inout_on) >= 21 AND DAY(inout_on) <= 31 
+                THEN amount 
+                ELSE NULL 
+            END) AS second_half_outstock_amount
+            FROM stock_inouts
+            JOIN stocks ON stocks.id = stock_inouts.stock_id
+            WHERE inout_on BETWEEN '#{from_date}' and '#{to_date}' 
+            AND warehouse_id = #{warehouse_id}
+            AND shipper_id= #{shipper_id}
+            GROUP BY product_id, lot_number
+    SQL
+
+    find_by_sql(query)
+
+  }
 end

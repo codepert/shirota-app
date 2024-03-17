@@ -1,4 +1,6 @@
 class Api::V1::ShippersController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   def index
     render json: ShipperSerializer.new(Shipper.all)
   end

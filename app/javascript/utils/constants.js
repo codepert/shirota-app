@@ -1,4 +1,4 @@
-const baseUrl = "http://127.0.0.1:3000/";
+const baseUrl = "http://127.0.0.1:3001/";
 // const baseUrl = "http://160.16.75.49/";
 
 export const loginURL = baseUrl + "login";
@@ -58,6 +58,7 @@ export const calculateBillURL = "api/v1/calculate_bill";
 export const exportReceivePaymentCSVDataUrl =
   baseUrl + "api/v1/received_payments_csv_export";
 export const billReportURL = "api/v1/export_bill_report";
+export const billAmountReportURL = "api/v1/export_bill_amount_report";
 
 export const BillURL = "api/v1/bills";
 //unit_price urls

@@ -1,4 +1,6 @@
 class Api::V1::ProductsController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   require 'grover'
   require 'csv'
   

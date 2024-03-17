@@ -1,4 +1,6 @@
 class Api::V1::WarehousesController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   def index
     render json: WarehouseSerializer.new(Warehouse.all).serialize
   end

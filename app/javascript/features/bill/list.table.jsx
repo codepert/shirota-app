@@ -1,8 +1,8 @@
 import React from "react";
+import moment from "moment";
 import { Flex, Table, Pagination } from "antd";
-import CustomButton from "../../components/common/CustomButton";
+import CustomButton from "../../components/common/CustomButton.js";
 import $lang from "../../utils/content/jp.json";
-import { formatNumberManualInsertion } from "../../utils/helper.js";
 
 const BillListTable = ({
   exportBillPDF,
@@ -16,57 +16,40 @@ const BillListTable = ({
 }) => {
   const columns = [
     {
-      title: `${$lang.productName}`,
-      key: "product_name",
-      width: "15%",
-      dataIndex: "product_name",
+      title: $lang.ym,
+      key: "billed_on",
+      width: "20%",
+      dataIndex: "billed_on",
+      align: "center",
+      render: (val) =>
+        val != undefined ? val.replace(/\-/g, "/").substring(0, 7) : "",
     },
     {
-      title: `${$lang.shipperCode}`,
-      key: "shipper_code",
-      width: "9%",
-      dataIndex: "shipper_code",
+      title: $lang.count,
+      dataIndex: "cnt",
+      key: "cnt",
+      align: "center",
     },
     {
-      title: `${$lang.shipperName}`,
-      key: "shipper_name",
-      width: "30%",
+      title: $lang.duration,
+      dataIndex: "duration",
+      key: "duration",
+      align: "center",
+      render: (val) => (val != undefined ? val.replace(/\-/g, "/") : ""),
+    },
+    {
+      title: $lang.warehouseName,
       dataIndex: "shipper_name",
+      align: "center",
+      key: "shipper_name",
     },
     {
-      title: `${$lang.receivePaymentAmount}`,
-      key: "received_payment_amount",
-      width: "8%",
-      dataIndex: "received_payment_amount",
-      render: (val) => formatNumberManualInsertion(val),
-    },
-    {
-      title: `${$lang.handlingFee}`,
-      key: "handling_cost",
-      width: "8%",
-      dataIndex: "handling_cost",
-      render: (val) => formatNumberManualInsertion(val),
-    },
-    {
-      title: `${$lang.storageFee}`,
-      key: "total_storage_fee",
-      width: "8%",
-      dataIndex: "total_storage_fee",
-      render: (val) => formatNumberManualInsertion(val),
-    },
-    {
-      title: `${$lang.invoiceAmount}`,
-      width: "8%",
-      dataIndex: "bill_payment_amount",
-      key: "bill_payment_amount",
-      render: (val) => formatNumberManualInsertion(val),
-    },
-    {
-      title: `${$lang.consumptionTax}`,
-      width: "8%",
-      dataIndex: "tax",
-      key: "tax",
-      render: (val) => formatNumberManualInsertion(val),
+      title: $lang.precessDate,
+      dataIndex: "billed_on",
+      align: "center",
+      key: "billed_on",
+      render: (val) =>
+        val != undefined ? moment(val).format("YYYY/MM/DD HH:mm:ss") : "",
     },
     isEdit === 1 ? (
       {
@@ -74,33 +57,38 @@ const BillListTable = ({
         dataIndex: "operation",
         render: (text, record, dataIndex) => {
           return (
-            <Flex justify="center">
-              <CustomButton
-                onClick={() => {
-                  exportBillPDF(record);
-                }}
-                title={$lang.billingReport}
-                size="small"
-                className="btn-default btn-hover-black"
-                style={{ backgroundColor: "transparent", color: "#000" }}
-                visability={true}
-              />{" "}
-              <CustomButton
-                onClick={() => {
-                  exportBillAmountPDF(record);
-                }}
-                title={$lang.billingReportDetail}
-                style={{ backgroundColor: "transparent", color: "#000" }}
-                size="small"
-                className="btn-default btn-hover-black"
-                visability={true}
-              />
-            </Flex>
-            // </div>
+            <div className="flex justify-center">
+              <div className="hidden rounded-full"></div>
+              <div className="p-2 rounded-full cursor-pointer text-center">
+                <CustomButton
+                  onClick={() => {
+                    exportBillPDF(record.id);
+                  }}
+                  title={$lang.billingReport}
+                  size="small"
+                  className="btn-default btn-hover-black"
+                  style={{ backgroundColor: "transparent", color: "#000" }}
+                  visability={true}
+                />{" "}
+                <CustomButton
+                  onClick={() => {
+                    exportBillAmountPDF(record.id);
+                  }}
+                  title={$lang.detail}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "#000",
+                    marginLeft: 10,
+                  }}
+                  size="small"
+                  className="btn-default btn-hover-black"
+                  visability={true}
+                />
+              </div>
+            </div>
           );
         },
         align: "center",
-        width: "25%",
       }
     ) : (
       <div></div>

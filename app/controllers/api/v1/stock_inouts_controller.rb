@@ -1,4 +1,6 @@
 class Api::V1::StockInoutsController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   require 'csv'
   require 'grover'
   require 'nokogiri'

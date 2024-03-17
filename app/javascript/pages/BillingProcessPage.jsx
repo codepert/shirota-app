@@ -29,6 +29,7 @@ import {
   computeBillURL,
   confirmBillURL,
   calculateBillURL,
+  billAmountReportURL,
   BillURL,
 } from "../utils/constants";
 import $lang from "../utils/content/jp.json";
@@ -37,10 +38,10 @@ const { RangePicker } = DatePicker;
 
 import { openNotificationWithIcon } from "../components/common/notification";
 import ConfirmModal from "../components/modal/confirm.modal";
-import BillListTable from "../features/bill/list.table";
+import BillProcessTable from "../features/bill/process.table";
 
 const { Content } = Layout;
-const BillingProcess = ({ is_edit }) => {
+const BillingProcessPage = ({ is_edit }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [total, setTotal] = useState(0);
@@ -215,15 +216,7 @@ const BillingProcess = ({ is_edit }) => {
           };
         });
 
-        // if (res.is_bill_data) {
-        //   openNotificationWithIcon(
-        //     "warning",
-        //     $lang.popConfirmType.warning,
-        //     $lang.messages.empty_data
-        //   );
-        // }
         setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
-
         setBillList(data);
         setTotal(res.data.count);
         setLastBillDate(res.data.last_bill_date);
@@ -408,7 +401,26 @@ const BillingProcess = ({ is_edit }) => {
   };
 
   const exportBillAmountPDF = (record) => {
-    console.log("record", record);
+    const billDate =
+      selectedYear +
+      "-" +
+      (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
+      "-" +
+      (selectedDay < 10 ? "0" + selectedDay : selectedDay);
+
+    API.post(
+      billAmountReportURL,
+      { bill_date: billDate },
+      {
+        responseType: "arraybuffer",
+      }
+    )
+      .then((res) => {
+        downloadPDF(res);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
   };
 
   const handleHideConfirmModal = () => {
@@ -585,7 +597,7 @@ const BillingProcess = ({ is_edit }) => {
           onClose={handleHideConfirmModal}
           message={$lang.messages.confirm_bill}
         />
-        <BillListTable
+        <BillProcessTable
           exportBillPDF={exportBillPDF}
           exportBillAmountPDF={exportBillAmountPDF}
           dataSource={billData}
@@ -600,4 +612,4 @@ const BillingProcess = ({ is_edit }) => {
   );
 };
 
-export default BillingProcess;
+export default BillingProcessPage;

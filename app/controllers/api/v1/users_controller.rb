@@ -1,4 +1,6 @@
 class Api::V1::UsersController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   def index
     render json: User.with_authority_info.to_json
   end

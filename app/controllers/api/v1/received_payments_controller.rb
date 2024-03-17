@@ -1,4 +1,6 @@
 class Api::V1::ReceivedPaymentsController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   set_pagination_callback :receive_payments, [:index]
 
   def index

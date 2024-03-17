@@ -140,9 +140,7 @@ const NavbarSection = () => {
                 float: "right",
               }}
             >
-              <Link to="/signin" style={{ color: "#000" }}>
-                {$lang.buttons.logout}
-              </Link>
+              {$lang.buttons.logout}
             </Button>
           </div>
         </div>

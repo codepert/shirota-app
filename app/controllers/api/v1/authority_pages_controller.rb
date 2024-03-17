@@ -1,4 +1,6 @@
 class Api::V1::AuthorityPagesController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   def index
     render json: AuthorityPageSerializer.new(AuthorityPage.reference_user_page)
   end

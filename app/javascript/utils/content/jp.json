@@ -343,5 +343,12 @@
   "consumptionTax": "消費税",
   "billingReport": "請求書",
   "billingReportDetail": "明細",
-  "processDate": "処理日時"
+  "processDate": "処理日時",
+
+  "ym": "年/月",
+  "count": "件数",
+  "duration": "対象期間",
+  "warehouse": "対象倉庫",
+  "precessDate": "処理日時",
+  "detail": "明細"
 }

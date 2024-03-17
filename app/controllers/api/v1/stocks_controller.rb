@@ -1,4 +1,6 @@
 class Api::V1::StocksController < Api::V1::BaseController
+  before_action :authenticate_user!
+
   def prepare_bill_amounts
     from_date =     params[:from_date]
     to_date =       params[:to_date]

@@ -93,7 +93,7 @@ const ReceivedPaymentRegisterModal = ({
           rules={[{ required: true, message: $lang.tableCommon.warning }]}
         >
           <DatePicker
-            style={{ marginLeft: 15, width: 200 }}
+            style={{ width: 200 }}
             placeholder={$lang.depositDate}
             format={"YYYY/MM/DD"}
             // value={
@@ -118,7 +118,7 @@ const ReceivedPaymentRegisterModal = ({
           label={$lang.receivePaymentProcessingDate}
         >
           <DatePicker
-            style={{ marginLeft: 15, width: 200 }}
+            style={{ width: 200 }}
             placeholder={$lang.receivePaymentProcessingDate}
             format={"YYYY/MM/DD"}
             // value={

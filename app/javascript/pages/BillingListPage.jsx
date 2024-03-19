@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import $lang from "../utils/content/jp.json";
-import moment from "moment";
+import dayjs from "dayjs";
 
 import { Link } from "react-router-dom";
 import { billURL } from "../utils/constants";
@@ -14,16 +14,18 @@ import {
   Select,
   Flex,
   Input,
+  DatePicker,
 } from "antd";
 import { API } from "../utils/helper";
 import CustomButton from "../components/common/CustomButton";
 import { openNotificationWithIcon } from "../components/common/notification";
 import BillListTable from "../features/bill/list.table";
 const { Content } = Layout;
+const currentDate = dayjs().tz("Asia/Tokyo");
 
 const BillingListPage = ({ is_edit }) => {
-  const [ym, setYM] = useState("2024/01");
-  const [day, setDay] = useState(1);
+  const [ym, setYM] = useState(dayjs(currentDate, "YYYY/MM"));
+  const [day, setDay] = useState(20);
 
   const [form] = Form.useForm();
   const [billData, setBillData] = useState([]);
@@ -32,22 +34,41 @@ const BillingListPage = ({ is_edit }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [total, setTotal] = useState(0);
+
   const getList = () => {
-    const yearMonth = ym.replace(/\//g, "-");
-    const fromDate = yearMonth + "-01";
-    const toDate = yearMonth + "-" + day;
+    const yearMonth = ym.format("YYYY-MM");
+    let fromDate = "";
+    let toDate = "";
+    if (day === 20) {
+      const d = new Date(yearMonth);
+      let m = d.getMonth() + 1;
+      if (m == 1) {
+        const y = d.getFullYear() - 1;
+        fromDate = y + "-12" + "-21";
+        toDate = yearMonth + "-20";
+      } else {
+        m = m - 1;
+        if (m < 10) m = "0" + m;
+        fromDate = d.getFullYear() + "-" + m + "-21";
+        toDate = yearMonth + "-20";
+      }
+    } else {
+      fromDate = yearMonth + "-01";
+      toDate = yearMonth + "-" + day;
+    }
+
     const url =
       billURL +
-      `?ym=${yearMonth}&closing_date=${day}&page=${currentPage}&limit=${itemsPerPage}&from_date=${fromDate}&to_date=${toDate}`;
+      `?&page=${currentPage}&limit=${itemsPerPage}&from_date=${fromDate}&to_date=${toDate}`;
 
     API.get(url)
       .then((res) => {
         const data = res.data.map((item, i) => {
           return {
-            billed_on: item.billed_on,
-            cnt: item.cnt,
-            duration: item.duration,
-            shipper_name: item.shipper_name,
+            billed_on: item.created_at,
+            cnt: item.processing_cnt,
+            duration: item.duration_from + " ~ " + item.duration_to,
+            shipper_name: item.shipper.name,
             updated_at: item.updated_at,
             key: i,
           };
@@ -112,15 +133,16 @@ const BillingListPage = ({ is_edit }) => {
         className="py-2 my-2"
         bordered={false}
       >
-        <Flex justify="space-between">
+        <Flex justify="space-between" style={{ marginBottom: 10 }}>
           <Flex justify="item-start">
             <Space>
               <label>{$lang.billing.YM}:</label>
-              <Input
-                defaultValue={2024}
+              <DatePicker
+                format={"YYYY/MM"}
                 value={ym}
-                onChange={(e) => {
-                  setYM(e.target.value);
+                picker="month"
+                onChange={(v) => {
+                  setYM(v);
                 }}
               />
             </Space>
@@ -151,7 +173,7 @@ const BillingListPage = ({ is_edit }) => {
             </Space>
           </Flex>
           <Flex>
-            <Col span={12}>
+            <Col>
               <Link to="/bill_process">
                 <Button style={{ float: "right" }}>
                   {$lang.billing.addNew}

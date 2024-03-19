@@ -12,12 +12,14 @@ class Api::V1::BillsController < Api::V1::BaseController
     warehouse_id = params[:warehouse_id]
     shipper_id = params[:shipper_id]
 
-    search = Bill.ransack(
-      shipper_id:     shipper_id,
-      warehouse_id:   warehouse_id,
-      duration_from:  from_date,
-      duration_to:    to_date
-    )
+
+      search = Bill.ransack(
+        shipper_id:     shipper_id,
+        warehouse_id:   warehouse_id,
+        duration_from:  from_date,
+        duration_to:    to_date
+      )
+    
     @bill = search.result.paginate(pagination_params)
 
     render json: BillsSerializer.new(@bill)
@@ -39,6 +41,13 @@ class Api::V1::BillsController < Api::V1::BaseController
 
     prepare_bill = Stock.get_uncalc_bills(from_date, to_date, shipper_id, warehouse_id)
     ActiveRecord::Base.transaction do
+      
+      if closing_date == '20'
+        prepare_bill_amounts    = Stock.prepare_bill_amounts_20(from_date, to_date, shipper_id, warehouse_id)
+      else
+        prepare_bill_amounts    = Stock.prepare_bill_amounts(from_date, to_date, shipper_id, warehouse_id)
+      end
+
       current_bill_amount = prepare_bill.first.current_bill_amount == nil ? 0 : prepare_bill.first.current_bill_amount
         bill = Bill.create(
           shipper_id: shipper_id,
@@ -53,19 +62,11 @@ class Api::V1::BillsController < Api::V1::BaseController
           duration_to: to_date,
           billed_on: billed_on,
           closing_date: closing_date,
-          billed: 1
+          billed: 1,
+          processing_cnt: prepare_bill_amounts.length
         )
-      if closing_date == '20'
-        puts "=============2000000000000000"
-        prepare_bill_amounts    = Stock.prepare_bill_amounts_20(from_date, to_date, shipper_id, warehouse_id)
-      else
-        puts "=============3111111111111110"
 
-        prepare_bill_amounts    = Stock.prepare_bill_amounts(from_date, to_date, shipper_id, warehouse_id)
-      end
       prepare_bill_amounts.map do |record|
-        puts "=================="
-        puts "pass"
         BillAmount.create(
           bill_id:                      bill['id'] ,
           product_id:                   record.product_id,                    

@@ -146,7 +146,7 @@ const PemissionPage = () => {
               <Button
                 onClick={saveAuthData}
                 className="btn-bg-black"
-                style={{ float: "right" }}
+                style={{ float: "right", marginBottom: 10 }}
               >
                 {messages.buttons.save}
               </Button>

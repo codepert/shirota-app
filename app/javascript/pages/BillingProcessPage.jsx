@@ -26,9 +26,6 @@ import {
   unCalcBillURL,
   exportBillOne,
   billReportURL,
-  computeBillURL,
-  confirmBillURL,
-  calculateBillURL,
   billAmountReportURL,
   billURL,
 } from "../utils/constants";
@@ -131,7 +128,7 @@ const BillingProcessPage = ({ is_edit }) => {
             "YYYY-MM-DD"
           )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
-    // const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
+
     const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
     console.log("get urlParam", urlParam);
 
@@ -181,13 +178,6 @@ const BillingProcessPage = ({ is_edit }) => {
       return;
     }
 
-    // const billDate =
-    //   selectedYear +
-    //   "-" +
-    //   (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
-    //   "-" +
-    //   (selectedDay < 10 ? "0" + selectedDay : selectedDay);
-
     const processDateParam =
       processRangeDates.length > 0
         ? `&from_date=${processRangeDates[0].format(
@@ -202,6 +192,7 @@ const BillingProcessPage = ({ is_edit }) => {
         let index = 1;
         const data = res.data.map((item) => {
           return {
+            id: item.id,
             shipper_name: item.shipper ? item.shipper.name : shipper_name,
             shipper_id: item.shipper ? item.shipper.id : item.shipper_id,
             shipper_code: item.shipper ? item.shipper.code : item.shipper_code,
@@ -255,45 +246,6 @@ const BillingProcessPage = ({ is_edit }) => {
     const fromDate = dayjs(dateStrings[0], "YYYY-MM-DD").add(1, "day").utc();
     const toDate = dayjs(dateStrings[1], "YYYY-MM-DD").add(1, "day").utc();
     setProcessRangeDates([fromDate, toDate]);
-  };
-
-  const computeBill = () => {
-    const billDate =
-      selectedYear +
-      "-" +
-      (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
-      "-" +
-      (selectedDay < 10 ? "0" + selectedDay : selectedDay);
-
-    const processDateFrom =
-      processRangeDates.length > 0
-        ? new Date(processRangeDates[0].toString())
-            .toISOString()
-            .substring(0, 10)
-        : "";
-
-    const processDateTo =
-      processRangeDates.length > 0
-        ? new Date(processRangeDates[1].toString())
-            .toISOString()
-            .substring(0, 10)
-        : "";
-    const params = {
-      billed_on: billDate,
-      closing_date: selectedDay,
-      duration_from: processDateFrom,
-      duration_to: processDateTo,
-      warehouse_id: selectedWarehouse.value,
-      shipper_id: seletedShipper.value,
-    };
-    console.log("params", params);
-    API.post(computeBillURL, params)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   const createBill = () => {

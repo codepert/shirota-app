@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_17_194633) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_19_072953) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_194633) do
     t.integer "printed", limit: 1, comment: "出力フラグ"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "processing_cnt", default: 0, null: false
     t.index ["shipper_id"], name: "index_bills_on_shipper_id"
     t.index ["warehouse_id"], name: "index_bills_on_warehouse_id"
   end

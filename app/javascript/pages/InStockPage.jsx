@@ -423,7 +423,7 @@ const InStockPage = ({ is_edit }) => {
   return (
     <div>
       <Content
-        style={{ width: 1280, marginTop: 20 }}
+        style={{ margin: 20 }}
         className="mx-auto flex flex-col justify-content content-h"
       >
         <Card
@@ -451,7 +451,7 @@ const InStockPage = ({ is_edit }) => {
             <Col span={1}>
               <label>{$lang.inStock.shipper}:</label>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               {shipperOptions.length > 0 && (
                 <>
                   <Select
@@ -462,13 +462,15 @@ const InStockPage = ({ is_edit }) => {
                     defaultValue={""}
                     placeholder={$lang.inStock.shipper}
                   />
-                  {shipperOptions.length > 0 && (
-                    <span className="" style={{ marginLeft: 16 }}>
-                      {$lang.inStock.shipper} :&nbsp;&nbsp;
-                      {shipperDisctription.code} &nbsp;/ &nbsp;
-                      {shipperDisctription.closingDate}
-                    </span>
-                  )}
+                  <Row>
+                    {shipperOptions.length > 0 && (
+                      <span className="" style={{ marginLeft: 16 }}>
+                        {$lang.inStock.shipper} :&nbsp;&nbsp;
+                        {shipperDisctription.code} &nbsp;/ &nbsp;
+                        {shipperDisctription.closingDate}
+                      </span>
+                    )}
+                  </Row>
                 </>
               )}
             </Col>

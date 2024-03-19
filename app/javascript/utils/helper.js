@@ -12,12 +12,35 @@ class HTTPError extends Error {
     this.statusCode = statusCode;
   }
 }
+
+export const isEmpty = (d) => d?.toString().trim().length === 0;
+
+export const hasKey = (obj, key) => typeof obj === "object" && !falsy(obj[key]);
+export const falsy = (d) => d === undefined || d === null;
+
+export const getAuthUser = () => {
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
+  const pemissionpage = localStorage.getItem("pemission_page");
+
+  return falsy(username) ||
+    falsy(token) ||
+    isEmpty(username) ||
+    isEmpty(token) ||
+    falsy(pemissionpage) ||
+    isEmpty(pemissionpage)
+    ? { username: null, token: null, pemissionpage: [] }
+    : { username, token, pemissionpage };
+};
+
+export const getAuthUserToken = () => getAuthUser()?.token;
+
 export const API = axios.create({
   baseURL: "/",
   headers: {
     "content-type": "application/json",
     // token: `Bearer ${token}`,
-    Authorization: getAuthUserToken,
+    // Authorization: getAuthUserToken(),
   },
 });
 
@@ -78,29 +101,7 @@ export const makeURLOptionsWtoken = (token, body = {}, method = "GET") => ({
   },
 });
 
-export const falsy = (d) => d === undefined || d === null;
-
-export const isEmpty = (d) => d?.toString().trim().length === 0;
-
-export const hasKey = (obj, key) => typeof obj === "object" && !falsy(obj[key]);
-
-export const getAuthUser = () => {
-  const username = localStorage.getItem("username");
-  const token = localStorage.getItem("token");
-  const pemissionpage = localStorage.getItem("pemission_page");
-
-  return falsy(username) ||
-    falsy(token) ||
-    isEmpty(username) ||
-    isEmpty(token) ||
-    falsy(pemissionpage) ||
-    isEmpty(pemissionpage)
-    ? { username: null, token: null, pemissionpage: [] }
-    : { username, token, pemissionpage };
-};
-
 export const getAuthUsername = () => getAuthUser()?.username;
-export const getAuthUserToken = () => getAuthUser()?.token;
 export const getPermissionPage = () => getAuthUser()?.pemissionpage;
 
 export const saveAuthUser = (username, token, pemissionPage) => {
@@ -120,7 +121,7 @@ export const getDateStr = (date, dateFormat) => {
 };
 
 export function formatNumberManualInsertion(x) {
-  if (typeof x == "undefined" || x == null || x == "") return "";
+  if (typeof x == "undefined" || x == null || x == "" || isNaN(x)) return "";
   var parts = x.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(",");

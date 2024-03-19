@@ -125,15 +125,11 @@ const UserPage = ({ is_edit }) => {
   return (
     <>
       <Content
-        style={{ width: 1024, marginTop: 20 }}
+        style={{ margin: 20 }}
         className="mx-auto flex flex-col justify-content content-h"
       >
-        <Card
-          style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-          className="py-4 my-2"
-          bordered={false}
-        >
-          <Flex justify="flex-end" className="mb-5">
+        <Card style={{ width: "100%" }} bordered={false}>
+          <Flex justify="flex-end">
             {is_edit === 1 ? (
               <Button
                 onClick={() => {

@@ -135,10 +135,7 @@ const WarehouseFeePage = ({ is_edit }) => {
   }, [isposted]);
 
   return (
-    <Content
-      style={{ width: 1024 }}
-      className="mx-auto flex flex-col content-h"
-    >
+    <Content style={{ margin: 20 }} className="mx-auto flex flex-col content-h">
       <Card
         style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
         className="py-2 my-2"

@@ -53,14 +53,14 @@ export const setAuthorityPageURL = baseUrl + "api/v1/set_authority_pages";
 export const confirmBillURL = "";
 export const computeBillURL = "";
 export const exportBillOne = "";
-export const billAmountURL = "api/v1/prepare_bill_amounts";
+export const unCalcBillURL = "api/v1/uncalc_bills";
 export const calculateBillURL = "api/v1/calculate_bill";
 export const exportReceivePaymentCSVDataUrl =
   baseUrl + "api/v1/received_payments_csv_export";
 export const billReportURL = "api/v1/export_bill_report";
 export const billAmountReportURL = "api/v1/export_bill_amount_report";
 
-export const BillURL = "api/v1/bills";
+export const billURL = "api/v1/bills";
 //unit_price urls
 
 export const httpErrors = {

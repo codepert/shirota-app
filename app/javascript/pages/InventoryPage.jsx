@@ -290,7 +290,7 @@ const InventoryPage = ({ is_edit }) => {
   return (
     <div>
       <Content
-        style={{ width: 1280, marginTop: 20 }}
+        style={{ margin: 20 }}
         className="mx-auto flex flex-col justify-content content-h"
       >
         <Card
@@ -334,13 +334,15 @@ const InventoryPage = ({ is_edit }) => {
                   defaultValue={""}
                   placeholder={$lang.inStock.shipper}
                 />
-                {shipperOptions.length > 0 && (
-                  <span className="" style={{ marginLeft: 16 }}>
-                    {$lang.inStock.shipper} :&nbsp;&nbsp;
-                    {shipperDisctription.code} &nbsp;/ &nbsp;
-                    {shipperDisctription.closingDate}
-                  </span>
-                )}{" "}
+                <Row>
+                  {shipperOptions.length > 0 && (
+                    <span className="" style={{ marginLeft: 16 }}>
+                      {$lang.inStock.shipper} :&nbsp;&nbsp;
+                      {shipperDisctription.code} &nbsp;/ &nbsp;
+                      {shipperDisctription.closingDate}
+                    </span>
+                  )}
+                </Row>
               </Col>
             </Row>
             <Row className="my-2">

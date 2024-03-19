@@ -23,14 +23,14 @@ import { API } from "../utils/helper";
 import {
   warehouseURL,
   shipperURL,
-  billAmountURL,
+  unCalcBillURL,
   exportBillOne,
   billReportURL,
   computeBillURL,
   confirmBillURL,
   calculateBillURL,
   billAmountReportURL,
-  BillURL,
+  billURL,
 } from "../utils/constants";
 import $lang from "../utils/content/jp.json";
 
@@ -107,69 +107,6 @@ const BillingProcessPage = ({ is_edit }) => {
     });
   };
 
-  const getBillList = () => {
-    if (processRangeDates.length == 0) {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.empty_during
-      );
-
-      return;
-    }
-
-    const billDate =
-      selectedYear +
-      "-" +
-      (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
-      "-" +
-      (selectedDay < 10 ? "0" + selectedDay : selectedDay);
-
-    const processDateParam =
-      processRangeDates.length > 0
-        ? `&from_date=${processRangeDates[0].format(
-            "YYYY-MM-DD"
-          )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
-        : "";
-    // const urlParam = `${billAmountURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
-    const urlParam = `${billAmountURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
-    console.log("get urlParam", urlParam);
-
-    API.get(urlParam)
-      .then((res) => {
-        let index = 1;
-        const data = res.data.data.map((item) => {
-          return {
-            shipper_name: item.shipper_name,
-            shipper_code: item.shipper_code,
-            product_name: item.product_name,
-            handling_cost: item.handling_cost_sum,
-            received_payment_amount: item.received_payments_amount,
-            total_storage_fee: item.storage_fee,
-            bill_payment_amount: item.bill_amount,
-            last_bill_amount: item.last_bill_amount,
-            tax: parseInt(item.bill_amount) * 0.1,
-            key: index++,
-            shipper_id: item.shipper_id,
-          };
-        });
-        setIsBillData(res.data.is_bill_data);
-        setBillList(data);
-        setTotal(res.data.count);
-        setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
-        // if (res.data.is_bill_data) {
-        //   openNotificationWithIcon(
-        //     "warning",
-        //     $lang.popConfirmType.warning,
-        //     $lang.messages.empty_data
-        //   );
-        // }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const getCalculateBillList = () => {
     if (processRangeDates.length == 0) {
       openNotificationWithIcon(
@@ -194,9 +131,10 @@ const BillingProcessPage = ({ is_edit }) => {
             "YYYY-MM-DD"
           )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
-    // const urlParam = `${billAmountURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
-    const urlParam = `${calculateBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}&closing_date=${selectedDay}`;
-    console.log("urlParam", urlParam);
+    // const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
+    const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
+    console.log("get urlParam", urlParam);
+
     API.get(urlParam)
       .then((res) => {
         let index = 1;
@@ -205,21 +143,82 @@ const BillingProcessPage = ({ is_edit }) => {
             shipper_name: item.shipper_name,
             shipper_code: item.shipper_code,
             product_name: item.product_name,
-            handling_cost: item.handling_cost_sum,
-            received_payment_amount: item.received_payments_amount,
-            total_storage_fee: item.storage_fee,
-            bill_payment_amount: item.bill_amount,
-            last_bill_amount: item.last_bill_amount,
-            tax: parseInt(item.bill_amount) * 0.1,
+            handling_cost: item.handle_cost,
+            received_payment_amount: item.received_payment_amount,
+            total_storage_fee: item.storage_cost,
+            bill_payment_amount: item.current_bill_amount,
+            last_bill_amount: item.previous_bill_amount,
+            tax: parseInt(item.current_bill_amount) * 0.1,
             key: index++,
             shipper_id: item.shipper_id,
           };
         });
-
-        setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
+        setIsBillData(res.data.is_bill_data);
         setBillList(data);
         setTotal(res.data.count);
-        setLastBillDate(res.data.last_bill_date);
+        setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
+        // if (res.data.is_bill_data) {
+        //   openNotificationWithIcon(
+        //     "warning",
+        //     $lang.popConfirmType.warning,
+        //     $lang.messages.empty_data
+        //   );
+        // }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getBillList = () => {
+    if (processRangeDates.length == 0) {
+      openNotificationWithIcon(
+        "warning",
+        $lang.popConfirmType.warning,
+        $lang.messages.empty_during
+      );
+
+      return;
+    }
+
+    // const billDate =
+    //   selectedYear +
+    //   "-" +
+    //   (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
+    //   "-" +
+    //   (selectedDay < 10 ? "0" + selectedDay : selectedDay);
+
+    const processDateParam =
+      processRangeDates.length > 0
+        ? `&from_date=${processRangeDates[0].format(
+            "YYYY-MM-DD"
+          )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
+        : "";
+    // const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
+    const urlParam = `${billURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&shipper_id=${seletedShipper.value}`;
+    console.log("urlParam", urlParam);
+    API.get(urlParam)
+      .then((res) => {
+        let index = 1;
+        const data = res.data.map((item) => {
+          return {
+            shipper_name: item.shipper ? item.shipper.name : shipper_name,
+            shipper_id: item.shipper ? item.shipper.id : item.shipper_id,
+            shipper_code: item.shipper ? item.shipper.code : item.shipper_code,
+            last_bill_amount: item.last_amount,
+            received_payment_amount: item.deposit_amount,
+            handling_cost: item.handling_cost,
+            total_storage_fee: item.storage_cost,
+            bill_payment_amount: item.current_amount,
+            tax: parseInt(item.current_amount) * 0.1,
+            key: index++,
+          };
+        });
+
+        // setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
+        setBillList(data);
+        setTotal(res.headers["x-total-count"]);
+        // setLastBillDate(res.data.last_bill_date);
       })
       .catch((err) => {
         console.log(err);
@@ -298,6 +297,14 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const createBill = () => {
+    if (seletedShipper.value == "") {
+      openNotificationWithIcon(
+        "warning",
+        $lang.popConfirmType.warning,
+        "select shipper"
+      );
+      return;
+    }
     const billDate =
       selectedYear +
       "-" +
@@ -317,8 +324,7 @@ const BillingProcessPage = ({ is_edit }) => {
       d: selectedDay,
     };
 
-    console.log("create urlParam", params);
-    API.post(BillURL, params)
+    API.post(billURL, params)
       .then((res) => {
         getBillList();
         openNotificationWithIcon(
@@ -439,10 +445,7 @@ const BillingProcessPage = ({ is_edit }) => {
   }, [selectedYear, selectedMonth]);
 
   return (
-    <Content
-      style={{ width: 1280, marginTop: 20 }}
-      className="mx-auto content-h"
-    >
+    <Content style={{ margin: 20 }} className="mx-auto content-h">
       <Card
         style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
         className="py-2 my-2"

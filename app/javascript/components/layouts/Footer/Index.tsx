@@ -22,7 +22,6 @@ const FooterSection = () => {
         width: "100%",
         backgroundColor: "#fff",
       }}
-      className="mt-10"
     >
       <p>Soko Kanri system</p>
     </Footer>

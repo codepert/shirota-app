@@ -128,7 +128,7 @@ const PemissionPage = () => {
           justifyContent: "center",
         }}
       >
-        <Card style={{ margin: 20 }} className="py-2 my-2" bordered={false}>
+        <Card style={{ margin: 20 }} className="py-2 " bordered={false}>
           <Tabs
             defaultActiveKey="1"
             tabPosition="left"
@@ -139,18 +139,14 @@ const PemissionPage = () => {
             ))}
           </Tabs>
         </Card>
-        <Card
-          style={{ marginTop: 20, marginBottom: 20 }}
-          className="py-2 my-2"
-          bordered={false}
-        >
+        <Card style={{ margin: 20 }} className="py-2" bordered={false}>
           {" "}
           <div>
-            <div className="my-2">
+            <div className="">
               <Button
                 onClick={saveAuthData}
                 className="btn-bg-black"
-                style={{ float: "right", marginBottom: 10 }}
+                style={{ float: "right" }}
               >
                 {messages.buttons.save}
               </Button>

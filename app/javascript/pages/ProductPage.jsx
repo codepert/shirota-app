@@ -161,7 +161,7 @@ const ProductPage = ({ is_edit }) => {
   }, [currentPage, itemsPerPage, isposted]);
 
   return (
-    <Content style={{ width: 1024 }} className="mx-auto content-h">
+    <Content style={{ margin: 20 }} className="mx-auto content-h">
       <Card
         style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
         className="py-2 my-2"

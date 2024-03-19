@@ -3,7 +3,7 @@ import $lang from "../utils/content/jp.json";
 import moment from "moment";
 
 import { Link } from "react-router-dom";
-import { BillURL } from "../utils/constants";
+import { billURL } from "../utils/constants";
 import {
   Form,
   Layout,
@@ -37,7 +37,7 @@ const BillingListPage = ({ is_edit }) => {
     const fromDate = yearMonth + "-01";
     const toDate = yearMonth + "-" + day;
     const url =
-      BillURL +
+      billURL +
       `?ym=${yearMonth}&closing_date=${day}&page=${currentPage}&limit=${itemsPerPage}&from_date=${fromDate}&to_date=${toDate}`;
 
     API.get(url)
@@ -106,7 +106,7 @@ const BillingListPage = ({ is_edit }) => {
     getList();
   }, []);
   return (
-    <Content style={{ width: 1280 }} className="mx-auto content-h">
+    <Content style={{ margin: 20 }} className="mx-auto content-h">
       <Card
         style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
         className="py-2 my-2"

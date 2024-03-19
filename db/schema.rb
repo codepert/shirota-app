@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_17_194633) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -26,14 +26,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
     t.bigint "bill_id", null: false, comment: "請求id"
     t.integer "product_id", null: false, comment: "品番"
     t.string "lot_number", null: false, comment: "lot number"
-    t.integer "previous_period_carryover", default: 0, null: false, comment: "前期繰起"
-    t.integer "first_half_instock_amount", default: 0, null: false, comment: "上期入庫"
-    t.integer "first_half_outstock_amount", default: 0, null: false, comment: "上期出庫"
-    t.integer "mid_instock_amount", default: 0, null: false, comment: "中期入庫"
-    t.integer "mid_outstock_amount", default: 0, null: false, comment: "中期出庫"
-    t.integer "second_half_instock_amount", default: 0, null: false, comment: "下期入庫"
-    t.integer "second_half_outstock_amount", default: 0, null: false, comment: "下期出庫"
-    t.integer "current_period_balance", default: 0, null: false, comment: "当期残高"
+    t.integer "previous_stock_amount", null: false, comment: "前期繰起"
+    t.integer "first_half_instock_amount", null: false, comment: "上期入庫"
+    t.integer "first_half_outstock_amount", null: false, comment: "上期出庫"
+    t.integer "mid_instock_amount", null: false, comment: "中期入庫"
+    t.integer "mid_outstock_amount", null: false, comment: "中期出庫"
+    t.integer "second_half_instock_amount", null: false, comment: "下期入庫"
+    t.integer "second_half_outstock_amount", null: false, comment: "下期出庫"
+    t.integer "current_stock_amount", null: false, comment: "当期残高"
+    t.integer "total_inout_stock_amount", null: false, comment: "当期残高"
+    t.integer "storage_fee_rate", null: false, comment: "保管料単価"
+    t.integer "instock_handle_fee_rate", null: false, comment: "入庫荷役料単価"
+    t.integer "outstock_handle_fee_rate", null: false, comment: "出庫荷役料単価"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_bill_amounts_on_bill_id"
@@ -119,6 +123,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_091436) do
     t.string "weight", null: false, comment: "重量"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "is_billed", limit: 1, default: 0
     t.index ["stock_id"], name: "index_stock_inouts_on_stock_id"
     t.index ["user_id"], name: "index_stock_inouts_on_user_id"
   end

@@ -27,8 +27,8 @@ Rails.application.routes.draw do
       get "products_by" => "products#show_by"
       get "product_in_stock" => "products#show_with_stock"
       resources :stocks
-      get "prepare_bill_amounts" => "stocks#prepare_bill_amounts"
-      get "calculate_bill" => "stocks#calculate_bill"
+      get "uncalc_bills" => "stocks#uncalc_bills"
+      get "uncalc_bills" => "stocks#uncalc_bills"
       resources :stock_inouts
       post "stock_in" => "stock_inouts#stock_in"
       post "stock_in_csv_export" => "stock_inouts#stock_in_csv_export"

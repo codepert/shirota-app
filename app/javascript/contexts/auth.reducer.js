@@ -24,15 +24,11 @@ export const AuthReducer = (state = initialAuthState, action) => {
         ...state,
         authUserName: action.payload.authUserName,
         loginErrors: null,
-        signupErrors: null,
       };
     case "Logout":
       return {
         ...state,
         loginErrors: null,
-        signupErrors: null,
-        afterLogin: false,
-        afterSignup: false,
       };
 
     default:

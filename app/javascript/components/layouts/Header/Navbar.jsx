@@ -9,6 +9,7 @@ import { navigatiionsURL } from "../../../utils/constants";
 import $lang from "../../../utils/content/jp.json";
 import moment from "moment";
 import { getAuthUsername } from "../../../utils/helper";
+import { openNotificationWithIcon } from "../../common/notification";
 
 const NavbarSection = () => {
   const { logoutAction } = useAuth();
@@ -89,6 +90,20 @@ const NavbarSection = () => {
     });
   };
 
+  const logout = async () => {
+    const res = await logoutAction();
+    debugger;
+    if (res.state == "success") {
+      navigate("/signin");
+    } else {
+      openNotificationWithIcon(
+        "error",
+        $lang.popConrimType.error,
+        HttpResponseErrorMessage(res.code, res.status)
+      );
+    }
+  };
+
   useEffect(() => {
     getNavigations();
   }, []);
@@ -133,7 +148,7 @@ const NavbarSection = () => {
             </p>
             <Button
               className="btn-bg-black"
-              onClick={logoutAction}
+              onClick={logout}
               style={{
                 marginLeft: "10px",
                 border: "none",
@@ -169,7 +184,7 @@ const NavbarSection = () => {
       <Breadcrumb
         items={[{ title }]}
         style={{
-          padding: "10px 50px ",
+          padding: "10px 20px ",
           backgroundColor: "#fff",
         }}
       />

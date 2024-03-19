@@ -16,10 +16,10 @@ const BillProcessTable = ({
 }) => {
   const columns = [
     {
-      title: `${$lang.productName}`,
-      key: "product_name",
+      title: `${$lang.productNumber}`,
+      key: "id",
       width: "15%",
-      dataIndex: "product_name",
+      dataIndex: "id",
     },
     {
       title: `${$lang.shipperCode}`,

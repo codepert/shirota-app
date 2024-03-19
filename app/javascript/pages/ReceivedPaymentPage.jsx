@@ -347,7 +347,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
 
   return (
     <Content
-      style={{ width: 1280 }}
+      style={{ margin: 20 }}
       className="mx-auto flex flex-col justify-content content-h s-content"
     >
       <Card

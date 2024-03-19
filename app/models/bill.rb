@@ -1,4 +1,6 @@
 class Bill < ApplicationRecord
+  include Paginatable
+
   belongs_to :shipper
   scope :desc, -> { order(id: :desc) }
   scope :with_bill_amount_cnt, -> (billed_on) {
@@ -17,6 +19,16 @@ class Bill < ApplicationRecord
     find_by_sql(query)
 
   }
-
-  
+  def self.ransackable_attributes(_auth_object = nil)
+    # %w[
+    #   name
+    #   code
+    #   warehouse_fee_id
+    #   specification
+    # ]
+    ["warehouse_id", "shipper_id", "duration_from", "duration_to"]
+  end
+  def self.ransackable_associations(_auth_object = nil)
+    %w[shipper]
+  end
 end

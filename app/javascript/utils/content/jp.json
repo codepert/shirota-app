@@ -275,7 +275,8 @@
     "empty_in_stock_data": "入庫するデータがありません。",
     "confirm_bill": "請求を確定しますか？",
     "empty_data": "データはありません。",
-    "finish_bill": "請求が確定しました。"
+    "finish_bill": "請求が確定しました。",
+    "alreayResigered": "これはすでに登録されているデータです。"
   },
   "popConfirmType": {
     "success": "成功",
@@ -345,11 +346,12 @@
   "billingReport": "請求書",
   "billingReportDetail": "明細",
   "processDate": "処理日時",
-
   "ym": "年/月",
   "count": "件数",
   "duration": "対象期間",
   "warehouse": "対象倉庫",
   "precessDate": "処理日時",
-  "detail": "明細"
+  "detail": "明細",
+  "unconfirm": "未確認",
+  "lastBilledAmount": "前回請求額"
 }

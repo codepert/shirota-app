@@ -7,7 +7,9 @@ import "./assets/css/style.css";
 // import enUS from "antd/lib/locale/en_US";
 
 import { AppRouter } from "./components/router/AppRouter";
-
+// const browser = await puppeteer.launch({
+//   executablePath: "/usr/bin/chromium-browser",
+// });
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

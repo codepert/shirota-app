@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 module RubyReactApp
   class Application < Rails::Application
+    # if ENV['RAILS_ENV'] == 'production' && !ENV['DISABLE_CHROMIUM'].present?
+    # end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 

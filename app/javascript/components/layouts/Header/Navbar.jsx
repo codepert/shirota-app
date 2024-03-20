@@ -92,16 +92,15 @@ const NavbarSection = () => {
 
   const logout = async () => {
     const res = await logoutAction();
-    debugger;
-    if (res.state == "success") {
-      navigate("/signin");
-    } else {
-      openNotificationWithIcon(
-        "error",
-        $lang.popConrimType.error,
-        HttpResponseErrorMessage(res.code, res.status)
-      );
-    }
+    // if (res.state == "success") {
+    navigate("/signin");
+    // } else {
+    //   openNotificationWithIcon(
+    //     "error",
+    //     $lang.popConrimType.error,
+    //     HttpResponseErrorMessage(res.code, res.status)
+    //   );
+    // }
   };
 
   useEffect(() => {

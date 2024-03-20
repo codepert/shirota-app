@@ -13,6 +13,30 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
 
     render json: result
   end
+  def check_stock_in
+    lot_number =   params[:lot_number]
+    warehouse_id = params[:warehouse_id]
+    shipper_id =   params[:shipper_id]
+    product_id=    params[:product_id]
+    stock = Stock.where(
+          warehouse_id:     warehouse_id,
+          shipper_id:       shipper_id,
+          product_id:       product_id,
+        );
+    
+    if stock.present?
+      stock_id = stock[0]['id']
+      if StockInout.where(stock_id: stock_id, lot_number: lot_number).present?
+        render :json => {
+          status: 'exist'
+        }
+        return;
+      end
+    end
+    render :json => {
+      status: 'ok'
+    }
+  end
   def stock_in
     request_stock_in_params.each do |record|
       ActiveRecord::Base.transaction do
@@ -41,7 +65,7 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
           )
           stock_id = stock['id']
         end
-
+        
         StockInout.create(
           stock_id:             stock_id,
           category:             stock_in_params[:category],
@@ -108,6 +132,22 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
         status: :unprocessable_entity,
         errors: e.record.errors.full_messages
       }
+  end
+  def uncalc_bills
+    from_date     = params[:from_date]
+    to_date       = params[:to_date]
+    shipper_id    = params[:shipper_id]
+    warehouse_id  = params[:warehouse_id]
+    page          = params[:page]
+    limit         = params[:limit]
+    
+    prepare_bill_amounts    = Stock.get_uncalc_bills(from_date, to_date, nil, warehouse_id, page, limit)
+    prepare_bill_amount_cnt = Stock.get_uncalc_bills(from_date, to_date, nil, warehouse_id).length
+
+    render :json => {
+      data:             prepare_bill_amounts,
+      count:            prepare_bill_amount_cnt,
+    }, status: :ok
   end
   def stock_in_csv_export
     data = params.require(:data)

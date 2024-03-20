@@ -28,6 +28,7 @@ import {
   billReportURL,
   billAmountReportURL,
   billURL,
+  lastBillDateURL,
 } from "../utils/constants";
 import $lang from "../utils/content/jp.json";
 
@@ -65,7 +66,8 @@ const BillingProcessPage = ({ is_edit }) => {
   const [isBillData, setIsBillData] = useState(false);
   const [lastBillDate, setLastBillDate] = useState("");
   const [isModalVisible, setIsConfirmModalVisible] = useState(false);
-
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [isConfirmBillDisabled, setIsConfirmBillDisabled] = useState(false);
   const getWarehouses = () => {
     API.get(warehouseURL).then((res) => {
       const warehouses = res.data.map((item) => {
@@ -104,6 +106,11 @@ const BillingProcessPage = ({ is_edit }) => {
     });
   };
 
+  const getLastBillDate = () => {
+    API.get(lastBillDateURL).then((res) => {
+      setLastBillDate(res.data.date);
+    });
+  };
   const getCalculateBillList = () => {
     if (processRangeDates.length == 0) {
       openNotificationWithIcon(
@@ -129,7 +136,7 @@ const BillingProcessPage = ({ is_edit }) => {
           )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
 
-    const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
+    const urlParam = `${unCalcBillURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
     console.log("get urlParam", urlParam);
 
     API.get(urlParam)
@@ -137,15 +144,16 @@ const BillingProcessPage = ({ is_edit }) => {
         let index = 1;
         const data = res.data.data.map((item) => {
           return {
+            id: $lang.unconfirm,
             shipper_name: item.shipper_name,
             shipper_code: item.shipper_code,
-            product_name: item.product_name,
+            // last_bill_amount: item.last_bill_amount,
             handling_cost: item.handle_cost,
-            received_payment_amount: item.received_payment_amount,
+            deposit_amount: item.deposit_amount,
             total_storage_fee: item.storage_cost,
             bill_payment_amount: item.current_bill_amount,
             last_bill_amount: item.previous_bill_amount,
-            tax: parseInt(item.current_bill_amount) * 0.1,
+            tax: parseInt(item.current_bill_amount) / 10,
             key: index++,
             shipper_id: item.shipper_id,
           };
@@ -154,6 +162,7 @@ const BillingProcessPage = ({ is_edit }) => {
         setBillList(data);
         setTotal(res.data.count);
         setLastBillDate(res.data.last_bill_date.replace(/\-/g, "/"));
+
         // if (res.data.is_bill_data) {
         //   openNotificationWithIcon(
         //     "warning",
@@ -197,11 +206,11 @@ const BillingProcessPage = ({ is_edit }) => {
             shipper_id: item.shipper ? item.shipper.id : item.shipper_id,
             shipper_code: item.shipper ? item.shipper.code : item.shipper_code,
             last_bill_amount: item.last_amount,
-            received_payment_amount: item.deposit_amount,
+            deposit_amount: item.deposit_amount,
             handling_cost: item.handling_cost,
             total_storage_fee: item.storage_cost,
             bill_payment_amount: item.current_amount,
-            tax: parseInt(item.current_amount) * 0.1,
+            tax: parseInt(item.current_amount) / 10,
             key: index++,
           };
         });
@@ -275,7 +284,6 @@ const BillingProcessPage = ({ is_edit }) => {
       m: selectedMonth,
       d: selectedDay,
     };
-
     API.post(billURL, params)
       .then((res) => {
         getBillList();
@@ -285,6 +293,7 @@ const BillingProcessPage = ({ is_edit }) => {
           $lang.messages.finish_bill
         );
         console.log(res);
+        getLastBillDate();
       })
       .catch((err) => {
         console.log(err);
@@ -388,6 +397,7 @@ const BillingProcessPage = ({ is_edit }) => {
   useEffect(() => {
     getWarehouses();
     getShippers();
+    getLastBillDate();
   }, []);
 
   useEffect(() => {
@@ -509,12 +519,21 @@ const BillingProcessPage = ({ is_edit }) => {
             <Button
               className="btn-bg-black"
               style={{ marginLeft: 60 }}
-              onClick={getCalculateBillList}
+              onClick={() => {
+                setIsConfirmBillDisabled(false);
+                getCalculateBillList();
+              }}
             >
               {$lang.billing.buttons.billingCalculation}
             </Button>
           </Space>
-          <Button className="btn-bg-black ml-1" onClick={getBillList}>
+          <Button
+            className="btn-bg-black ml-1"
+            onClick={() => {
+              setIsConfirmBillDisabled(true);
+              getBillList();
+            }}
+          >
             {$lang.billing.buttons.billingList}
           </Button>
         </Flex>
@@ -533,7 +552,17 @@ const BillingProcessPage = ({ is_edit }) => {
                 </Space>
                 <Button
                   className="btn-bg-black"
-                  onClick={setIsConfirmModalVisible}
+                  onClick={() => {
+                    const duration =
+                      processRangeDates[0].format("YYYY-MM-DD") +
+                      " ~ " +
+                      processRangeDates[1].format("YYYY-MM-DD");
+                    const warrehouse =
+                      $lang.warehouse + " : " + selectedWarehouse.label;
+                    setConfirmMessage($lang.messages.confirm_bill);
+                    setIsConfirmModalVisible(true);
+                  }}
+                  disabled={isConfirmBillDisabled}
                 >
                   {$lang.buttons.billingConfirmed}
                 </Button>
@@ -550,7 +579,7 @@ const BillingProcessPage = ({ is_edit }) => {
             createBill();
           }}
           onClose={handleHideConfirmModal}
-          message={$lang.messages.confirm_bill}
+          message={confirmMessage}
         />
         <BillProcessTable
           exportBillPDF={exportBillPDF}

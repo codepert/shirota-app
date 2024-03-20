@@ -26,6 +26,7 @@ import {
 
 import CustomButton from "../components/common/CustomButton";
 import $lang from "../utils/content/jp.json";
+import { formatNumberManualInsertion } from "../utils/helper";
 
 const { Content } = Layout;
 const dateFormat = "YYYY/MM/DD";
@@ -88,11 +89,12 @@ const InventoryPage = ({ is_edit }) => {
       title: `${$lang.amount}`,
       dataIndex: "amount",
       key: "amount",
+      render: (val) => formatNumberManualInsertion(val),
     },
     {
       title: `${$lang.inStockDate}`,
       dataIndex: "inout_on",
-      key: "amount",
+      key: "inout_on",
       render: (val) => (val != undefined ? val.replace(/\-/g, "/") : ""),
     },
   ];

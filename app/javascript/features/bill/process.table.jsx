@@ -18,7 +18,7 @@ const BillProcessTable = ({
     {
       title: `${$lang.productNumber}`,
       key: "id",
-      width: "15%",
+      width: "10%",
       dataIndex: "id",
     },
     {
@@ -34,10 +34,16 @@ const BillProcessTable = ({
       dataIndex: "shipper_name",
     },
     {
+      title: $lang.lastBilledAmount,
+      key: "last_bill_amount",
+      width: "10%",
+      dataIndex: "last_bill_amount",
+    },
+    {
       title: `${$lang.receivePaymentAmount}`,
-      key: "received_payment_amount",
+      key: "deposit_amount",
       width: "8%",
-      dataIndex: "received_payment_amount",
+      dataIndex: "deposit_amount",
       render: (val) => formatNumberManualInsertion(val),
     },
     {

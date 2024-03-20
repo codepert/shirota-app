@@ -21,6 +21,7 @@ import {
   productDetailURL,
   saveStockInUrl,
   exportCSVDataUrl,
+  checkStockInUrl,
 } from "../utils/constants";
 
 import CustomButton from "../components/common/CustomButton";
@@ -258,35 +259,60 @@ const InStockPage = ({ is_edit }) => {
     return true;
   };
 
+  const checkStockIn = async () => {
+    const url =
+      checkStockInUrl +
+      `?lot_number=${lotNumber}&warehouse_id=${selectedWarehouse.value}&shipper_id=${seletedShipper.value}&product_id=${selectedProductId}`;
+    const res = await API.get(url);
+    if (res.data.status != "ok") {
+      return false;
+    }
+    return true;
+  };
   const doPrepareProducts = () => {
     if (!isReadyPrepareProducts()) return;
 
-    let selectedProductArr = prepareProducts.slice();
-    const inStockDateStr = inStockDate.format("YYYY/MM/DD");
+    const url =
+      checkStockInUrl +
+      `?lot_number=${lotNumber}&warehouse_id=${selectedWarehouse.value}&shipper_id=${seletedShipper.value}&product_id=${selectedProductId}`;
+    API.get(url)
+      .then((res) => {
+        if (res.data.status != "ok") {
+          openNotificationWithIcon(
+            "warning",
+            $lang.popConfirmType.warning,
+            $lang.messages.alreayResigered
+          );
+          return;
+        }
+        let selectedProductArr = prepareProducts.slice();
+        const inStockDateStr = inStockDate.format("YYYY/MM/DD");
 
-    const newData = {
-      handling_fee_rate: handlePrice,
-      storage_fee_rate: storagePrice,
-      product_id: selectedProductId,
-      product_name: searchProductTxt,
-      product_type: packaging,
-      catagory: 0,
-      lot_number: lotNumber,
-      weight: weight,
-      amount: amount,
-      warehouse_id: selectedWarehouse.value,
-      warehouse_name: selectedWarehouse.label,
-      shipper_id: seletedShipper.value,
-      shipper_name: seletedShipper.label,
-      inout_on: inStockDateStr,
-      idx: selectedProductArr.length + 1,
-      category: 0,
-    };
+        const newData = {
+          handling_fee_rate: handlePrice,
+          storage_fee_rate: storagePrice,
+          product_id: selectedProductId,
+          product_name: searchProductTxt,
+          product_type: packaging,
+          catagory: 0,
+          lot_number: lotNumber,
+          weight: weight,
+          amount: amount,
+          warehouse_id: selectedWarehouse.value,
+          warehouse_name: selectedWarehouse.label,
+          shipper_id: seletedShipper.value,
+          shipper_name: seletedShipper.label,
+          inout_on: inStockDateStr,
+          idx: selectedProductArr.length + 1,
+          category: 0,
+        };
 
-    selectedProductArr.push(newData);
+        selectedProductArr.push(newData);
 
-    setPrepareProducts(selectedProductArr);
-    initPrepareProductItem();
+        setPrepareProducts(selectedProductArr);
+        initPrepareProductItem();
+      })
+      .then((err) => {});
   };
 
   const editRow = (productId) => {

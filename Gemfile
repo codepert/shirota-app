@@ -95,3 +95,7 @@ gem "grover"
 gem "csv"
 
 gem "nokogiri"
+
+gem 'pdfkit'
+gem 'render_anywhere'
+gem 'wkhtmltopdf-binary'

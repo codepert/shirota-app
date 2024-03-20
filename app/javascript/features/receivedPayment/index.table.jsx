@@ -3,6 +3,7 @@ import { Table, Pagination, Flex } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomButton from "../../components/common/CustomButton";
 import $lang from "../../utils/content/jp.json";
+import { formatNumberManualInsertion } from "../../utils/helper.js";
 
 const ReceivePaymentTable = ({
   editRow,
@@ -18,12 +19,14 @@ const ReceivePaymentTable = ({
       title: $lang.receivePaymentDate,
       dataIndex: "received_on",
       key: "received_on",
+      width: "10%",
       render: (val) => (val != undefined ? val.replace(/\-/g, "/") : ""),
     },
     {
       title: $lang.shipperCode,
       dataIndex: "shipper_code",
       key: "shipper_code",
+      width: "8%",
     },
     {
       title: $lang.shipperName,
@@ -34,11 +37,14 @@ const ReceivePaymentTable = ({
       title: $lang.receivePaymentAmount,
       dataIndex: "amount",
       key: "amount",
+      width: "10%",
+      render: (val) => formatNumberManualInsertion(val),
     },
     {
       title: $lang.receivePaymentDescription,
       dataIndex: "description",
       key: "description",
+      width: "20%",
     },
     {
       title: $lang.receivePaymentProcessingDate,

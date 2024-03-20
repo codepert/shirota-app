@@ -29,6 +29,7 @@ export const productStockURL = baseUrl + `api/v1/product_in_stock`;
 
 export const saveStockInUrl = baseUrl + "api/v1/stock_in";
 export const saveStockOutUrl = baseUrl + "api/v1/stock_out";
+export const checkStockInUrl = baseUrl + "api/v1/check_stock_in";
 
 export const exportCSVDataUrl = baseUrl + "api/v1/stock_in_csv_export";
 
@@ -55,6 +56,7 @@ export const computeBillURL = "";
 export const exportBillOne = "";
 export const unCalcBillURL = "api/v1/uncalc_bills";
 export const calculateBillURL = "api/v1/calculate_bill";
+export const lastBillDateURL = "api/v1/last_bill_date";
 export const exportReceivePaymentCSVDataUrl =
   baseUrl + "api/v1/received_payments_csv_export";
 export const billReportURL = "api/v1/export_bill_report";

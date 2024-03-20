@@ -35,65 +35,83 @@ class Api::V1::BillsController < Api::V1::BaseController
     y             = params[:y]
     m             = params[:m]
     d             = params[:d]
-
-    puts "===========closing_date=========="
-    puts closing_date
-
-    prepare_bill = Stock.get_uncalc_bills(from_date, to_date, shipper_id, warehouse_id)
+    
+    if Bill.where("duration_from='#{from_date}' AND duration_to='#{to_date}'").length > 0
+      render :json => {
+        status: 'error'
+      }
+      return;
+    end
+    prepare_bills = Stock.get_uncalc_bills(from_date, to_date)
     ActiveRecord::Base.transaction do
+      prepare_bills.map do |prepare_bill|
       
-      if closing_date == '20'
-        prepare_bill_amounts    = Stock.prepare_bill_amounts_20(from_date, to_date, shipper_id, warehouse_id)
-      else
-        prepare_bill_amounts    = Stock.prepare_bill_amounts(from_date, to_date, shipper_id, warehouse_id)
-      end
+        if closing_date == 20
+          prepare_bill_amounts    = Stock.prepare_bill_amounts_20(from_date, to_date, nil, warehouse_id)
+        else
+          prepare_bill_amounts    = Stock.prepare_bill_amounts(from_date, to_date, nil, warehouse_id)
+        end
 
-      current_bill_amount = prepare_bill.first.current_bill_amount == nil ? 0 : prepare_bill.first.current_bill_amount
+        current_bill_amount = prepare_bill['current_bill_amount'] == nil ? 0 : prepare_bill['current_bill_amount']
+
+        
         bill = Bill.create(
-          shipper_id: shipper_id,
-          warehouse_id: warehouse_id,
-          last_amount: prepare_bill.first.previous_bill_amount == nil ? 0 : prepare_bill.first.previous_bill_amount,
-          deposit_amount: prepare_bill.first.received_payment_amount == nil ? 0 : prepare_bill.first.received_payment_amount,
-          handling_cost: prepare_bill.first.handle_cost == nil ? 0 : prepare_bill.first.handle_cost,
-          storage_cost: prepare_bill.first.storage_cost == nil ? 0 : prepare_bill.first.storage_cost,
-          current_amount: prepare_bill.first.current_bill_amount == nil ? 0 : prepare_bill.first.current_bill_amount,
-          tax: (current_bill_amount*0.1),
-          duration_from: from_date,
-          duration_to: to_date,
-          billed_on: billed_on,
-          closing_date: closing_date,
-          billed: 1,
-          processing_cnt: prepare_bill_amounts.length
+          shipper_id:           shipper_id,
+          warehouse_id:         warehouse_id,
+          last_amount:          prepare_bill['previous_bill_amount'] == nil ? 0 : prepare_bill['previous_bill_amount'],
+          deposit_amount:       prepare_bill['deposit_amount'] == nil ? 0 : prepare_bill['deposit_amount'],
+          handling_cost:        prepare_bill['handle_cost'] == nil ? 0 : prepare_bill['handle_cost'],
+          storage_cost:         prepare_bill['storage_cost'] == nil ? 0 : prepare_bill['storage_cost'],
+          current_amount:       prepare_bill['current_bill_amount'] == nil ? 0 : prepare_bill['current_bill_amount'],
+          tax:                  (current_bill_amount*0.1),
+          duration_from:        from_date,
+          duration_to:          to_date,
+          billed_on:            billed_on,
+          closing_date:         closing_date,
+          billed:               1,
+          processing_cnt:       prepare_bill_amounts.length
         )
 
-      prepare_bill_amounts.map do |record|
-        BillAmount.create(
-          bill_id:                      bill['id'] ,
-          product_id:                   record.product_id,                    
-          lot_number:                   record.lot_number,   
-          previous_stock_amount:        record.previous_stock_amount == nil ? 0: record.previous_stock_amount,
-          first_half_instock_amount:    record.first_half_instock_amount == nil ? 0: record.first_half_instock_amount,
-          first_half_outstock_amount:   record.first_half_outstock_amount == nil ? 0: record.first_half_outstock_amount,            
-          mid_instock_amount:           record.mid_instock_amount == nil ? 0: record.mid_instock_amount,          
-          mid_outstock_amount:          record.mid_outstock_amount == nil ? 0: record.mid_outstock_amount,                  
-          second_half_instock_amount:   record.second_half_instock_amount == nil ? 0: record.second_half_instock_amount,                  
-          second_half_outstock_amount:  record.second_half_outstock_amount == nil ? 0: record.second_half_outstock_amount,          
-          current_stock_amount:         record.current_stock_amount == nil ? 0 : record.current_stock_amount,     
-          total_inout_stock_amount:     record.total_inout_stock_amount == nil ? 0 : record.total_inout_stock_amount,     
-          storage_fee_rate:             record.storage_fee_rate == nil ? 0 : record.storage_fee_rate,
-          instock_handle_fee_rate:      record.instock_handle_fee_rate == nil ? 0 : record.instock_handle_fee_rate,
-          outstock_handle_fee_rate:     record.outstock_handle_fee_rate == nil ? 0 : record.outstock_handle_fee_rate
-        )
-        stockInout = StockInout.where(stock_id: record.stock_id)
+        prepare_bill_amounts.map do |record|
+          BillAmount.create(
+            bill_id:                      bill['id'] ,
+            product_id:                   record.product_id,                    
+            lot_number:                   record.lot_number,   
+            previous_stock_amount:        record.previous_stock_amount == nil ? 0: record.previous_stock_amount,
+            first_half_instock_amount:    record.first_half_instock_amount == nil ? 0: record.first_half_instock_amount,
+            first_half_outstock_amount:   record.first_half_outstock_amount == nil ? 0: record.first_half_outstock_amount,            
+            mid_instock_amount:           record.mid_instock_amount == nil ? 0: record.mid_instock_amount,          
+            mid_outstock_amount:          record.mid_outstock_amount == nil ? 0: record.mid_outstock_amount,                  
+            second_half_instock_amount:   record.second_half_instock_amount == nil ? 0: record.second_half_instock_amount,                  
+            second_half_outstock_amount:  record.second_half_outstock_amount == nil ? 0: record.second_half_outstock_amount,          
+            current_stock_amount:         record.current_stock_amount == nil ? 0 : record.current_stock_amount,     
+            total_inout_stock_amount:     record.total_inout_stock_amount == nil ? 0 : record.total_inout_stock_amount,     
+            storage_fee_rate:             record.storage_fee_rate == nil ? 0 : record.storage_fee_rate,
+            instock_handle_fee_rate:      record.instock_handle_fee_rate == nil ? 0 : record.instock_handle_fee_rate,
+            outstock_handle_fee_rate:     record.outstock_handle_fee_rate == nil ? 0 : record.outstock_handle_fee_rate
+          )
+          stockInout = StockInout.where(stock_id: record.stock_id)
 
-        if stockInout.present?
-          stockInout.update(is_billed: 1)
+          if stockInout.present?
+            stockInout.update(is_billed: 1)
+          end
         end
       end
     end
     render :json => {
       status: :accepted
     }
+  end
+  def last_bill_date
+    
+    last_bill = Bill.where(billed: 1).desc
+    last_bill_date = ""
+    if last_bill.present?
+      last_bill_date = last_bill[0].created_at
+    end
+    render :json => {
+      date: last_bill_date
+    }, status: :ok
   end
   def export_bill_report
     shipper_id              = params[:shipper_id]

@@ -188,6 +188,7 @@ GEM
     nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    pdfkit (0.8.7.3)
     psych (5.1.2)
       stringio
     public_suffix (5.0.4)
@@ -241,6 +242,8 @@ GEM
     regexp_parser (2.9.0)
     reline (0.4.3)
       io-console (~> 0.5)
+    render_anywhere (0.0.12)
+      rails (>= 3.0.7)
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
@@ -294,6 +297,7 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    wkhtmltopdf-binary (0.12.6.6)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.13)
@@ -317,9 +321,11 @@ DEPENDENCIES
   kaminari
   mysql2 (~> 0.5)
   nokogiri
+  pdfkit
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.2)
   ransack
+  render_anywhere
   selenium-webdriver
   sprockets-rails
   stimulus-rails
@@ -327,6 +333,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  wkhtmltopdf-binary
 
 RUBY VERSION
    ruby 3.2.2p53

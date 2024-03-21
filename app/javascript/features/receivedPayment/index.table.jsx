@@ -101,7 +101,7 @@ const ReceivePaymentTable = ({
         pagination={false}
         className="h-full overflow-auto pr-1"
       />
-      <Flex justify="flex-end" className="my-5">
+      <Flex justify="flex-end" style={{ marginTop: 10, marginBottom: 10 }}>
         <Pagination
           current={currentPage}
           pageSize={itemsPerPage}

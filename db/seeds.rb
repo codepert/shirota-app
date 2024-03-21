@@ -334,3 +334,21 @@ AuthorityPage.create([{
   is_read: 1,
   is_edit: 1
 }])
+
+ManagementInfo.create([{
+  company_name: '城田運送株式会社',
+  post_code: '511-0944',
+  address1: '三重県桑名市',
+  address2: '芳ヶ崎７７８',
+  representative: '城田 真理子',
+  tel_number: '0594-31-2532',
+  fax_number: '2024-04-01',
+  start_date: '2025-03-31',
+  end_date: '1',
+  processing_year: '2024',
+  processing_month: '1',
+  installation_location: '本社',
+  management_pw: 'XXXX',
+  invoice_number: '123456	',
+  register_number: 'T1234567890123',
+}])

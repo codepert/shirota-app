@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_19_072953) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -63,6 +63,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_19_072953) do
     t.integer "processing_cnt", default: 0, null: false
     t.index ["shipper_id"], name: "index_bills_on_shipper_id"
     t.index ["warehouse_id"], name: "index_bills_on_warehouse_id"
+  end
+
+  create_table "management_infos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "company_name", comment: "社名"
+    t.string "post_code", comment: "郵便番号"
+    t.string "address1", comment: "住所１"
+    t.string "address2", comment: "住所２"
+    t.string "representative", comment: "代表者"
+    t.string "tel_number", comment: "電話番号"
+    t.string "fax_number", comment: "FAX番号\t"
+    t.string "start_date", comment: "期首年月日"
+    t.string "end_date", comment: "期末年月日"
+    t.string "processing_year", comment: "処理年"
+    t.string "processing_month", comment: "処理月"
+    t.string "management_pw", comment: "管理PW"
+    t.string "installation_location", comment: "設置場所"
+    t.string "invoice_number", comment: "請求書番号"
+    t.string "register_number", comment: "登録番号"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -139,6 +159,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_19_072953) do
     t.index ["product_id"], name: "index_stocks_on_product_id"
     t.index ["shipper_id"], name: "index_stocks_on_shipper_id"
     t.index ["warehouse_id"], name: "index_stocks_on_warehouse_id"
+  end
+
+  create_table "test_db", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.date "inout_on"
+    t.integer "shipper_id"
+    t.integer "amount"
   end
 
   create_table "user_authorities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

@@ -140,7 +140,14 @@ const ShipperList = ({ is_edit }) => {
         className="py-2 my-2"
         bordered={false}
       >
-        <Flex justify="flex-end" className="mb-5">
+        <Flex
+          justify="flex-end"
+          className="mb-5"
+          style={{
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
           {is_edit === 1 ? (
             <Button
               onClick={() => {

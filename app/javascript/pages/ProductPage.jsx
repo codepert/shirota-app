@@ -167,7 +167,14 @@ const ProductPage = ({ is_edit }) => {
         className="py-2 my-2"
         bordered={false}
       >
-        <Flex gap="middle" align="start" className="mb-5">
+        <Flex
+          gap="middle"
+          align="start"
+          style={{
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
           <Flex
             style={{
               width: "100%",

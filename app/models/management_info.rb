@@ -1,0 +1,2 @@
+class ManagementInfo < ApplicationRecord
+end

@@ -2,6 +2,7 @@ class Bill < ApplicationRecord
   include Paginatable
 
   belongs_to :shipper
+  
   scope :desc, -> { order(id: :desc) }
   scope :with_bill_amount_cnt, -> (billed_on) {
 

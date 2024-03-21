@@ -107,8 +107,16 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const getLastBillDate = () => {
-    API.get(lastBillDateURL).then((res) => {
-      setLastBillDate(res.data.date);
+    const url =
+      lastBillDateURL +
+      "?warehouse_id=" +
+      selectedWarehouse.value +
+      "&shipper_id=" +
+      seletedShipper.value;
+    API.get(url).then((res) => {
+      let date = res.data.date;
+      if (date != "") date = dayjs(date).format("YYYY/MM/DD HH:mm:ss");
+      setLastBillDate(date);
     });
   };
   const getCalculateBillList = () => {
@@ -293,7 +301,7 @@ const BillingProcessPage = ({ is_edit }) => {
           $lang.messages.finish_bill
         );
         console.log(res);
-        getLastBillDate();
+        // getLastBillDate();
       })
       .catch((err) => {
         console.log(err);
@@ -348,19 +356,13 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const exportBillPDF = (record) => {
-    const param = {
-      shipper_id: record.shipper_id,
-      bill_payment_amount: record.bill_payment_amount,
-      handling_cost: record.handling_cost,
-      last_bill_amount: record.last_bill_amount,
-      product_name: record.product_name,
-      received_payment_amount: record.received_payment_amount,
-      tax: record.tax,
-      total_storage_fee: record.total_storage_fee,
-    };
-    API.post(billReportURL, param, {
-      responseType: "arraybuffer",
-    })
+    API.post(
+      billReportURL,
+      { id: record.id },
+      {
+        responseType: "arraybuffer",
+      }
+    )
       .then((res) => {
         downloadPDF(res);
       })
@@ -397,7 +399,6 @@ const BillingProcessPage = ({ is_edit }) => {
   useEffect(() => {
     getWarehouses();
     getShippers();
-    getLastBillDate();
   }, []);
 
   useEffect(() => {
@@ -406,6 +407,9 @@ const BillingProcessPage = ({ is_edit }) => {
     setDateOptions([20, endDay.getDate()]);
   }, [selectedYear, selectedMonth]);
 
+  useEffect(() => {
+    getLastBillDate();
+  }, [selectedWarehouse, seletedShipper]);
   return (
     <Content style={{ margin: 20 }} className="mx-auto content-h">
       <Card
@@ -540,15 +544,21 @@ const BillingProcessPage = ({ is_edit }) => {
       </Card>
       <Card className="mb-5">
         <Flex vertical>
-          <div>{$lang.billing.new}</div>
-          <Flex justify="space-between" className="mb-5 mt-5">
+          <div style={{ marginBottom: 10 }}>{$lang.billing.new}</div>
+          <Flex
+            justify="space-between"
+            style={{
+              marginBottom: 10,
+            }}
+          >
             {is_edit === 1 ? (
               <>
                 <Space className="" style={{ float: "right" }}>
                   <Button className="btn-bg-black">
                     {$lang.buttons.billingListOutput}
                   </Button>
-                  {$lang.processDate} :{lastBillDate}
+                  <label style={{ marginLeft: 20 }}>{$lang.processDate}</label>{" "}
+                  :{lastBillDate}
                 </Space>
                 <Button
                   className="btn-bg-black"

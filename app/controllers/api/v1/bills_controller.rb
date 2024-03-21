@@ -103,8 +103,9 @@ class Api::V1::BillsController < Api::V1::BaseController
     }
   end
   def last_bill_date
-    
-    last_bill = Bill.where(billed: 1).desc
+    warehouse_id = params[:warehouse_id]
+    shipper_id = params[:shipper_id]
+    last_bill = Bill.where(billed: 1, warehouse_id: warehouse_id, shipper_id:shipper_id).desc
     last_bill_date = ""
     if last_bill.present?
       last_bill_date = last_bill[0].created_at
@@ -114,16 +115,12 @@ class Api::V1::BillsController < Api::V1::BaseController
     }, status: :ok
   end
   def export_bill_report
-    shipper_id              = params[:shipper_id]
-    bill_payment_amount     = params[:bill_payment_amount]
-    handling_cost           = params[:handling_cost]
-    last_bill_amount        = params[:last_bill_amount]
-    product_name            = params[:product_name]
-    received_payment_amount = params[:received_payment_amount]
-    tax                     = params[:tax]
-    total_storage_fee       = params[:total_storage_fee]
+    bill_id              = params[:id]
+
+    bill = Bill.includes(:shipper).find(bill_id)
     
-    shipper = Shipper.find(shipper_id)
+    return
+    # shipper = Shipper.find(shipper_id)
 
 
     html = "<html><meta charset=\"UTF-8\"><body><div style=\"width:100%;margin-left:25px\">

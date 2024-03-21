@@ -15,6 +15,19 @@ const UserPermissionTable = ({ data, onCheckChange }) => {
       title: "ページ名",
       dataIndex: "name",
       key: "name",
+      align: "center",
+    },
+    {
+      title: "読み込み専用",
+      dataIndex: "is_read",
+      key: "is_read",
+      align: "center",
+      render: (_, record) => (
+        <Checkbox
+          checked={record.is_read}
+          onChange={(e) => handleCheckboxChange(e, record, "is_read")}
+        />
+      ),
     },
     {
       title: "編集",
@@ -24,17 +37,6 @@ const UserPermissionTable = ({ data, onCheckChange }) => {
         <Checkbox
           checked={record.is_edit}
           onChange={(e) => handleCheckboxChange(e, record, "is_edit")}
-        />
-      ),
-    },
-    {
-      title: "読み込み専用",
-      dataIndex: "is_read",
-      key: "is_read",
-      render: (_, record) => (
-        <Checkbox
-          checked={record.is_read}
-          onChange={(e) => handleCheckboxChange(e, record, "is_read")}
         />
       ),
     },

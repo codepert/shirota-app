@@ -45,18 +45,17 @@ const Top = () => {
     // <div className={shakeScreen ? "shakeScreen" : ""}>
     <div>
       <Content
-        style={{ width: 1024 }}
         className="mx-auto flex flex-col justify-content content-h"
+        style={{ width: 1024 }}
       >
         <Row
-          className="my-8"
           style={{
             margin: 20,
             marginTop: 50,
           }}
         >
           {navigations.map((item, i) => (
-            <Col key={i} span={8} style={{ margin: 20 }}>
+            <Col key={i} span={7} style={{ margin: 20 }}>
               <Link to={item.key} key={i}>
                 <Card bordered={false}>{item.title}</Card>
               </Link>

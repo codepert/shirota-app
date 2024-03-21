@@ -1215,15 +1215,18 @@ video {
   color: #000;
 }
 
-.my-5 {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.mb-5 {
-  margin-bottom: 5px;
-}
-
-.mt-5 {
-  margin-top: 5px;
+:where(.css-dev-only-do-not-override-1k979oh).ant-select-single
+  .ant-select-selector,
+:where(.css-dev-only-do-not-override-1k979oh).ant-picker,
+:where(.css-dev-only-do-not-override-1k979oh).ant-input,
+:where(.css-dev-only-do-not-override-1k979oh).ant-card,
+:where(.css-dev-only-do-not-override-1k979oh).ant-btn,
+:where(.css-dev-only-do-not-override-1k979oh).ant-pagination,
+:where(.css-dev-only-do-not-override-1k979oh).ant-checkbox
+  .ant-checkbox-inner
+  .ant-pagination-item,
+:where(.css-dev-only-do-not-override-1k979oh).ant-checkbox .ant-checkbox-inner,
+:where(.css-dev-only-do-not-override-1k979oh).ant-pagination
+  .ant-pagination-item-active {
+  border-radius: 0 !important;
 }

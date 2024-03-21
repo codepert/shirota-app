@@ -30,7 +30,7 @@ const BillingListPage = ({ is_edit }) => {
   const [form] = Form.useForm();
   const [billData, setBillData] = useState([]);
 
-  const dateOptions = [20, 28, 29, 30, 31];
+  const [dateOptions, setDateOptions] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [total, setTotal] = useState(0);
@@ -126,6 +126,15 @@ const BillingListPage = ({ is_edit }) => {
   useEffect(() => {
     getList();
   }, []);
+
+  useEffect(() => {
+    const y = ym.format("YYYY");
+    const m = ym.format("M");
+    const NextMonth = new Date(y, m, 1);
+    const endDay = new Date(NextMonth - 1);
+
+    setDateOptions([20, endDay.getDate()]);
+  }, [ym]);
   return (
     <Content style={{ margin: 20 }} className="mx-auto content-h">
       <Card

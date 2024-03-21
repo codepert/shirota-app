@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Table, Pagination } from "antd";
+import { Flex, Table, Pagination, Spin } from "antd";
 import CustomButton from "../../components/common/CustomButton.js";
 import $lang from "../../utils/content/jp.json";
 import { formatNumberManualInsertion } from "../../utils/helper.js";
@@ -13,6 +13,8 @@ const BillProcessTable = ({
   itemsPerPage,
   onChange,
   isEdit,
+  isBillExportSpinLoading,
+  isBillAmountExportSpinLoading,
 }) => {
   const columns = [
     {
@@ -81,26 +83,30 @@ const BillProcessTable = ({
         render: (text, record, dataIndex) => {
           return (
             <Flex justify="center">
-              <CustomButton
-                onClick={() => {
-                  exportBillPDF(record);
-                }}
-                title={$lang.billingReport}
-                size="small"
-                className="btn-default btn-hover-black"
-                style={{ backgroundColor: "transparent", color: "#000" }}
-                visability={true}
-              />{" "}
-              <CustomButton
-                onClick={() => {
-                  exportBillAmountPDF(record);
-                }}
-                title={$lang.billingReportDetail}
-                style={{ backgroundColor: "transparent", color: "#000" }}
-                size="small"
-                className="btn-default btn-hover-black"
-                visability={true}
-              />
+              <Spin spinning={isBillExportSpinLoading}>
+                <CustomButton
+                  onClick={() => {
+                    exportBillPDF(record);
+                  }}
+                  title={$lang.billingReport}
+                  size="small"
+                  className="btn-default btn-hover-black"
+                  style={{ backgroundColor: "transparent", color: "#000" }}
+                  visability={true}
+                />
+              </Spin>
+              <Spin spinning={isBillAmountExportSpinLoading}>
+                <CustomButton
+                  onClick={() => {
+                    exportBillAmountPDF(record);
+                  }}
+                  title={$lang.billingReportDetail}
+                  style={{ backgroundColor: "transparent", color: "#000" }}
+                  size="small"
+                  className="btn-default btn-hover-black"
+                  visability={true}
+                />
+              </Spin>
             </Flex>
             // </div>
           );

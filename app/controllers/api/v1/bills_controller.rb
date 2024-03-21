@@ -5,6 +5,7 @@ class Api::V1::BillsController < Api::V1::BaseController
   require 'csv'
   require 'grover'
   require 'nokogiri'
+  require 'date'
 
   def index
     from_date = params[:from_date]
@@ -31,11 +32,8 @@ class Api::V1::BillsController < Api::V1::BaseController
     shipper_id    = params[:shipper_id]
     warehouse_id  = params[:warehouse_id]
     closing_date  = params[:closing_date]
-    billed_on     = params[:billed_on]
-    y             = params[:y]
-    m             = params[:m]
-    d             = params[:d]
-    
+    billed_on = Date.today.strftime("%Y-%m-%d")
+
     if Bill.where("duration_from='#{from_date}' AND duration_to='#{to_date}'").length > 0
       render :json => {
         status: 'error'
@@ -115,54 +113,63 @@ class Api::V1::BillsController < Api::V1::BaseController
     }, status: :ok
   end
   def export_bill_report
-    bill_id              = params[:id]
+    bill_id   = params[:id]
+    from_date = params[:from_date]
+    to_date   = params[:to_date]
+    bill = Bill.with_shipper_by_id(bill_id).first
+    manangementInfo = ManagementInfo.all.first
 
-    bill = Bill.includes(:shipper).find(bill_id)
-    
-    return
-    # shipper = Shipper.find(shipper_id)
+    sum_amount = bill.handling_cost + bill.storage_cost + bill.deposit_amount
+    billed_on = bill.billed_on
+    billed_on_str = billed_on.to_s[0,4] + "年" + billed_on.to_s[5,2] + "月" + billed_on.to_s[8,2] + "日"
+    year_last_two_digits = billed_on.to_s[2, 2]
 
 
     html = "<html><meta charset=\"UTF-8\"><body><div style=\"width:100%;margin-left:25px\">
             <div style=\"display:flex\">
-            <div style=\"width:30%\">
-              <p></p>
-              <p></p>
-              <p></p>
-            </div>
-            <div style=\"text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:12px\">
-              <h1>御 請 求 書</h1>
-              <p style=\"margin-top:20px;margin-bottom:20px;border-bottom: 2px solid blue;width:180px; margin-left:auto;margin-right:auto\">発行日 2024 年 10 月 30 日</p>  
-              <div>
-                <p>自 23 年 10 月 01 日</p>
-                <p>自 23 年 10 月 31 日</p>
+              <div style=\"width:30%;font-size:12px\">
+                <p style=\"margin-top:50px\">#{bill.shipper_post_code}</p>
+                <p style=\"margin-top:0;margin-bottom:5px\">#{bill.shipper_name}</p>
+                <p style=\"margin-top:0;margin-bottom:5px;width:160px;border-bottom:1px solid red\">#{bill.shipper_main_address} 殿</p>
+              </div>
+              <div style=\"text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:12px\">
+                <h1>御 請 求 書</h1>
+                <p style=\"margin-top:20px;margin-bottom:20px;border-bottom: 1px solid red;width:140px; margin-left:auto;margin-right:auto\">
+                発行日 #{billed_on_str}</p>  
+                <div >
+                  <p>自 #{from_date}</p>
+                  <p style=\"border-bottom: 1px solid red;width: 100px;margin:auto\">至 #{to_date} </p>
+                </div>
+              </div>
+              <div style=\"width:30%;padding-left:20px;font-size:12px\">
+                <p style=\"margin-top:40px;font-size: 14px\">#{manangementInfo.company_name}</p>
+                <p>#{manangementInfo.post_code} #{manangementInfo.address1}</p>
+                <p style=\"padding-left: 50px;margin-top:0;margin-bottom:5px\">TEL #{manangementInfo.tel_number}</p>
+                <p style=\"padding-left: 50px;margin-top:0;margin-bottom:5px\">FAX #{manangementInfo.fax_number}</p>
+                <p style=\"margin-top:0;margin-bottom:5px\"><span>取引銀行</span> #{manangementInfo.bank} </p>
+                <p style=\"padding-left: 50px;margin-top:0;margin-bottom:5px\"> #{manangementInfo.bank_number}</p>
+                <p styl\"margin-top:0\">登録番号 #{manangementInfo.register_number}</p>
               </div>
             </div>
-            <div style=\"width:30%;padding-left:20px;font-size:12px\">
-              <p style=\"margin-top:80px;\">#{shipper.name}</p>
-              <p>#{shipper.main_address}</p>
-              <p> 登録番号: #{shipper.code}</p>
-            </div></div>
-            <div>
             <div style=\"float:right;\">
-              <div style=\"padding-right:55px;margin-bottom:10px;font-size:12px\">請求書No: 006855</div>
+              <div style=\"padding-right:55px;margin-bottom:10px;font-size:12px\">請求書No: #{manangementInfo.invoice_number}</div>
             </div>
             <div style=\"margin-top:5px;display:flex;width:96%;font-size:12px\">
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\">前回御請求額	</div>
-                <div style=\"text-align:center;height:30px;padding-top:10px\">￥ #{last_bill_amount}</div>
+                <div style=\"text-align:center;height:30px;padding-top:10px\">￥ #{bill.last_amount}</div>
               </div>
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\">御入金額	</div>
-                <div style=\"text-align:center;height:30px;padding-top:10px\">￥ #{received_payment_amount}</div>
+                <div style=\"text-align:center;height:30px;padding-top:10px\">￥ #{bill.deposit_amount}</div>
               </div>
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\">当月荷役料</div>
-                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{handling_cost}</div>
+                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{bill.handling_cost}</div>
               </div>
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\">当月保管料</div>
-                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{total_storage_fee}</div>
+                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{bill.storage_cost}</div>
               </div>
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\"></div>
@@ -170,17 +177,18 @@ class Api::V1::BillsController < Api::V1::BaseController
               </div>
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\">税抜合計額<br><span>(税率10%対象)</span></div>
-                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{last_bill_amount}</div>
+                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{sum_amount}</div>
               </div>
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\">消費税額<br><span>(税率10%対象)</span></div>
-                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{last_bill_amount}</div>
+                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{bill.tax}</div>
               </div>
               <div style=\"width:12%;border-style:solid;border-color: red;border-width:1px 1px 1px 1px\">
                 <div style=\"border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px\">今回御請求額</div>
-                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{last_bill_amount}</div>
+                <div style=\"text-align:center;height:30px;padding-top:10px\">￥#{bill.current_amount}</div>
               </div>
-            </div></div></body></html>";
+            </div>
+            <div style=\"float:right;margin-top: 10px;padding-right:55px;font-size:12px\">上記の 通りご請求申し上げます。</div></div></body></html>";
 
     filename = "template"
     doc = Nokogiri::HTML(html)

@@ -12,6 +12,7 @@ import {
   Select,
   Button,
   DatePicker,
+  Spin,
 } from "antd";
 import {} from "antd";
 
@@ -68,6 +69,9 @@ const BillingProcessPage = ({ is_edit }) => {
   const [isModalVisible, setIsConfirmModalVisible] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState("");
   const [isConfirmBillDisabled, setIsConfirmBillDisabled] = useState(false);
+  const [isBillExportSpinLoading, setIsBillExportSpinLoading] = useState(false);
+  const [isBillAmountExportSpinLoading, setIsBillAmountExportSpinLoading] =
+    useState(false);
   const getWarehouses = () => {
     API.get(warehouseURL).then((res) => {
       const warehouses = res.data.map((item) => {
@@ -292,8 +296,11 @@ const BillingProcessPage = ({ is_edit }) => {
       m: selectedMonth,
       d: selectedDay,
     };
+
+    SetIsSpinLoading(true);
     API.post(billURL, params)
       .then((res) => {
+        SetIsSpinLoading(false);
         getBillList();
         openNotificationWithIcon(
           "success",
@@ -356,14 +363,26 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const exportBillPDF = (record) => {
+    processRangeDates.length > 0
+      ? `&from_date=${processRangeDates[0].format(
+          "YY年MM月DD日"
+        )}&to_date=${processRangeDates[1].format("YY年MM月DD日")}`
+      : "";
+
+    setIsBillExportSpinLoading(true);
     API.post(
       billReportURL,
-      { id: record.id },
+      {
+        id: record.id,
+        from_date: processRangeDates[0].format("YY年MM月DD日"),
+        to_date: processRangeDates[1].format("YY年MM月DD日"),
+      },
       {
         responseType: "arraybuffer",
       }
     )
       .then((res) => {
+        setIsBillExportSpinLoading(false);
         downloadPDF(res);
       })
       .catch((err) => {});
@@ -396,6 +415,13 @@ const BillingProcessPage = ({ is_edit }) => {
     setIsConfirmModalVisible(false);
   };
 
+  const onchageBillExportSpinLoading = () => {
+    setIsBillExportSpinLoading(!isBillExportSpinLoading);
+  };
+
+  const onchageBillAmountExportSpinLoading = () => {
+    setIsBillAmountExportSpinLoading(!isBillAmountExportSpinLoading);
+  };
   useEffect(() => {
     getWarehouses();
     getShippers();
@@ -599,6 +625,8 @@ const BillingProcessPage = ({ is_edit }) => {
           itemsPerPage={itemsPerPage}
           total={total}
           onChange={handlePageChange}
+          isBillExportSpinLoading={isBillExportSpinLoading}
+          isBillAmountExportSpinLoading={isBillAmountExportSpinLoading}
           isEdit={is_edit}
         />
       </Card>

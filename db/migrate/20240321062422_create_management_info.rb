@@ -16,6 +16,8 @@ class CreateManagementInfo < ActiveRecord::Migration[7.1]
       t.string  :installation_location,         comment: '設置場所'
       t.string  :invoice_number,                comment: '請求書番号'
       t.string  :register_number,               comment: '登録番号'
+      t.string  :bank,                          comment: 'bank'
+      t.string  :bank_number,                   comment: ''
       t.timestamps
     end
   end

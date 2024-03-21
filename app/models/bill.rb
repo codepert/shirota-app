@@ -4,8 +4,13 @@ class Bill < ApplicationRecord
   belongs_to :shipper
   
   scope :desc, -> { order(id: :desc) }
+  
+  scope :with_shipper_by_id, -> (bill_id) {
+    select("shippers.name as shipper_name, shippers.post_code as shipper_post_code, shippers.main_address as shipper_main_address, bills.*")
+      .joins('LEFT JOIN shippers ON shippers.id= bills.shipper_id')
+      .where('bills.id', bill_id)
+  }
   scope :with_bill_amount_cnt, -> (billed_on) {
-
     query = <<-SQL
       SELECT CONCAT(duration_from, '~', duration_to) AS duration, cnt, billed_on, shippers.name as shipper_name, bills.id, bills.closing_date, shipper_id
       FROM bills

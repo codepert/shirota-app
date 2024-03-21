@@ -351,4 +351,6 @@ ManagementInfo.create([{
   management_pw: 'XXXX',
   invoice_number: '123456	',
   register_number: 'T1234567890123',
+  bank: 'xxxxxx-xxxxxx',
+  bank_number: '123'
 }])

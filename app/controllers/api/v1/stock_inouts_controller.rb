@@ -4,6 +4,7 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
   require 'csv'
   require 'grover'
   require 'nokogiri'
+
   def index
     shipper_id = params[:shipper_id].presence || ''
     warehouse_id = params[:warehouse_id].presence || ''
@@ -160,7 +161,24 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
     
     send_data csv_data, filename: "stock.csv", type: "text/csv", disposition: "inline"
   end
+  def export_stock_csv
+    shipper_id = params[:shipper_id].presence || ''
+    warehouse_id = params[:warehouse_id].presence || ''
+    out_date = params[:out_date].presence || ''
 
+    data = StockInout.inventory(shipper_id, warehouse_id, out_date)
+    csv_data = CSV.generate do |csv|
+      csv << ["NO", "ロット番号", "倉庫",  "品名", "規格・荷姿", "入目","在庫数" ]
+      index = 1
+      data.each do |record|
+        total_weight = record['stock_amount'].to_i*record['weight'].to_i
+        csv << [index, record['lot_number'], record['warehouse_name'], record['product_name'], record['packaging'], 
+        record['weight'], record['stock_amount'], total_weight]
+       index += 1
+      end
+    end
+    send_data csv_data, filename: "stock.csv", type: "text/csv", disposition: "inline"
+  end
   private
   def calculate_adjusted_total_amount(stock, stock_inout_params)
     existing_total_amount = stock[0].total_amount

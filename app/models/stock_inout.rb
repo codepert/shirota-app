@@ -24,61 +24,25 @@ class StockInout < ApplicationRecord
 
   scope :inventory, -> (shipper_id, warehouse_id, out_date) {
       sql = <<~SQL
-      WITH inventory_summary AS (
-        SELECT
-          si.*,
-          stocks.product_id,
-          products.`name`,
-          warehouse_fees.packaging
-        FROM
-          (
-            SELECT
-              inventory_in.lot_number,
-              inventory_in.stock_id,
-              (
-                COALESCE ( inventory_in.in_amount, 0 ) - COALESCE ( inventory_out.out_amount, 0 )) AS inventory_stock 
-            FROM
-              (
-                SELECT
-                  lot_number,
-                  stock_id,
-                  SUM( amount ) AS in_amount
-                FROM
-                  stock_inouts
-                  JOIN stocks ON stocks.id = stock_inouts.stock_id 
-                WHERE
-                  category = 0  #{shipper_id.present? ? "And shipper_id = '#{shipper_id}'" : ''}  #{warehouse_id.present? ? "And warehouse_id = '#{warehouse_id}'" : ''}
-                GROUP BY
-                  lot_number,
-                  stock_id 
-              ) AS inventory_in
-          LEFT JOIN (
-            SELECT
-              lot_number,
-              stock_id,
-              SUM( amount ) AS out_amount
-            FROM
-              stock_inouts
-            WHERE
-              category = 1 #{out_date.present? ? "And inout_on <= '#{out_date}'" : ''}
-            GROUP BY
-              stock_id,
-              lot_number
-          ) AS inventory_out ON inventory_out.stock_id = inventory_in.stock_id
-                            AND inventory_out.lot_number = inventory_in.lot_number
-          ) si
-          JOIN stocks on stocks.id = si.stock_id
-          JOIN products on products.id = stocks.product_id
-          JOIN warehouse_fees ON warehouse_fees.id = products.warehouse_fee_id
-      )
-      SELECT t.*, inouton.inout_on, inouton.weight
-      FROM (
-        SELECT * FROM inventory_summary
-      ) t
-      JOIN (
-        SELECT * FROM stock_inouts WHERE category = 0
-      ) inouton ON inouton.stock_id = t.stock_id AND inouton.lot_number = t.lot_number
-      ORDER BY t.stock_id, t.lot_number
+       SELECT 
+          stock_id, products.name as product_name, stock_inouts.lot_number, shippers.name as shippper_name, products.specification, 
+          SUM(CASE WHEN category = 0 THEN amount ELSE 0 END) - SUM(CASE WHEN category = 1 THEN amount ELSE 0 END) as stock_amount,
+          warehouse_fees.packaging,
+          warehouses.name as warehouse_name,
+          max(stock_inouts.weight) as weight, 
+          MIN(CASE  WHEN category = 0 THEN inout_on ELSE null END) as inout_on
+      FROM 
+          stock_inouts
+      JOIN 
+          stocks ON stocks.id = stock_inouts.stock_id
+      JOIN products ON products.id = stocks.product_id
+      JOIN shippers ON shippers.id = stocks.shipper_id
+      JOIN warehouses ON warehouses.id = stocks.warehouse_id
+      JOIN warehouse_fees ON warehouse_fees.id = products.warehouse_fee_id
+      WHERE 
+          inout_on <= '#{out_date}' #{shipper_id.present? ? " WHERE shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " WHERE warehouse_id = '#{warehouse_id}'" : ''}
+      GROUP BY 
+          stock_id, lot_number
     SQL
 
      ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, shipper_id, warehouse_id, out_date]))

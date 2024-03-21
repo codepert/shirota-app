@@ -88,16 +88,6 @@ const BillingListPage = ({ is_edit }) => {
   };
 
   const exportBillPDF = (record) => {
-    const param = {
-      shipper_id: record.shipper_id,
-      bill_payment_amount: record.bill_payment_amount,
-      handling_cost: record.handling_cost,
-      last_bill_amount: record.last_bill_amount,
-      product_name: record.product_name,
-      received_payment_amount: record.received_payment_amount,
-      tax: record.tax,
-      total_storage_fee: record.total_storage_fee,
-    };
     API.post(billReportURL, param, {
       responseType: "arraybuffer",
     })

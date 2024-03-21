@@ -11,6 +11,7 @@ import {
   Row,
   Col,
   Table,
+  Spin,
 } from "antd";
 
 import { API, currentDate } from "../utils/helper";
@@ -21,7 +22,7 @@ import {
   shipperURL,
   inventoryURL,
   exportInventoryPdfDataUrl,
-  // exportStockCSVDataUrl,
+  exportStockCSVDataUrl,
 } from "../utils/constants";
 
 import CustomButton from "../components/common/CustomButton";
@@ -62,6 +63,8 @@ const InventoryPage = ({ is_edit }) => {
   const onChangeShipper = (value, option) => {
     setSeletedShipper({ value: value, label: option.label });
   };
+
+  const [isSpinLoading, setIsSpinLoading] = useState(false);
 
   const stockColumns = [
     {
@@ -159,9 +162,9 @@ const InventoryPage = ({ is_edit }) => {
           i++;
           return {
             inout_on: item.inout_on,
-            amount: item.inventory_stock,
+            amount: item.stock_amount,
             lot_number: item.lot_number,
-            product_name: item.name,
+            product_name: item.product_name,
             packaging: item.packaging,
             weight: item.weight,
             key: i,
@@ -214,12 +217,6 @@ const InventoryPage = ({ is_edit }) => {
     });
   };
   const exportDataAndDownloadCVS = async () => {
-    openNotificationWithIcon(
-      "warning",
-      $lang.popConfirmType.warning,
-      "現在作業しています。"
-    );
-    return;
     const csvData = getCSVData();
     if (csvData.length == 0) {
       openNotificationWithIcon(
@@ -230,9 +227,8 @@ const InventoryPage = ({ is_edit }) => {
       return;
     }
 
-    const dateParam = new Date(targetDate.toString())
-      .toISOString()
-      .substring(0, 10);
+    const dateParam = targetDate.format("YYYY-MM-DD");
+
     let url = `${exportStockCSVDataUrl}?out_date=${dateParam}`;
 
     if (seletedShipper.value != "")
@@ -244,7 +240,9 @@ const InventoryPage = ({ is_edit }) => {
           ? `&warehouse_id=${selectedWarehouse.value}`
           : "";
 
-    API.post(url, { data: csvData, shipper_id: seletedShipper.value })
+    setIsSpinLoading(true);
+
+    API.get(url)
       .then((response) => {
         const timestamp = Date.now();
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -255,6 +253,7 @@ const InventoryPage = ({ is_edit }) => {
         link.click();
         document.body.removeChild(link);
 
+        setIsSpinLoading(false);
         setTimeout(() => {
           openNotificationWithIcon(
             "success",
@@ -264,6 +263,8 @@ const InventoryPage = ({ is_edit }) => {
         }, 1000);
       })
       .catch((err) => {
+        setIsSpinLoading(false);
+
         openNotificationWithIcon(
           "error",
           $lang.popConfirmType.error,
@@ -375,7 +376,7 @@ const InventoryPage = ({ is_edit }) => {
               </Col>
               <Col span={13}>
                 {is_edit === 1 ? (
-                  <>
+                  <Spin spinning={isSpinLoading}>
                     <CustomButton
                       onClick={exportDataAndDownloadCVS}
                       className="px-5 ml-2 btn-bg-black"
@@ -390,7 +391,7 @@ const InventoryPage = ({ is_edit }) => {
                       visability={true}
                       style={{ float: "right" }}
                     /> */}
-                  </>
+                  </Spin>
                 ) : (
                   <></>
                 )}

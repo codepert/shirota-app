@@ -61,7 +61,7 @@ export const exportReceivePaymentCSVDataUrl =
   baseUrl + "api/v1/received_payments_csv_export";
 export const billReportURL = "api/v1/export_bill_report";
 export const billAmountReportURL = "api/v1/export_bill_amount_report";
-
+export const billsReportURL = "api/v1/export_bills_report";
 export const billURL = "api/v1/bills";
 //unit_price urls
 

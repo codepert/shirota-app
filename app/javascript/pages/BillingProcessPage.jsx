@@ -30,6 +30,7 @@ import {
   billAmountReportURL,
   billURL,
   lastBillDateURL,
+  billsReportURL,
 } from "../utils/constants";
 import $lang from "../utils/content/jp.json";
 
@@ -71,6 +72,8 @@ const BillingProcessPage = ({ is_edit }) => {
   const [isConfirmBillDisabled, setIsConfirmBillDisabled] = useState(false);
   const [isBillExportSpinLoading, setIsBillExportSpinLoading] = useState(false);
   const [isBillAmountExportSpinLoading, setIsBillAmountExportSpinLoading] =
+    useState(false);
+  const [isBillsExportSpinLoading, setIsBillsExportSpinLoading] =
     useState(false);
   const getWarehouses = () => {
     API.get(warehouseURL).then((res) => {
@@ -385,29 +388,58 @@ const BillingProcessPage = ({ is_edit }) => {
         setIsBillExportSpinLoading(false);
         downloadPDF(res);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setIsBillExportSpinLoading(false);
+      });
   };
 
   const exportBillAmountPDF = (record) => {
-    const billDate =
-      selectedYear +
-      "-" +
-      (selectedMonth < 10 ? "0" + selectedMonth : selectedMonth) +
-      "-" +
-      (selectedDay < 10 ? "0" + selectedDay : selectedDay);
-
+    setIsBillAmountExportSpinLoading(true);
     API.post(
       billAmountReportURL,
-      { bill_date: billDate },
+      {
+        bill_id: record.id,
+        from_date: processRangeDates[0].format("YY年MM月DD日"),
+        to_date: processRangeDates[1].format("YY年MM月DD日"),
+      },
       {
         responseType: "arraybuffer",
       }
     )
       .then((res) => {
+        setIsBillAmountExportSpinLoading(false);
         downloadPDF(res);
       })
       .catch((err) => {
+        setIsBillAmountExportSpinLoading(false);
         console.log("err", err);
+      });
+  };
+
+  const exportBillsPDF = () => {
+    processRangeDates.length > 0
+      ? `&from_date=${processRangeDates[0].format(
+          "YYYY-MM-DD"
+        )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
+      : "";
+
+    setIsBillsExportSpinLoading(true);
+    API.post(
+      billsReportURL,
+      {
+        from_date: processRangeDates[0].format("YYYY-MM-DD"),
+        to_date: processRangeDates[1].format("YYYY-MM-DD"),
+      },
+      {
+        responseType: "arraybuffer",
+      }
+    )
+      .then((res) => {
+        setIsBillsExportSpinLoading(false);
+        downloadPDF(res);
+      })
+      .catch((err) => {
+        setIsBillExportSpinLoading(false);
       });
   };
 
@@ -580,9 +612,11 @@ const BillingProcessPage = ({ is_edit }) => {
             {is_edit === 1 ? (
               <>
                 <Space className="" style={{ float: "right" }}>
-                  <Button className="btn-bg-black">
-                    {$lang.buttons.billingListOutput}
-                  </Button>
+                  <Spin spinning={isBillsExportSpinLoading}>
+                    <Button className="btn-bg-black" onClick={exportBillsPDF}>
+                      {$lang.buttons.billingListOutput}
+                    </Button>
+                  </Spin>
                   <label style={{ marginLeft: 20 }}>{$lang.processDate}</label>{" "}
                   :{lastBillDate}
                 </Space>

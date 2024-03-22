@@ -3,7 +3,7 @@ import $lang from "../utils/content/jp.json";
 import dayjs from "dayjs";
 
 import { Link } from "react-router-dom";
-import { billURL } from "../utils/constants";
+import { billURL, billsReportURL } from "../utils/constants";
 import {
   Form,
   Layout,
@@ -65,6 +65,7 @@ const BillingListPage = ({ is_edit }) => {
       .then((res) => {
         const data = res.data.map((item, i) => {
           return {
+            id: item.id,
             billed_on: item.created_at,
             cnt: item.processing_cnt,
             duration: item.duration_from + " ~ " + item.duration_to,
@@ -88,7 +89,7 @@ const BillingListPage = ({ is_edit }) => {
   };
 
   const exportBillPDF = (record) => {
-    API.post(billReportURL, param, {
+    API.get(`${billsReportURL}?id=${record.id}`, {
       responseType: "arraybuffer",
     })
       .then((res) => {

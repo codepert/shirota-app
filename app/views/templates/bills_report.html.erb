@@ -1,0 +1,119 @@
+<html>
+  <meta charset="UTF-8" />
+  <body>
+    <div style="width:100%;margin-left:80px">
+      <div style="width: 30%; font-size: 10px">
+        <p style="margin-top: 50px; font-size: 16px; font-style: italic;font-family:'MizukiMinchoU';">
+          請求一覧
+        </p>
+      </div>
+      <div style="margin-left:500">
+        <p style="">
+          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';">締切日:</span> 
+          <span style="font-size: 12px;font-family: 'Arial Narrow'">2024</span>
+          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #4096ff;padding-left:'2px';padding-right:'2px'">年</span>
+          <span style="font-size: 12px;font-family: 'Arial Narrow'">3</span>
+          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #4096ff;padding-left:'2px';padding-right:'2px'">月</span>
+          <span style="font-size: 12px;font-family: 'Arial Narrow'">31</span>
+          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #4096ff;padding-left:'2px';padding-right:'2px'">日</span>
+        </p>
+      </div>
+      <table
+        style="
+          font-size: 10px;
+          width: '100%'
+          border-bottom: 1px solid #4096ff;
+          border-spacing: 0;
+        "
+      >
+        <thead>
+          <tr style="color: #4096ff;;font-family:'MizukiMinchoU';">
+            <td style="padding: 1px">請求書番号</td>
+            <td style="padding: 1px">荷主コード</td>
+            <td style="padding: 1px">荷主名</td>
+            <td style="padding: 1px">前回請求額</td>
+            <td style="padding: 1px">入金額</td>
+            <td style="padding: 1px">荷役料</td>
+            <td style="padding: 1px">保管料</td>
+            <td style="padding: 1px">値引</td>
+            <td style="padding: 1px">税抜き合計</td>
+            <td style="padding: 1px">消費額</td>
+            <td style="padding: 1px" width="8%">今回請求額</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background-color: blue; height: 2px">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <% @bills.each do |record| %>
+          <tr style="font-size: 10px; margin-top: 2px">
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.id %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.shipper_code %></td>
+            <td style="width: 20%; text-align: left">
+              <%= record.shipper_name %>
+            </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= record.last_amount %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= record.deposit_amount %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= record.handling_cost %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= record.storage_cost %></td>
+            <td style="padding: 1px"></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">
+              ￥ <%= record.handling_cost + record.storage_cost %>
+            </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">
+              ￥ <%= ((record.handling_cost + record.storage_cost)/ 10) %>
+            </td>
+            <td style="width: 7%; padding: 1px;font-family: 'Arial Narrow'">
+              ￥ <%= record.current_amount %>
+            </td>
+          </tr>
+          <% end %>
+          <tr style="background-color: blue; height: 2px">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr style="font-size: 10px; margin-top: 2px">
+            <td style="padding: 1px;font-family: 'Arial Narrow'"></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"></td>
+            <td style="width: 20%; text-align: left;color:#4096ff">
+              合計
+            </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <% @total_bills[0].last_amount %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <% @total_bills[0].deposit_amount %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= @total_bills[0].handling_cost %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= @total_bills[0].storage_cost %></td>
+            <td style="padding: 1px"></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">
+              ￥ <%= @total_bills[0].handling_cost + @total_bills[0].storage_cost %>
+            </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">
+              ￥ <%= ((@total_bills[0].handling_cost + @total_bills[0].storage_cost)/ 10) %>
+            </td>
+            <td style="width: 7%; padding: 1px;font-family: 'Arial Narrow'">
+              ￥ <%= @total_bills[0].current_amount %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

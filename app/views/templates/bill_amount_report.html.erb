@@ -1,0 +1,296 @@
+<html><meta charset="UTF-8"><body><div style="width:100%;margin-left:25px">
+            <div style="display:flex">
+            <div style="width:30%;margin-top:70px;font-size:10px">
+              <p style="font-family: 'MizukiMinchoU';font-style: 'italic'">荷主名: <%= @shipper_name></p>
+            </div>
+            <div style="text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:10px">
+              <h1 style="font-family: 'MizukiMinchoU';font-style: 'italic'">御 請 求 書</h1>
+              <div>
+                <p>自 #{from_date}<%= @shipper_name></p>
+                <p>至 #{to_date}<%= @shipper_name></p>
+              </div>
+            </div>
+            <div style="width:30%;padding-left:10px;font-size:10px;margin-top:80px;">
+              <span style="border-bottom:1px solid #4096ff;color:#4096ff;float:right;font-family: 'MizukiMinchoU';font-style: 'italic'">
+                #{manangementInfo.company_name}<%= @shipper_name></span>
+            </div></div>
+            <div>
+            <div style="margin-top:5px;display:flex;width:96%;font-size:8px;color:#4096ff">
+              <div style="width:56%;">
+              </div>
+              <div style="width:21%;">
+                <span style="font-family: 'MizukiMinchoU';font-style: 'italic'">*--------------------荷役料--------------------*</span>
+              </div>
+              <div style="width:21%;">
+                <span>*--------------------保管料--------------------*</span>
+              </div>
+            </div>
+            <div style="margin-top:0px;display:flex;width:96%;font-size:8px;color:#4096ff;font-family: 'MizukiMinchoU';font-style: 'italic'">
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">ロット番号	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">品名コード,	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">品名,規格荷姿	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">前期繰起	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">上期入庫<br>上期出庫<br>上期積数	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">中期入庫<br>中期出庫<br>中期積数	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">下期入庫<br> 下期出庫<br>	下期積数	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">当期残高	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">総残高	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">単価	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">金額	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">入庫数<br>出庫数	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">単価<br>単価	</div>
+              </div>
+              <div style="width:7%;">
+                <div style="border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'">入庫料<br>出庫料	</div>
+              </div></div>"
+              total_first_stock_amount  = 0
+              total_mid_stock_amount    = 0
+              total_second_stock_amount = 0
+              total_stock               = 0
+              total_handle_fee          = 0
+              total_in_stock_amount     = 0
+              total_out_stock_amount    = 0
+              total_in_stock_fee        = 0
+              total_out_stock_fee       = 0
+              bill_amounts.map do |record|
+                html  += "<div style="margin-top:5px;display:flex;width:96%;font-size:8px">
+              <div style="width:7%;font-family: 'MizukiMinchoU';">
+                #{record.product_code}<%= @shipper_name>
+              </div>
+              <div style="width:7%;font-family: 'MizukiMinchoU';">
+                #{record.product_name}<%= @shipper_name>
+              </div>
+              <div style="width:7%;font-family: 'MizukiMinchoU';">
+                #{record.specification} <%= @shipper_name>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.previous_stock_amount}<%= @shipper_name></div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.first_half_instock_amount}<%= @shipper_name></div>
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.first_half_outstock_amount}<%= @shipper_name></div>
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.first_half_instock_amount+record.previous_stock_amount}<%= @shipper_name></div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.mid_instock_amount}<%= @shipper_name></div>
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.mid_outstock_amount}<%= @shipper_name></div>
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount}<%= @shipper_name></div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.second_half_instock_amount}</div>
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.second_half_outstock_amount}</div>
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">#{record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount}<%= @shipper_name></div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                    #{record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount-record.second_half_outstock_amount}
+                    <%= @shipper_name></div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                    #{(record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)}
+                  <%= @shipper_name></div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{record.storage_fee_rate}<%= @shipper_name></div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{record.storage_fee_rate*((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount))}
+                <%= @shipper_name>
+              </div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount}
+                <%= @shipper_name>
+                </div>
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount}
+                <%= @shipper_name>
+              </div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥ #{record.instock_handle_fee_rate}
+                  <%= @shipper_name>
+                </div>
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥ #{record.outstock_handle_fee_rate}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+                 <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥#{(record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)*record.instock_handle_fee_rate} 
+                  <%= @shipper_name>
+                </div>
+                 <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥#{(record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)*record.outstock_handle_fee_rate}
+                <%= @shipper_name> </div>
+              </div>
+            </div>"
+            
+              total_first_stock_amount  += record.first_half_instock_amount+record.previous_stock_amount
+              total_mid_stock_amount    += record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount
+              total_second_stock_amount += record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount
+              total_stock               += (record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)
+              total_handle_fee          += record.storage_fee_rate*((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount))
+              total_in_stock_amount     += record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount
+              total_out_stock_amount    += record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount
+              total_in_stock_fee        += (record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)*record.instock_handle_fee_rate
+              total_out_stock_fee       += (record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)*record.outstock_handle_fee_rate
+          end
+             html +=  "<div style="margin-top:5px;display:flex;width:96%;font-size:8px">
+              <div style="width:28%;">
+                <div style="float:right;padding-right:35px">合計</div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                    #{total_first_stock_amount}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                    #{total_mid_stock_amount}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_second_stock_amount}
+                <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;"></div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                      #{total_stock}
+                    <%= @shipper_name>
+                  </div>
+              </div>
+              <div style="width:7%;">
+                  
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_handle_fee}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_in_stock_amount}
+                  <%= @shipper_name>
+                </div>
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_out_stock_amount}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+               
+              </div>
+              <div style="width:7%;">
+                 <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥#{total_in_stock_fee}
+                  <%= @shipper_name>
+                </div>
+                 <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥#{total_out_stock_fee}
+                  <%= @shipper_name>
+                </div>
+              </div>
+            </div><hr>
+            <div style="margin-top:5px;display:flex;width:96%;font-size:8px">
+              <div style="width:28%;float:right">
+                 <div style="float:right;padding-right:35px">頁計</div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                    #{total_first_stock_amount}
+                    <%= @shipper_name>
+                  </div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_mid_stock_amount}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+                  <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                    #{total_second_stock_amount}
+                    <%= @shipper_name>
+                  </div>
+              </div>
+              <div style="width:7%;">
+                 </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_stock}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+                  
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_handle_fee}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_in_stock_amount}
+                  <%= @shipper_name>
+                </div>
+                <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  #{total_out_stock_amount}
+                  <%= @shipper_name>
+                </div>
+              </div>
+              <div style="width:7%;">
+               
+              </div>
+              <div style="width:7%;">
+                 <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥#{total_in_stock_fee}
+                  <%= @shipper_name>
+                </div>
+                 <div style="border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';">
+                  ￥#{total_out_stock_fee} 
+                  <%= @shipper_name>
+                </div>
+              </div>
+            </div>"
+            
+            "</div></div></body></html>

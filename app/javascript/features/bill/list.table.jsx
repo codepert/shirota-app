@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
 import { Flex, Table, Pagination } from "antd";
 import CustomButton from "../../components/common/CustomButton.js";
@@ -62,7 +62,8 @@ const BillListTable = ({
               <div className="p-2 rounded-full cursor-pointer text-center">
                 <CustomButton
                   onClick={() => {
-                    exportBillPDF(record.id);
+                    console.log("record", record);
+                    exportBillPDF(record);
                   }}
                   title={$lang.billingReport}
                   size="small"
@@ -72,7 +73,7 @@ const BillListTable = ({
                 />{" "}
                 <CustomButton
                   onClick={() => {
-                    exportBillAmountPDF(record.id);
+                    exportBillAmountPDF(record);
                   }}
                   title={$lang.detail}
                   style={{

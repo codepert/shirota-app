@@ -127,6 +127,7 @@ const NavbarSection = () => {
         style={{
           backgroundColor: "#fff",
           width: "100%",
+          borderBottom: "1px solid #eee",
         }}
       >
         <div className="" style={{ backgroundColor: "#fff" }}></div>
@@ -162,13 +163,12 @@ const NavbarSection = () => {
           boxShadow: "0 5px 10px rgba(204,204,204,.4)",
         }}
       >
-        <Flex horizontal align="start">
+        <Flex horizontal="true" align="start">
           <Title
             level={5}
             style={{
               marginTop: 10,
               marginLeft: 20,
-              background: "#297afc",
               paddingLeft: 10,
               paddingRight: 10,
             }}
@@ -178,7 +178,6 @@ const NavbarSection = () => {
               style={{
                 color: "#000",
                 fontWeight: 800,
-                color: "#fff",
                 fontSize: 14,
               }}
             >

@@ -1,11 +1,14 @@
 class Api::V1::BillsController < Api::V1::BaseController
-  before_action :authenticate_user!
-  set_pagination_callback :bill, [:index]
-
   require 'csv'
   require 'grover'
   require 'nokogiri'
   require 'date'
+  
+  before_action :authenticate_user!
+  set_pagination_callback :bill, [:index]
+  
+  include PdfRender
+  include ActionController::MimeResponds # API モードで respond_to を使うために必要
 
   def index
     from_date = params[:from_date]
@@ -125,7 +128,9 @@ class Api::V1::BillsController < Api::V1::BaseController
     year_last_two_digits = billed_on.to_s[2, 2]
 
 
-    html = "<html><meta charset=\"UTF-8\"><body><div style=\"width:100%;margin-left:25px\">
+    html = "<html><meta charset=\"UTF-8\">
+          <head><style>@font-face {font-family: 'Arial Unicode MS'; src: url('<%= asset_pack_path('fonts/MizukiMinchoU.ttf') %>') format('truetype');}</style></head>
+          <body><div style=\"width:100%;margin-left:25px\">
             <div style=\"display:flex\">
               <div style=\"width:30%;font-size:10px\">
                 <p style=\"margin-top:50px\">#{bill.shipper_post_code}</p>
@@ -133,7 +138,7 @@ class Api::V1::BillsController < Api::V1::BaseController
                 <p style=\"margin-top:0;margin-bottom:5px;width:160px;border-bottom:1px solid red\">#{bill.shipper_main_address} 殿</p>
               </div>
               <div style=\"text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:10px\">
-                <h1>御 請 求 書</h1>
+                <h1 style=\"font-style:italic;color: #4096ff\">御 請 求 書</h1>
                 <p style=\"margin-top:20px;margin-bottom:20px;border-bottom: 1px solid red;width:140px; margin-left:auto;margin-right:auto\">
                 発行日 #{billed_on_str}</p>  
                 <div >
@@ -190,11 +195,36 @@ class Api::V1::BillsController < Api::V1::BaseController
             </div>
             <div style=\"float:right;margin-top: 10px;padding-right:55px;font-size:10px\">上記の 通りご請求申し上げます。</div></div></body></html>";
 
-    filename = "template"
-    doc = Nokogiri::HTML(html)
-    doc.encoding = 'UTF-8'
-    pdf = Grover.new(html, format: 'A4').to_pdf
-    send_data pdf, filename: filename, type: "application/pdf"
+
+  
+    # doc = Nokogiri::HTML(html)
+    # doc.encoding = 'UTF-8'
+    controller = ActionController::Base.new
+
+    controller.instance_variable_set(:@shipper_post_code, bill.shipper_post_code)
+    controller.instance_variable_set(:@shipper_name, bill.shipper_name)
+    controller.instance_variable_set(:@shipper_main_address, bill.shipper_main_address)
+    controller.instance_variable_set(:@from_date, from_date)
+    controller.instance_variable_set(:@to_date, to_date)
+    controller.instance_variable_set(:@company_post_code, manangementInfo.post_code)
+    controller.instance_variable_set(:@company_name, manangementInfo.company_name)
+    controller.instance_variable_set(:@address1, manangementInfo.address1)
+    controller.instance_variable_set(:@tel_number, manangementInfo.tel_number)
+    controller.instance_variable_set(:@fax_number, manangementInfo.fax_number)
+    controller.instance_variable_set(:@bank, manangementInfo.bank)
+    controller.instance_variable_set(:@bank_number, manangementInfo.bank_number)
+    controller.instance_variable_set(:@register_number, manangementInfo.register_number)
+    controller.instance_variable_set(:@invoice_number, manangementInfo.invoice_number)
+    controller.instance_variable_set(:@last_amount, bill.last_amount)
+    controller.instance_variable_set(:@handling_cost, bill.handling_cost)
+    controller.instance_variable_set(:@storage_cost, bill.storage_cost)
+    controller.instance_variable_set(:@sum_amount, sum_amount)
+    controller.instance_variable_set(:@tax, bill.tax)
+    controller.instance_variable_set(:@current_amount, bill.current_amount)
+
+    html = controller.render_to_string(template: 'templates/bill_report', layout: nil)
+    pdf = Grover.new(html).to_pdf
+    send_data(pdf, filename: 'sample.pdf', type: 'application/pdf', disposition: 'inline')
 
   end
   def export_bill_amount_report

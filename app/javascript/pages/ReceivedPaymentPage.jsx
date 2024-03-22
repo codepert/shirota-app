@@ -399,7 +399,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
             {" "}
             <Button
               className="btn-bg-black"
-              style={{ marginLeft: 40 }}
+              style={{ marginLeft: 70 }}
               onClick={getReceivePayment}
             >
               {$lang.buttons.search}
@@ -407,6 +407,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
             <Button
               className="btn-bg-black ml-1"
               onClick={exportDataAndDownloadCVS}
+              type="primary"
             >
               {$lang.buttons.csvExchange}
             </Button>
@@ -419,11 +420,12 @@ const ReceivedPaymentPage = ({ is_edit }) => {
           <Col span={12}>
             <Button
               className="btn-bg-black"
-              style={{ float: "right" }}
+              style={{ float: "right", marginBottom: 10 }}
               onClick={() => {
                 setModalData(null);
                 handleShowModal();
               }}
+              type="primary"
             >
               {$lang.buttons.register}
             </Button>

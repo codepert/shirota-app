@@ -75,6 +75,7 @@ const BillingProcessPage = ({ is_edit }) => {
     useState(false);
   const [isBillsExportSpinLoading, setIsBillsExportSpinLoading] =
     useState(false);
+  const [isSpinLoading, SetIsSpinLoading] = useState(false);
   const getWarehouses = () => {
     API.get(warehouseURL).then((res) => {
       const warehouses = res.data.map((item) => {
@@ -578,16 +579,18 @@ const BillingProcessPage = ({ is_edit }) => {
         <Flex justify="item-start">
           {" "}
           <Space>
-            <Button
-              className="btn-bg-black"
-              style={{ marginLeft: 60 }}
-              onClick={() => {
-                setIsConfirmBillDisabled(false);
-                getCalculateBillList();
-              }}
-            >
-              {$lang.billing.buttons.billingCalculation}
-            </Button>
+            <Spin spinning={isSpinLoading}>
+              <Button
+                className="btn-bg-black"
+                style={{ marginLeft: 60 }}
+                onClick={() => {
+                  setIsConfirmBillDisabled(false);
+                  getCalculateBillList();
+                }}
+              >
+                {$lang.billing.buttons.billingCalculation}
+              </Button>
+            </Spin>
           </Space>
           <Button
             className="btn-bg-black ml-1"

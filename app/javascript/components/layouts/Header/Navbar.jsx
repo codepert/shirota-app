@@ -125,21 +125,16 @@ const NavbarSection = () => {
       <Flex
         justify="space-between"
         style={{
-          backgroundColor: "#abd090",
+          backgroundColor: "#fff",
+          width: "100%",
         }}
       >
-        <div className="" style={{ backgroundColor: "#abd090" }}>
-          <Title level={5} style={{ marginLeft: "20px" }}>
-            <Link to="/" style={{ color: "#000", fontWeight: 800 }}>
-              {siteInfo.title}
-            </Link>
-          </Title>
-        </div>
+        <div className="" style={{ backgroundColor: "#fff" }}></div>
         <div className="items-center">
           <div className="flex justify-between">
             <p
               style={{
-                backgroundColor: "#abd990",
+                backgroundColor: "#fff",
               }}
               className="mt-2"
             >
@@ -162,31 +157,58 @@ const NavbarSection = () => {
       <Flex
         justify="space-between"
         style={{
-          backgroundColor: "#bfd9ab",
+          backgroundColor: "#fff",
+          borderBottom: "1px solid #0505050f",
+          boxShadow: "0 5px 10px rgba(204,204,204,.4)",
         }}
       >
-        <Menu
-          onClick={onMenuClick}
-          selectedKeys={[current]}
-          mode="horizontal"
-          items={realData}
-          style={{
-            marginLeft: 190,
-            backgroundColor: "#bfd9ab",
-          }}
-        />
+        <Flex horizontal align="start">
+          <Title
+            level={5}
+            style={{
+              marginTop: 10,
+              marginLeft: 20,
+              background: "#297afc",
+              paddingLeft: 10,
+              paddingRight: 10,
+            }}
+          >
+            <Link
+              to="/"
+              style={{
+                color: "#000",
+                fontWeight: 800,
+                color: "#fff",
+                fontSize: 14,
+              }}
+            >
+              {siteInfo.title}
+            </Link>
+          </Title>
+          <Menu
+            onClick={onMenuClick}
+            selectedKeys={[current]}
+            mode="horizontal"
+            items={realData}
+            style={{
+              marginLeft: 190,
+              backgroundColor: "#fff",
+              border: "none",
+            }}
+          />
+        </Flex>
         <div style={{ marginTop: 10, marginRight: 20 }}>
           <span>{$lang.date} : </span>
           <span>{moment().format("YYYY/MM/DD")}</span>
         </div>
       </Flex>
-      <Breadcrumb
+      {/* <Breadcrumb
         items={[{ title }]}
         style={{
           padding: "10px 20px ",
           backgroundColor: "#fff",
         }}
-      />
+      /> */}
     </Layout>
   );
 };

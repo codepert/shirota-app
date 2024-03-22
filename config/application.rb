@@ -29,3 +29,4 @@ module RubyReactApp
     config.encoding = "utf-8"
   end
 end
+

@@ -20,6 +20,7 @@ const CustomButton = ({
       htmlType={htmlType}
       style={style}
       hidden={!visability}
+      type="primary"
     >
       {title}
     </Button>

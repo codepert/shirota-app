@@ -1,0 +1,71 @@
+<html><meta charset="UTF-8">
+  <head></head>
+  <body>
+    <div style="width:90%;margin-left:60px;margin-right:60px;font-family:'MizukiMinchoU'">
+      <div style="display:flex">
+        <div style="width:30%;font-size:10px">
+          <p style="margin-top:50px;margin-bottom:0"><%= @shipper_post_code %></p>
+          <p style="margin-top:0;margin-bottom:5px"><%= @shipper_name %></p>
+          <p style="margin-top:10px;margin-bottom:5px">
+            <span style="border-bottom:1px solid red;letter-spacing:2px"><%= @shipper_main_address %> 殿</span>
+          </p>
+        </div>
+        <div style="text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:10px">
+          <h1 style="margin-bottom:0;font-family:'MizukiMinchoU';letter-spacing:2px;font-weight:400">御 請 求 書</h1>
+          <p style="margin-top:5px;margin-bottom:5px;border-bottom: 1px solid red;width:140px; margin-left:auto;margin-right:auto">
+            <span style="">発行日</span> <span style="font-family: 'Arial Narrow';letter-spacing:2px"><%= @billed_on_str %></span>
+          </p>  
+          <p style="margin-top:10px;margin-bottom:5px;font-family: 'Arial Narrow';letter-spacing:2px">自 <%= @from_date %></p>
+          <p style="margin-top:0;margin-bottm:5px;border-bottom: 1px solid red;width: 95px;margin:auto;letter-spacing:2px;font-family: 'Arial Narrow';letter-spacing:2px">至 <%= @to_date %> </p>
+        </div>
+        <div style="width:30%;padding-left:20px;font-size:10px">
+          <p style="margin-top:40px;margin-bottom:0;font-size: 14px;letter-spacing:5px"><%= @company_name %></p>
+          <p style="margin-top:5px;margin-bottom:0"><span style="font-family: 'Arial Narrow"><%= @company_post_code %></span> <%= @address1 %></p>
+          <p style="margin-top:0;margin-bottom:2px;padding-left: 40px;font-family: 'Arial Narrow'">TEL <%= @tel_number %></p>
+          <p style="margin-top:0;margin-bottom:2px;padding-left: 40px;font-family: 'Arial Narrow'">FAX <%= @fax_number %></p>
+          <p style="margin-top:0;margin-bottom:2px;"><span>取引銀行</span><span style="font-family: 'Arial Narrow'"> <%= @bank %> </sapn></p>
+          <p style="margin-top:0;margin-bottom:5px;padding-left: 40px;font-family: 'Arial Narrow'"> <%= @bank_number %></p>
+          <p style="margin-top:0;font-family: 'Arial Narrow'">登録番号 <span style="font-family: 'Arial Narrow"><%= @register_number %></span></p>
+        </div>
+      </div>
+      <div style="float:right;">
+        <div style="padding-right:55px;margin-bottom:10px;font-size:10px">請求書No: <span style="font-family: 'Arial Narrow"><%= @invoice_number %></span></div>
+      </div>
+      <div style="margin-top:5px;display:flex;width:96%;font-size:10px">
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">前回御請求額	</div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥ <span style="font-family: 'Arial Narrow"><%= @last_amount %></span></div>
+        </div>
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">御入金額	</div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥ <span style="font-family: 'Arial Narrow"><%= @deposit_amount %></span></div>
+        </div>
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">当月荷役料</div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @handling_cost %></span></div>
+        </div>
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">当月保管料</div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @storage_cost %></span></div>
+        </div>
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px"></div>
+          <div style="text-align:center;height:30px;padding-top:10px"></div>
+        </div>
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">税抜合計額<br><span>(税率10%対象)</span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @sum_amount %></span></div>
+        </div>
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">消費税額<br><span>(税率10%対象)</span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @tax %></span></div>
+        </div>
+        <div style="width:12%;border-style:solid;border-color: red;border-width:1px 1px 1px 1px">
+          <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">今回御請求額</div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @current_amount %></span></div>
+        </div>
+      </div>
+      <div style="float:right;margin-top: 10px;padding-right:55px;font-size:10px">上記の 通りご請求申し上げます。</div>
+    </div>
+  </body>
+</html>

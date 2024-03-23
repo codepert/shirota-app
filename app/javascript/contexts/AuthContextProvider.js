@@ -28,13 +28,14 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const logoutAction = async () => {
-    // try {
-    // const res = await services.logout();
-    debugger;
-    authActions.logoutAction(dispatch);
-    // } catch (err) {
-    //   return { status: "error", message: err.code };
-    // }
+    try {
+      const res = await services.logout();
+      debugger;
+      authActions.logoutAction(dispatch);
+      return res;
+    } catch (err) {
+      return { status: "error", message: err.code };
+    }
   };
 
   return (

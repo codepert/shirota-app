@@ -113,7 +113,7 @@ const ReceivedPaymentRegisterModal = ({
         <Form.Item name="description" label={$lang.receivePaymentDescription}>
           <Input />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="processing_on"
           label={$lang.receivePaymentProcessingDate}
         >
@@ -127,7 +127,7 @@ const ReceivedPaymentRegisterModal = ({
             //     : null
             // }
           />
-        </Form.Item>
+        </Form.Item> */}
         <div style={{ textAlign: "right" }}>
           <Button onClick={handleSave} style={{ marginRight: 10 }}>
             {" "}

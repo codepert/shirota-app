@@ -76,6 +76,7 @@ const BillingProcessPage = ({ is_edit }) => {
   const [isBillsExportSpinLoading, setIsBillsExportSpinLoading] =
     useState(false);
   const [isSpinLoading, SetIsSpinLoading] = useState(false);
+  const [isCreateSpinLoading, SetIsCreateSpinLoading] = useState(false);
   const getWarehouses = () => {
     API.get(warehouseURL).then((res) => {
       const warehouses = res.data.map((item) => {
@@ -153,8 +154,6 @@ const BillingProcessPage = ({ is_edit }) => {
         : "";
 
     const urlParam = `${unCalcBillURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
-    console.log("get urlParam", urlParam);
-
     API.get(urlParam)
       .then((res) => {
         let index = 1;
@@ -211,7 +210,7 @@ const BillingProcessPage = ({ is_edit }) => {
         : "";
     // const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
     const urlParam = `${billURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&shipper_id=${seletedShipper.value}`;
-    console.log("urlParam", urlParam);
+
     API.get(urlParam)
       .then((res) => {
         let index = 1;
@@ -300,11 +299,10 @@ const BillingProcessPage = ({ is_edit }) => {
       m: selectedMonth,
       d: selectedDay,
     };
-
-    SetIsSpinLoading(true);
+    SetIsCreateSpinLoading(true);
     API.post(billURL, params)
       .then((res) => {
-        SetIsSpinLoading(false);
+        SetIsCreateSpinLoading(false);
         getBillList();
         openNotificationWithIcon(
           "success",
@@ -591,22 +589,24 @@ const BillingProcessPage = ({ is_edit }) => {
                   <label style={{ marginLeft: 20 }}>{$lang.processDate}</label>{" "}
                   :{lastBillDate}
                 </Space>
-                <Button
-                  className="btn-bg-black"
-                  onClick={() => {
-                    const duration =
-                      processRangeDates[0].format("YYYY-MM-DD") +
-                      " ~ " +
-                      processRangeDates[1].format("YYYY-MM-DD");
-                    const warrehouse =
-                      $lang.warehouse + " : " + selectedWarehouse.label;
-                    setConfirmMessage($lang.messages.confirm_bill);
-                    setIsConfirmModalVisible(true);
-                  }}
-                  disabled={isConfirmBillDisabled}
-                >
-                  {$lang.buttons.billingConfirmed}
-                </Button>
+                <Spin spinning={isCreateSpinLoading}>
+                  <Button
+                    className="btn-bg-black"
+                    onClick={() => {
+                      const duration =
+                        processRangeDates[0].format("YYYY-MM-DD") +
+                        " ~ " +
+                        processRangeDates[1].format("YYYY-MM-DD");
+                      const warrehouse =
+                        $lang.warehouse + " : " + selectedWarehouse.label;
+                      setConfirmMessage($lang.messages.confirm_bill);
+                      setIsConfirmModalVisible(true);
+                    }}
+                    disabled={isConfirmBillDisabled}
+                  >
+                    {$lang.buttons.billingConfirmed}
+                  </Button>
+                </Spin>
               </>
             ) : (
               <></>

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::Users::SessionsController < Devise::SessionsController
-  protect_from_forgery with: :exception, except: [:create]
+  protect_from_forgery with: :exception, except: [:create, :destroy]
   before_action :configure_permitted_parameters
   respond_to :json
   # before_action :configure_sign_up_params, only: [:create]

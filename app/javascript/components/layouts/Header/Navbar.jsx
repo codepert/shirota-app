@@ -92,15 +92,16 @@ const NavbarSection = () => {
 
   const logout = async () => {
     const res = await logoutAction();
-    // if (res.state == "success") {
-    navigate("/signin");
-    // } else {
-    //   openNotificationWithIcon(
-    //     "error",
-    //     $lang.popConrimType.error,
-    //     HttpResponseErrorMessage(res.code, res.status)
-    //   );
-    // }
+    debugger;
+    if (res.status == 204) {
+      navigate("/signin");
+    } else {
+      openNotificationWithIcon(
+        "error",
+        $lang.popConrimType.error,
+        HttpResponseErrorMessage(res.code, res.status)
+      );
+    }
   };
 
   useEffect(() => {
@@ -196,7 +197,7 @@ const NavbarSection = () => {
           />
         </Flex>
         <div style={{ marginTop: 10, marginRight: 20 }}>
-          <span>{$lang.date} : </span>
+          <span>Date : </span>
           <span>{moment().format("YYYY/MM/DD")}</span>
         </div>
       </Flex>

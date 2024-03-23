@@ -73,6 +73,9 @@ class Api::V1::BillsController < Api::V1::BaseController
           processing_cnt:       prepare_bill_amounts.length
         )
 
+        ReceivedPayment.where("received_on BETWEEN '#{from_date}' AND '#{to_date}'")
+                      .update(processing_on: Time.now)
+
         prepare_bill_amounts.map do |record|
           BillAmount.create(
             bill_id:                      bill['id'] ,

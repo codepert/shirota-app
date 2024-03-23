@@ -328,7 +328,7 @@ const BillingProcessPage = ({ is_edit }) => {
     setSeletedShipper({ value: value, label: option.label });
   };
 
-  const downloadPDF = (response) => {
+  const downloadPDF = (response, filename) => {
     const blob = new Blob([response.data], { type: "application/pdf" });
     const fileName = "generated_pdf.pdf";
 
@@ -340,46 +340,14 @@ const BillingProcessPage = ({ is_edit }) => {
     a.click();
   };
 
-  const exportDataAndDownloadPdf = (record) => {
-    console.log("record", record);
-    API.post(
-      exportBillOne,
-      {
-        before_bill_amount: "10",
-        receivedAmount: record.received_payment_amount,
-        handling_cost: record.handling_cost,
-        tax: record.tax,
-        total_storage_fee: record.total_storage_fee,
-        bill_payment_amount: record.bill_payment_amount,
-        shipper_id: seletedShipper.id,
-        warehouse_id: selectedWarehouse.value,
-      },
-      {
-        responseType: "arraybuffer",
-      }
-    )
-      .then((res) => {
-        downloadPDF(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   const exportBillPDF = (record) => {
-    processRangeDates.length > 0
-      ? `&from_date=${processRangeDates[0].format(
-          "YY年MM月DD日"
-        )}&to_date=${processRangeDates[1].format("YY年MM月DD日")}`
-      : "";
-
     setIsBillExportSpinLoading(true);
     API.post(
       billReportURL,
       {
         id: record.id,
-        from_date: processRangeDates[0].format("YY年MM月DD日"),
-        to_date: processRangeDates[1].format("YY年MM月DD日"),
+        from_date: processRangeDates[0].format("YY-MM-DD"),
+        to_date: processRangeDates[1].format("YY-MM-DD"),
       },
       {
         responseType: "arraybuffer",
@@ -387,7 +355,9 @@ const BillingProcessPage = ({ is_edit }) => {
     )
       .then((res) => {
         setIsBillExportSpinLoading(false);
-        downloadPDF(res);
+        const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
+        processRangeDates[1].format("YY-MM-DD") + "_御請求書.pdf";
+        downloadPDF(res, fileName);
       })
       .catch((err) => {
         setIsBillExportSpinLoading(false);
@@ -400,8 +370,8 @@ const BillingProcessPage = ({ is_edit }) => {
       billAmountReportURL,
       {
         bill_id: record.id,
-        from_date: processRangeDates[0].format("YY年MM月DD日"),
-        to_date: processRangeDates[1].format("YY年MM月DD日"),
+        from_date: processRangeDates[0].format("YY-MM-DD"),
+        to_date: processRangeDates[1].format("YY-MM-DD"),
       },
       {
         responseType: "arraybuffer",
@@ -409,7 +379,9 @@ const BillingProcessPage = ({ is_edit }) => {
     )
       .then((res) => {
         setIsBillAmountExportSpinLoading(false);
-        downloadPDF(res);
+        const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
+        processRangeDates[1].format("YY-MM-DD") + "_請求明細書.pdf";
+        downloadPDF(res, fileName);
       })
       .catch((err) => {
         setIsBillAmountExportSpinLoading(false);
@@ -418,12 +390,6 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const exportBillsPDF = () => {
-    processRangeDates.length > 0
-      ? `&from_date=${processRangeDates[0].format(
-          "YYYY-MM-DD"
-        )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
-      : "";
-
     setIsBillsExportSpinLoading(true);
     API.post(
       billsReportURL,
@@ -437,7 +403,9 @@ const BillingProcessPage = ({ is_edit }) => {
     )
       .then((res) => {
         setIsBillsExportSpinLoading(false);
-        downloadPDF(res);
+        const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
+        processRangeDates[1].format("YY-MM-DD") + "_請求一覧.pdf";
+        downloadPDF(res, fileName);
       })
       .catch((err) => {
         setIsBillExportSpinLoading(false);

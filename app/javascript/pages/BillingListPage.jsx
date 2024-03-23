@@ -14,6 +14,7 @@ import {
   Select,
   Flex,
   Input,
+  Spin,
   DatePicker,
 } from "antd";
 import { API } from "../utils/helper";
@@ -34,7 +35,9 @@ const BillingListPage = ({ is_edit }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemPerPage] = useState(10);
   const [total, setTotal] = useState(0);
-
+  const [isBillExportSpinLoading, setIsBillExportSpinLoading] = useState(false);
+  const [isBillAmountExportSpinLoading, setIsBillAmountExportSpinLoading] =
+    useState(false);
   const getList = () => {
     const yearMonth = ym.format("YYYY-MM");
     let fromDate = "";
@@ -69,8 +72,11 @@ const BillingListPage = ({ is_edit }) => {
             billed_on: item.created_at,
             cnt: item.processing_cnt,
             duration: item.duration_from + " ~ " + item.duration_to,
-            shipper_name: item.shipper.name,
+            from_date: item.duration_from,
+            to_date: item.duration_to,
+            warehouse_name: item.warehouse.name,
             updated_at: item.updated_at,
+            warehouse_id: item.warehouse.id,
             key: i,
           };
         });
@@ -88,30 +94,45 @@ const BillingListPage = ({ is_edit }) => {
     setItemPerPage(pageSize);
   };
 
-  const exportBillPDF = (record) => {
-    API.get(`${billsReportURL}?id=${record.id}`, {
-      responseType: "arraybuffer",
-    })
+  const exportBillAmountPDF = (record) => {
+    const arr = record.duration.split("~");
+    const filename = record.duration + "_請求書.pdf";
+    setIsBillExportSpinLoading(true);
+    debugger;
+    API.post(
+      billsReportURL,
+      {
+        from_date: record.from_date,
+        to_date: record.to_date,
+        warehouse_id: record.warehouse_id,
+      },
+      {
+        responseType: "arraybuffer",
+      }
+    )
       .then((res) => {
-        downloadPDF(res);
+        setIsBillExportSpinLoading(false);
+        downloadPDF(res, filename);
       })
       .catch((err) => {});
   };
 
-  const downloadPDF = (response) => {
+  const downloadPDF = (response, filename) => {
     const blob = new Blob([response.data], { type: "application/pdf" });
-    const fileName = "generated_pdf.pdf";
 
     // Construct the URL and initiate the download
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.setAttribute("download", fileName);
+    a.setAttribute("download", filename);
     a.click();
   };
 
-  const exportBillAmountPDF = (record) => {
-    console.log("record", record);
+  const exportBillPDF = (record) => {
+    setIsBillAmountExportSpinLoading(true);
+    setIsBillAmountExportSpinLoading(false);
+    const arr = record.duration.split("~");
+    const filename = record.duration + "_明細書.pdf";
   };
 
   useEffect(() => {
@@ -183,14 +204,16 @@ const BillingListPage = ({ is_edit }) => {
           </Flex>
         </Flex>
         <BillListTable
-          exportBillPDF={exportBillPDF}
-          exportBillAmountPDF={exportBillAmountPDF}
+          exportBillPDF={exportBillAmountPDF}
+          exportBillAmountPDF={exportBillPDF}
           dataSource={billData}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           total={total}
           onChange={handlePageChange}
           isEdit={is_edit}
+          isBillExportSpinLoading={isBillExportSpinLoading}
+          isBillAmountExportSpinLoading={isBillAmountExportSpinLoading}
         />
       </Card>
     </Content>

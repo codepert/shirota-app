@@ -11,23 +11,23 @@
         <p style="">
           <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';">締切日:</span> 
           <span style="font-size: 12px;font-family: 'Arial Narrow'">2024</span>
-          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #4096ff;padding-left:'2px';padding-right:'2px'">年</span>
+          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #090d7e;padding-left:'2px';padding-right:'2px'">年</span>
           <span style="font-size: 12px;font-family: 'Arial Narrow'">3</span>
-          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #4096ff;padding-left:'2px';padding-right:'2px'">月</span>
+          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #090d7e;padding-left:'2px';padding-right:'2px'">月</span>
           <span style="font-size: 12px;font-family: 'Arial Narrow'">31</span>
-          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #4096ff;padding-left:'2px';padding-right:'2px'">日</span>
+          <span style="font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';color: #090d7e;padding-left:'2px';padding-right:'2px'">日</span>
         </p>
       </div>
       <table
         style="
           font-size: 10px;
           width: '100%'
-          border-bottom: 1px solid #4096ff;
+          border-bottom: 1px solid #090d7e;
           border-spacing: 0;
         "
       >
         <thead>
-          <tr style="color: #4096ff;;font-family:'MizukiMinchoU';">
+          <tr style="color: #090d7e;;font-family:'MizukiMinchoU';">
             <td style="padding: 1px">請求書番号</td>
             <td style="padding: 1px">荷主コード</td>
             <td style="padding: 1px">荷主名</td>
@@ -91,25 +91,25 @@
             <td></td>
             <td></td>
           </tr>
-          <tr style="font-size: 10px; margin-top: 2px">
+          <tr style="font-size: 10px; margin-top: 2px;border-top:2px solid #eee">
             <td style="padding: 1px;font-family: 'Arial Narrow'"></td>
             <td style="padding: 1px;font-family: 'Arial Narrow'"></td>
-            <td style="width: 20%; text-align: left;color:#4096ff">
+            <td style="width: 20%; text-align: left;color:#090d7e">
               合計
             </td>
-            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <% @total_bills[0].last_amount %></td>
-            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <% @total_bills[0].deposit_amount %></td>
-            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= @total_bills[0].handling_cost %></td>
-            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= @total_bills[0].storage_cost %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <% @total_bills[:last_amount] %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <% @total_bills[:deposit_amount] %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= @total_bills[:handling_cost] %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">￥ <%= @total_bills[:storage_cost] %></td>
             <td style="padding: 1px"></td>
             <td style="padding: 1px;font-family: 'Arial Narrow'">
-              ￥ <%= @total_bills[0].handling_cost + @total_bills[0].storage_cost %>
+              ￥ <%= @total_bills[:handling_cost] + @total_bills[:storage_cost] %>
             </td>
             <td style="padding: 1px;font-family: 'Arial Narrow'">
-              ￥ <%= ((@total_bills[0].handling_cost + @total_bills[0].storage_cost)/ 10) %>
+              ￥ <%= ((@total_bills[:handling_cost] + @total_bills[:storage_cost])/ 10) %>
             </td>
             <td style="width: 7%; padding: 1px;font-family: 'Arial Narrow'">
-              ￥ <%= @total_bills[0].current_amount %>
+              ￥ <%= @total_bills[:current_amount] %>
             </td>
           </tr>
         </tbody>

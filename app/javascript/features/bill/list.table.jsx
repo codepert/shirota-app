@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import moment from "moment";
-import { Flex, Table, Pagination } from "antd";
+import { Flex, Table, Pagination, Spin } from "antd";
 import CustomButton from "../../components/common/CustomButton.js";
 import $lang from "../../utils/content/jp.json";
 
@@ -13,6 +13,8 @@ const BillListTable = ({
   itemsPerPage,
   onChange,
   isEdit,
+  isBillExportSpinLoading,
+  isBillAmountExportSpinLoading,
 }) => {
   const columns = [
     {
@@ -39,9 +41,9 @@ const BillListTable = ({
     },
     {
       title: $lang.warehouseName,
-      dataIndex: "shipper_name",
+      dataIndex: "warehouse_name",
       align: "center",
-      key: "shipper_name",
+      key: "warehouse_name",
     },
     {
       title: $lang.precessDate,
@@ -57,9 +59,8 @@ const BillListTable = ({
         dataIndex: "operation",
         render: (text, record, dataIndex) => {
           return (
-            <div className="flex justify-center">
-              <div className="hidden rounded-full"></div>
-              <div className="p-2 rounded-full cursor-pointer text-center">
+            <Flex justify="center">
+              <Spin spinning={isBillExportSpinLoading}>
                 <CustomButton
                   onClick={() => {
                     console.log("record", record);
@@ -68,9 +69,15 @@ const BillListTable = ({
                   title={$lang.billingReport}
                   size="small"
                   className="btn-default btn-hover-black"
-                  style={{ backgroundColor: "transparent", color: "#000" }}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "#000",
+                    display: "none",
+                  }}
                   visability={true}
                 />{" "}
+              </Spin>
+              <Spin spinning={isBillAmountExportSpinLoading}>
                 <CustomButton
                   onClick={() => {
                     exportBillAmountPDF(record);
@@ -79,14 +86,14 @@ const BillListTable = ({
                   style={{
                     backgroundColor: "transparent",
                     color: "#000",
-                    marginLeft: 10,
+                    marginLeft: 5,
                   }}
                   size="small"
                   className="btn-default btn-hover-black"
                   visability={true}
                 />
-              </div>
-            </div>
+              </Spin>
+            </Flex>
           );
         },
         align: "center",

@@ -101,7 +101,11 @@ const BillProcessTable = ({
                     exportBillAmountPDF(record);
                   }}
                   title={$lang.billingReportDetail}
-                  style={{ backgroundColor: "transparent", color: "#000" }}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "#000",
+                    marginLeft: 5,
+                  }}
                   size="small"
                   className="btn-default btn-hover-black"
                   visability={true}

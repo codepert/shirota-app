@@ -40,7 +40,7 @@ Rails.application.routes.draw do
       get "last_bill_date" => "bills#last_bill_date"
       post "export_bill_report" => "bills#export_bill_report"
       post "export_bill_amount_report" => "bills#export_bill_amount_report"
-      get "export_bills_report" => "bills#export_bills_report"
+      post "export_bills_report" => "bills#export_bills_report"
       
       # resources :bill_amounts
     end

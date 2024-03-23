@@ -175,253 +175,59 @@ class Api::V1::BillsController < Api::V1::BaseController
 
     bill_amounts = BillAmount.with_product(bill_id)
     shipper = Shipper.find(bill.shipper_id)
-    manangementInfo = ManagementInfo.all.first
-
+    manangement_info = ManagementInfo.all.first
+    bill_amounts_sum = compute_shipper_bills_sum(bill_amounts)
     
-    
-    html = "<html><meta charset=\"UTF-8\"><body><div style=\"width:100%;margin-left:25px\">
-            <div style=\"display:flex\">
-            <div style=\"width:30%;margin-top:70px;font-size:10px\">
-              <p style=\"font-family: 'MizukiMinchoU';font-style: 'italic'\">荷主名: #{shipper.name}</p>
-            </div>
-            <div style=\"text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:10px\">
-              <h1 style=\"font-family: 'MizukiMinchoU';font-style: 'italic'\">御 請 求 書</h1>
-              <div>
-                <p>自 #{from_date}</p>
-                <p>至 #{to_date}</p>
-              </div>
-            </div>
-            <div style=\"width:30%;padding-left:10px;font-size:10px;margin-top:80px;\">
-              <span style=\"border-bottom:1px solid #4096ff;color:#4096ff;float:right;font-family: 'MizukiMinchoU';font-style: 'italic'\">#{manangementInfo.company_name}</span>
-            </div></div>
-            <div>
-            <div style=\"margin-top:5px;display:flex;width:96%;font-size:8px;color:#4096ff\">
-              <div style=\"width:56%;\">
-              </div>
-              <div style=\"width:21%;\">
-                <span style=\"font-family: 'MizukiMinchoU';font-style: 'italic'\">*--------------------荷役料>--------------------*</span>
-              </div>
-              <div style=\"width:21%;\">
-                <span>*--------------------保管料>--------------------*</span>
-              </div>
-            </div>
-            <div style=\"margin-top:0px;display:flex;width:96%;font-size:8px;color:#4096ff;font-family: 'MizukiMinchoU';font-style: 'italic'\">
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">ロット番号	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">品名コード,	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">品名,規格荷姿	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">前期繰起	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">上期入庫<br>上期出庫<br>上期積数	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">中期入庫<br>中期出庫<br>中期積数	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">下期入庫<br> 下期出庫<br>	下期積数	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">当期残高	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">総残高	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">単価	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">金額	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">入庫数<br>出庫数	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">単価<br>単価	</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border-bottom:1px solid #4096ff;height:40px;text-align:center;padding-top:20px;font-family: 'MizukiMinchoU'\">入庫料<br>出庫料	</div>
-              </div></div>"
-              total_first_stock_amount  = 0
-              total_mid_stock_amount    = 0
-              total_second_stock_amount = 0
-              total_stock               = 0
-              total_handle_fee          = 0
-              total_in_stock_amount     = 0
-              total_out_stock_amount    = 0
-              total_in_stock_fee        = 0
-              total_out_stock_fee       = 0
-              bill_amounts.map do |record|
-                html  += "<div style=\"margin-top:5px;display:flex;width:96%;font-size:8px\">
-              <div style=\"width:7%;font-family: 'MizukiMinchoU';\">
-                #{record.product_code}
-              </div>
-              <div style=\"width:7%;font-family: 'MizukiMinchoU';\">
-                #{record.product_name}
-              </div>
-              <div style=\"width:7%;font-family: 'MizukiMinchoU';\">
-                #{record.specification} 
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.previous_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.first_half_instock_amount}</div>
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.first_half_outstock_amount}</div>
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.first_half_instock_amount+record.previous_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.mid_instock_amount}</div>
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.mid_outstock_amount}</div>
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.second_half_instock_amount}</div>
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.second_half_outstock_amount}</div>
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount-record.second_half_outstock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{(record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)}</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.storage_fee_rate}</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.storage_fee_rate*((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount))}</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount}</div>
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">
-                  ￥ #{record.instock_handle_fee_rate}
-                </div>
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">
-                  ￥ #{record.outstock_handle_fee_rate}
-                </div>
-              </div>
-              <div style=\"width:7%;\">
-                 <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">￥#{(record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)*record.instock_handle_fee_rate} </div>
-                 <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">￥#{(record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)*record.outstock_handle_fee_rate} </div>
-              </div>
-            </div>"
-            
-              total_first_stock_amount  += record.first_half_instock_amount+record.previous_stock_amount
-              total_mid_stock_amount    += record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount
-              total_second_stock_amount += record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount
-              total_stock               += (record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)
-              total_handle_fee          += record.storage_fee_rate*((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount))
-              total_in_stock_amount     += record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount
-              total_out_stock_amount    += record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount
-              total_in_stock_fee        += (record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)*record.instock_handle_fee_rate
-              total_out_stock_fee       += (record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)*record.outstock_handle_fee_rate
-          end
-             html +=  "<div style=\"margin-top:5px;display:flex;width:96%;font-size:8px\">
-              <div style=\"width:28%;\">
-                <div style=\"float:right;padding-right:35px\">合計</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_first_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_mid_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_second_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                 </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_stock}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_handle_fee}</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_in_stock_amount}</div>
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_out_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-               
-              </div>
-              <div style=\"width:7%;\">
-                 <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">￥#{total_in_stock_fee} </div>
-                 <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">￥#{total_out_stock_fee} </div>
-              </div>
-            </div><hr>
-            <div style=\"margin-top:5px;display:flex;width:96%;font-size:8px\">
-              <div style=\"width:28%;float:right\">
-                 <div style=\"float:right;padding-right:35px\">頁計</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_first_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_mid_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_second_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-                 </div>
-              <div style=\"width:7%;\">
-                  <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_stock}</div>
-              </div>
-              <div style=\"width:7%;\">
-                  
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_handle_fee}</div>
-              </div>
-              <div style=\"width:7%;\">
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_in_stock_amount}</div>
-                <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">#{total_out_stock_amount}</div>
-              </div>
-              <div style=\"width:7%;\">
-               
-              </div>
-              <div style=\"width:7%;\">
-                 <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">￥#{total_in_stock_fee} </div>
-                 <div style=\"border:1px solid #bbbaba;margin:2px;font-family: 'Arial Narrow';\">￥#{total_out_stock_fee} </div>
-              </div>
-            </div>"
-            
-            html += "</div></div></body></html>";
+    controller = ActionController::Base.new
+    controller.instance_variable_set(:@from_date, from_date)
+    controller.instance_variable_set(:@to_date, to_date)
+    controller.instance_variable_set(:@managementInfo, manangement_info)
+    controller.instance_variable_set(:@bill_amounts, bill_amounts)
+    controller.instance_variable_set(:@bill_amounts_sum, bill_amounts_sum)
+    controller.instance_variable_set(:@shipper, shipper)
 
-    filename = "template"
-    doc = Nokogiri::HTML(html)
-    doc.encoding = 'UTF-8'
-    pdf = Grover.new(html, format: 'A4').to_pdf
-    send_data pdf, filename: filename, type: "application/pdf"
+    html = controller.render_to_string(template: 'templates/bill_amount_report', layout: nil)
+    pdf = Grover.new(html).to_pdf
+    send_data(pdf, filename: 'sample.pdf', type: 'application/pdf', disposition: 'inline')
+
+    # filename = "template"
+    # doc = Nokogiri::HTML(html)
+    # doc.encoding = 'UTF-8'
+    # pdf = Grover.new(html, format: 'A4').to_pdf
+    # send_data pdf, filename: filename, type: "application/pdf"
+  end
+  def compute_shipper_bills_sum(bills)
+    types = ['first_stock_amount', 'mid_stock_amount', 'second_stock_amount', 'total_stock', 'handle_fee', 'in_stock_amount','out_stock_amount',
+            'in_stock_fee', 'out_stock_fee']
+
+    total = Hash.new(0)
+    types.each { |type| total[:"#{type}"] = 0 }
+
+    bills.each do |record|
+      total[:total_first_stock_amount]  += record.first_half_instock_amount+record.previous_stock_amount
+      total[:total_mid_stock_amount]    += record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount
+      total[:total_second_stock_amount] += record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount
+      total[:total_stock]               += (record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)
+      total[:total_handle_fee]          += record.storage_fee_rate*((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount))
+      total[:total_in_stock_amount]     += record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount
+      total[:total_out_stock_amount]    += record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount
+      total[:total_in_stock_fee]        += (record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)*record.instock_handle_fee_rate
+      total[:total_out_stock_fee]       += (record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)*record.outstock_handle_fee_rate
+    end
+    total
   end
   def export_bills_report
-    id = params[:id]
-    bills = Bill.where("bills.id='#{id}'")
+    bills = Bill.where("bills.duration_from='#{params[:from_date]}' and bills.duration_to='#{params[:to_date]}'")
                 .joins('LEFT JOIN shippers ON shippers.id= bills.shipper_id')
                 .select("bills.*, shippers.name as shipper_name, shippers.code as shipper_code")
-    total_bills = compute_totals(bills)
+    total_bills = compute_bills_sum(bills)
 
-    puts "total============"
     # filename = "template"
     # doc = Nokogiri::HTML(html)
     # doc.encoding = 'UTF-8'
     # pdf = Grover.new(html, format: 'A4').to_pdf
     # send_data pdf, filename: filename, type: "application/pdf"
 
-    puts  total_bills[0]['last_amount']
     controller = ActionController::Base.new
     controller.instance_variable_set(:@bills, bills)
     controller.instance_variable_set(:@total_bills, total_bills)
@@ -431,7 +237,7 @@ class Api::V1::BillsController < Api::V1::BaseController
     send_data(pdf, filename: 'sample.pdf', type: 'application/pdf', disposition: 'inline')
 
   end
-  def compute_totals(bills)
+  def compute_bills_sum(bills)
 
     types = ['last_amount', 'deposit_amount', 'handling_cost','storage_cost', 'tax','current_amount']
 
@@ -443,5 +249,37 @@ class Api::V1::BillsController < Api::V1::BaseController
         total[:"#{type}"] += eval("record.#{type}")
       end
     end
+    total
+  end
+
+  def export_bills_amounts_report
+    from_date = params[:from_date]
+    to_date   = params[:to_date]
+    warehouse_id = params[:warehouse_id]
+    bill = Bill.find(bill_id)
+
+    if bill.blank?
+      render :json => {
+        data: "warning"
+      }, status: "error"
+      return
+    end
+
+    bill_amounts = BillAmount.with_product_by_duration(from_date, to_date, warehouse_id)
+    shipper = Shipper.find(bill.shipper_id)
+    manangement_info = ManagementInfo.all.first
+    bill_amounts_sum = compute_shipper_bills_sum(bill_amounts)
+    
+    controller = ActionController::Base.new
+    controller.instance_variable_set(:@from_date, from_date)
+    controller.instance_variable_set(:@to_date, to_date)
+    controller.instance_variable_set(:@managementInfo, manangement_info)
+    controller.instance_variable_set(:@bill_amounts, bill_amounts)
+    controller.instance_variable_set(:@bill_amounts_sum, bill_amounts_sum)
+    controller.instance_variable_set(:@shipper, shipper)
+
+    html = controller.render_to_string(template: 'templates/bill_amount_report', layout: nil)
+    pdf = Grover.new(html).to_pdf
+    send_data(pdf, filename: 'sample.pdf', type: 'application/pdf', disposition: 'inline')
   end
 end

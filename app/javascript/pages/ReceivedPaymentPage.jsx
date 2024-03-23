@@ -407,7 +407,6 @@ const ReceivedPaymentPage = ({ is_edit }) => {
             <Button
               className="btn-bg-black ml-1"
               onClick={exportDataAndDownloadCVS}
-              type="primary"
             >
               {$lang.buttons.csvExchange}
             </Button>
@@ -425,7 +424,6 @@ const ReceivedPaymentPage = ({ is_edit }) => {
                 setModalData(null);
                 handleShowModal();
               }}
-              type="primary"
             >
               {$lang.buttons.register}
             </Button>

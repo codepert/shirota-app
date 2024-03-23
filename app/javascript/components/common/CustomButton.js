@@ -4,7 +4,7 @@ import { Button } from "antd";
 const CustomButton = ({
   title,
   onClick = () => {},
-  className = "btn-bg-black",
+  className = "",
   icon = <></>,
   size = "default",
   htmlType = "default",
@@ -20,7 +20,6 @@ const CustomButton = ({
       htmlType={htmlType}
       style={style}
       hidden={!visability}
-      type="primary"
     >
       {title}
     </Button>

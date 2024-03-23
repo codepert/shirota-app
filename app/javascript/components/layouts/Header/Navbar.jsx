@@ -176,7 +176,6 @@ const NavbarSection = () => {
             <Link
               to="/"
               style={{
-                color: "#000",
                 fontWeight: 800,
                 fontSize: 14,
               }}

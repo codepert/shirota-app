@@ -18,7 +18,11 @@ const ConfirmModal = ({ isOpen, onConfirm, onClose, message }) => {
       <br />
       <div className="flex flex-row" style={{ marginLeft: 260 }}>
         <div className="items-center">
-          <Button onClick={onConfirm} className="items-center btn-bg-black">
+          <Button
+            onClick={onConfirm}
+            className="items-center btn-bg-black"
+            type="primary"
+          >
             {$lang.yes}
           </Button>
         </div>

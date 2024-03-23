@@ -9,6 +9,7 @@ import {
   Card,
   Row,
   Col,
+  Button,
 } from "antd";
 import {
   warehouseURL,
@@ -612,12 +613,9 @@ const OutStockPage = ({ is_edit }) => {
           >
             {is_edit === 1 ? (
               <>
-                <CustomButton
-                  onClick={setIsConfirmModalVisible}
-                  title={$lang.confirmDeparture}
-                  visability={true}
-                ></CustomButton>
-
+                <Button onClick={setIsConfirmModalVisible} type="primary">
+                  {$lang.confirmDeparture}
+                </Button>
                 <ConfirmModal
                   isOpen={isModalVisible}
                   onConfirm={() => {

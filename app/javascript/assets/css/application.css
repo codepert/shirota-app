@@ -1201,6 +1201,7 @@ video {
   .ant-pagination-item,
 :where(.css-dev-only-do-not-override-1k979oh).ant-checkbox .ant-checkbox-inner,
 :where(.css-dev-only-do-not-override-1k979oh).ant-pagination
-  .ant-pagination-item-active {
+  .ant-pagination-item-active,
+:where(.css-dev-only-do-not-override-1k979oh).ant-input-affix-wrapper {
   border-radius: 0 !important;
 }

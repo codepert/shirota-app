@@ -602,6 +602,7 @@ const BillingProcessPage = ({ is_edit }) => {
                       setConfirmMessage($lang.messages.confirm_bill);
                       setIsConfirmModalVisible(true);
                     }}
+                    type="primary"
                     disabled={isConfirmBillDisabled}
                   >
                     {$lang.buttons.billingConfirmed}

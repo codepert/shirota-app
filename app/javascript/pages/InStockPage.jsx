@@ -11,6 +11,7 @@ import {
   Card,
   Row,
   Col,
+  Button,
 } from "antd";
 
 import InStockTable from "../features/inStock/index.table";
@@ -652,12 +653,15 @@ const InStockPage = ({ is_edit }) => {
                 marginTop: 15,
               }}
             >
-              <CustomButton
-                title={$lang.buttons.csvExchange}
-                className="mr-2 btn-bg-black"
-                visability={true}
+              <Button
                 onClick={exportDataAndDownloadCVS}
-              ></CustomButton>
+                visability={true}
+                style={{
+                  marginRight: 10,
+                }}
+              >
+                {$lang.buttons.csvExchange}
+              </Button>
               <ConfirmModal
                 isOpen={isModalVisible}
                 onConfirm={() => {
@@ -667,11 +671,13 @@ const InStockPage = ({ is_edit }) => {
                 onClose={handleHideConfirmModal}
                 message={$lang.messages.confirm_instock}
               />
-              <CustomButton
+              <Button
                 onClick={setIsConfirmModalVisible}
-                title={$lang.buttons.confirmInStock}
                 visability={true}
-              ></CustomButton>
+                type="primary"
+              >
+                {$lang.buttons.confirmInStock}
+              </Button>
             </div>
           ) : (
             <div></div>

@@ -159,7 +159,11 @@ const UserRegisterModal = ({
         )}
 
         <div style={{ textAlign: "right" }}>
-          <Button onClick={handleSave} style={{ marginRight: 10 }}>
+          <Button
+            onClick={handleSave}
+            style={{ marginRight: 10 }}
+            type="primary"
+          >
             {" "}
             {$lang.newResiger}
           </Button>
@@ -171,6 +175,8 @@ const UserRegisterModal = ({
               onClick={() => {
                 onInitPassword(initialValues.id);
               }}
+              type="primary"
+              danger
             >
               {$lang.initPassword}
             </Button>

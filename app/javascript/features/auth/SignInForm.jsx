@@ -14,13 +14,12 @@ const LoginForm = () => {
 
   const onFormSubmit = async ({ login_id, password }) => {
     const res = await loginAction({ user: { login_id, password } });
-
     if (res.state == "success") {
       navigate("/home");
     } else {
       openNotificationWithIcon(
         "error",
-        $lang.popConrimType.error,
+        $lang.popConfirmType.error,
         HttpResponseErrorMessage(res.code, res.status)
       );
     }

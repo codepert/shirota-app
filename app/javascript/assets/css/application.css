@@ -1202,10 +1202,13 @@ video {
 :where(.css-dev-only-do-not-override-1k979oh).ant-checkbox .ant-checkbox-inner,
 :where(.css-dev-only-do-not-override-1k979oh).ant-pagination
   .ant-pagination-item-active,
-:where(.css-dev-only-do-not-override-1k979oh).ant-input-affix-wrapper {
+:where(.css-dev-only-do-not-override-1k979oh).ant-input-affix-wrapper,
+:where(.css-dev-only-do-not-override-1k979oh).ant-alert {
   border-radius: 0 !important;
 }
 :where(.css-dev-only-do-not-override-1k979oh).ant-menu-light.ant-menu-horizontal
-  > .ant-menu-item-selected::after {
+  > .ant-menu-item-selected::after,
+:where(.css-dev-only-do-not-override-1k979oh).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after {
   border-color: #fff;
 }

@@ -34,8 +34,6 @@ const NavbarSection = () => {
   };
 
   const getNavigations = () => {
-    console.log("navbar component................");
-
     axios
       .get(`${navigatiionsURL}`)
       .then((res) => {
@@ -134,7 +132,7 @@ const NavbarSection = () => {
         style={{
           backgroundColor: "#fff",
           width: "100%",
-          borderTop: "2px solid #297afc",
+          borderTop: "5px solid #297afc",
         }}
       >
         <div className="" style={{ backgroundColor: "#fff" }}></div>

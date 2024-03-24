@@ -50,7 +50,8 @@ const ReceivePaymentTable = ({
       title: $lang.receivePaymentProcessingDate,
       dataIndex: "processing_on",
       key: "processing_on",
-      render: (val) => (val != undefined ? val.replace(/\-/g, "/") : ""),
+      render: (val) =>
+        val != undefined ? val.replace(/\-/g, "/").replace("UTC", "") : "",
     },
     isEdit === 1 ? (
       {

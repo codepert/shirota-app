@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
-import { Row, Layout, Card, Col, Button } from "antd";
+import { Row, Layout, Card, Col, Alert } from "antd";
 import axios from "axios";
 const { Header, Content, Footer } = Layout;
 import { useAuth } from "../hooks/useAuth.js";
@@ -11,6 +12,7 @@ import { navigatiionsURL } from "../utils/constants.js";
 
 const Top = () => {
   const [navigations, setNavigations] = useState([]);
+  const [isVisibleAlert, setIsVisibleAlert] = useState(false);
   // const [shakeScreen, setShakeScreen] = useState(false); // State variable for shaking the screen
   const navigate = useNavigate();
 
@@ -38,6 +40,9 @@ const Top = () => {
 
   useEffect(() => {
     getNavigations();
+    if (eval(moment().format("D")) < 5) {
+      setIsVisibleAlert(true);
+    } else setIsVisibleAlert(false);
   }, []);
 
   const authState = useAuth();
@@ -62,6 +67,23 @@ const Top = () => {
             margin: 20,
           }}
         >
+          倉庫番へようこそ
+        </Row>
+        <Row
+          style={{
+            marginBottom: 20,
+            marginLeft: 20,
+          }}
+        >
+          {isVisibleAlert && (
+            <Alert
+              message="月初めです。先月末の入金処理、請求処理を行ってください。"
+              type="warning"
+              closable
+            />
+          )}
+        </Row>
+        <Row>
           {navigations.map((item, i) => (
             <Col key={i} span={7} style={{ margin: 20 }}>
               <Link to={item.key} key={i}>

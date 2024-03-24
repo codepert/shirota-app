@@ -26,7 +26,7 @@ const IncomeTable = ({ data, editRow, deleteRow, is_edit }) => {
             <span className="text-xs text-blue">{record.warehouse_name}</span>
             <span className="px-5 text-xs text-blue">|</span>
             <span className="text-xs text-blue">
-              {$lang.inStock.inStockDate}: {record.inout_on}
+              {$lang.inStockDate}: {record.inout_on}
             </span>
           </p>
         </>

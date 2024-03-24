@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Row, Layout, Card, Col, Button } from "antd";
 import axios from "axios";
 const { Header, Content, Footer } = Layout;
@@ -10,21 +12,28 @@ import { navigatiionsURL } from "../utils/constants.js";
 const Top = () => {
   const [navigations, setNavigations] = useState([]);
   // const [shakeScreen, setShakeScreen] = useState(false); // State variable for shaking the screen
+  const navigate = useNavigate();
 
   const getNavigations = () => {
-    axios.get(`${navigatiionsURL}`).then((res) => {
-      let index = 1;
-      const allData = res.data.map((item) => {
-        return {
-          ...item,
-          key: item.path,
-          label: item.name,
-          url: item.path,
-          title: `${index++}. ${item.name}`,
-        };
+    console.log("top page................");
+    axios
+      .get(`${navigatiionsURL}`)
+      .then((res) => {
+        let index = 1;
+        const allData = res.data.map((item) => {
+          return {
+            ...item,
+            key: item.path,
+            label: item.name,
+            url: item.path,
+            title: `${index++}. ${item.name}`,
+          };
+        });
+        setNavigations(allData.slice(0, -3));
+      })
+      .catch((error) => {
+        navigate("/signin");
       });
-      setNavigations(allData.slice(0, -3));
-    });
   };
 
   useEffect(() => {
@@ -51,7 +60,6 @@ const Top = () => {
         <Row
           style={{
             margin: 20,
-            marginTop: 50,
           }}
         >
           {navigations.map((item, i) => (

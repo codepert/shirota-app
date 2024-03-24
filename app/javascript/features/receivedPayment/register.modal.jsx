@@ -129,7 +129,11 @@ const ReceivedPaymentRegisterModal = ({
           />
         </Form.Item> */}
         <div style={{ textAlign: "right" }}>
-          <Button onClick={handleSave} style={{ marginRight: 10 }}>
+          <Button
+            onClick={handleSave}
+            style={{ marginRight: 10 }}
+            type="primary"
+          >
             {" "}
             {$lang.newResiger}
           </Button>

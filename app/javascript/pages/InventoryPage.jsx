@@ -312,11 +312,11 @@ const InventoryPage = ({ is_edit }) => {
           >
             <Row className="my-2">
               <Col span={1}>
-                <label>{$lang.inStock.warehouse}: </label>
+                <label>{$lang.warehouseName}: </label>
               </Col>
               <Col span={6}>
                 <Select
-                  placeholder={$lang.inStock.warehouse}
+                  placeholder={$lang.warehouseName}
                   style={{ width: 150, marginLeft: 14 }}
                   value={selectedWarehouse}
                   options={warehouseOptions}
@@ -326,7 +326,7 @@ const InventoryPage = ({ is_edit }) => {
             </Row>
             <Row className="my-2">
               <Col span={1}>
-                <label>{$lang.inStock.shipper}:</label>
+                <label>{$lang.shipperName}:</label>
               </Col>
               <Col span={6}>
                 <Select
@@ -335,12 +335,12 @@ const InventoryPage = ({ is_edit }) => {
                   options={shipperOptions}
                   value={seletedShipper.value}
                   defaultValue={""}
-                  placeholder={$lang.inStock.shipper}
+                  placeholder={$lang.shipperName}
                 />
                 <Row>
                   {shipperOptions.length > 0 && (
                     <span className="" style={{ marginLeft: 16 }}>
-                      {$lang.inStock.shipper} :&nbsp;&nbsp;
+                      {$lang.shipperName} :&nbsp;&nbsp;
                       {shipperDisctription.code} &nbsp;/ &nbsp;
                       {shipperDisctription.closingDate}
                     </span>
@@ -350,7 +350,7 @@ const InventoryPage = ({ is_edit }) => {
             </Row>
             <Row className="my-2">
               <Col span={1}>
-                <label>{$lang.stock.targetDate}:</label>
+                <label>{$lang.targetDate}:</label>
               </Col>
               <Col span={10}>
                 <div className="ml-2">
@@ -362,7 +362,7 @@ const InventoryPage = ({ is_edit }) => {
                         setTargetDate(dayjs(currentDate, dateFormat));
                       } else setTargetDate(dayjs(dateStr, dateFormat));
                     }}
-                    placeholder={$lang.inStock.in}
+                    placeholder={""}
                     className="ml-1"
                     format={dateFormat}
                   />
@@ -380,7 +380,7 @@ const InventoryPage = ({ is_edit }) => {
                     <CustomButton
                       onClick={exportDataAndDownloadCVS}
                       className="px-5 ml-2 btn-bg-black"
-                      title={$lang.stock.inventory_report}
+                      title={$lang.inventory_report}
                       visability={true}
                       style={{ float: "right" }}
                     />

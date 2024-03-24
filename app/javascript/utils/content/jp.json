@@ -26,15 +26,6 @@
     "to_login": "ログインページへ",
     "signup": "登録"
   },
-  "stock": {
-    "inventory_report": "在庫報告書",
-    "productName": "品名",
-    "packaging": "荷姿",
-    "lotoNumber": "ロット番号",
-    "amount": "数量",
-    "inStockDate": "入庫日",
-    "targetDate": "対象日"
-  },
   "buttons": {
     "login": "ログイン",
     "logout": "ログアウト",
@@ -65,179 +56,6 @@
   },
   "listCommon": {
     "all": "ALL"
-  },
-  "shipper": {
-    "shipper_num": "荷主ID",
-    "name": "荷主名",
-    "main_address": "住所1",
-    "sub_address": "住所2",
-    "tel_number": "電話",
-    "closingDate": "締日",
-    "code": "コード",
-    "mainAddress": "住所"
-  },
-  "billing": {
-    "new": "請求一覧",
-    "YM": "年月",
-    "day": "締日",
-    "month": "月",
-    "year": "年",
-    "yymm": "年/月",
-    "closingDate": "締日",
-    "period": "対象期間",
-    "processDate": "処理日時",
-    "list": "一覧",
-    "productList": "明細",
-    "billingDate": "請求年月",
-    "targetPeriod": "対象期間",
-    "targetShipper": "対象荷主",
-    "targetWarehouse": "対象倉庫",
-    "number": "番号",
-    "lastBilledAmount": "前回請求額",
-    "billingAmout": "請求額",
-    "consumptionTax": "消費税",
-    "output": "出力",
-    "buttons": {
-      "billingList": "請求リスト",
-      "billingCalculation": "請求計算",
-      "billingReport": "請求書",
-      "detail": "明細"
-    },
-    "table": {
-      "number": "NO",
-      "productName": "番号",
-      "shipperId": "荷主ID",
-      "shipperName": "荷主名",
-      "previousInvoicedAmount": "前回請求額",
-      "receivedAmount": "入金額",
-      "handlingFee": "荷役料",
-      "storageFee": "保管料",
-      "invoiceAmount": "請求額",
-      "consumptionTax": "消費税"
-    },
-    "back": "戻る",
-    "addNew": "新規登録"
-  },
-  "billingList": {
-    "table": {
-      "ym": "年/月",
-      "closingDate": "締日",
-      "count": "件数",
-      "duration": "対象期間",
-      "warehouse": "対象倉庫",
-      "precessDate": "処理日時"
-    }
-  },
-  "Maintenance": {
-    "addNew": "新規登録",
-    "productNumber": "品番",
-    "productName": "品名",
-    "productPacking": "規格・荷姿",
-    "productCode": "品名コード",
-    "handlingFee": "荷役料",
-    "storageFee": "保管料 ",
-    "change": "変更",
-    "productList": "品名一覧",
-    "productMaster": "品名マスタ",
-    "unitPriceMaster": "単価区分マスタ",
-    "unitPrice": "単価",
-    "packing": "単価区分",
-    "register": "登録",
-    "unitPriceID": "単価ID",
-    "handlingFeeUnitPrice": "荷役料単価",
-    "storageFeeUnitPrice": "保管料単価",
-    "billingClass": "請求区分",
-    "productNameID": "品名id",
-    "shipperID": "荷主ID",
-    "shipperName": "荷主名",
-    "address": "住所",
-    "postCode": "郵便番号",
-    "address1": "住所１",
-    "address2": "住所２",
-    "usedTsubos": "使用坪数",
-    "priceTsubo": "坪単価",
-    "discountRate": "値引率",
-    "calCategory": "計算区分",
-    "telephoneNumber": "電話番号",
-    "telephone": "電話",
-    "endDate": "締日",
-    "shipperlist": "荷主一覧",
-    "shipperMaster": "荷主マスタ",
-    "fullTimeRequest": "全期請求",
-    "firstBilling": "１期請求 "
-  },
-  "inStock": {
-    "lotNumber": "ロット番号",
-    "weight": "重量",
-    "itemNumber": "入庫数",
-    "cargoPrice": "荷役単価",
-    "storagePrice": "保管単価",
-    "packing": "荷姿",
-    "productName": "品名",
-    "productNumber": "品番",
-    "search": "検索",
-    "inStockDate": "入庫日",
-    "shipper": "荷主",
-    "warehouse": "倉庫"
-  },
-  "outStock": {
-    "outStockDate": "出庫日",
-    "outStockAmount": "出庫数",
-    "stockAmount": "現在庫数",
-    "shipmentNumber": "出庫数",
-    "pakaing_warehouse_fee": "荷姿 / 荷役単価 / 保管単価",
-    "table": {
-      "productName": "品名",
-      "packaging": "荷姿",
-      "lotNumber": "ロット番号",
-      "weight": "重量",
-      "amount": "数量"
-    }
-  },
-  "deposit": {
-    "depositDate": "入金年月日",
-    "received_onFrom": "入金日From",
-    "received_onTo": "入金日To",
-    "received_on": "入金日",
-    "processing_on": "処理日",
-    "processing_onFrom": "処理日From",
-    "processing_onTo": "処理日To",
-    "amount": "入金額",
-    "shipperCode": "荷主コード",
-    "processing_onDate": "処理日時",
-    "description": "摘要",
-    "received": "入金",
-    "shipper": "荷主名"
-  },
-  "UserPage": {
-    "registerUser": "ユーザー登録",
-    "buttons": {
-      "addNew": "新規登録"
-    },
-    "dataFields": {
-      "username": "ユーザー名",
-      "loginId": "ログインID",
-      "email": "Eメール",
-      "authority": "権限"
-    }
-  },
-  "WarehousePage": {
-    "name": "倉庫名"
-  },
-  "WarehouseFeePage": {
-    "fullTimeRequest": "全期請求",
-    "firstBilling": "１期請求 "
-  },
-  "ProductPage": {
-    "productNumber": "品番",
-    "productName": "品名",
-    "productPacking": "規格・荷姿",
-    "productCode": "品名コード",
-    "warehouseFee": "単価区分",
-    "registerProduct": "品名登録",
-    "handling_fee": "荷役単価",
-    "storage_fee": "保管単価",
-    "yen": "円"
   },
   "messages": {
     "type_username": "ユーザー名を入力してください。",
@@ -303,12 +121,15 @@
   "handlingFeeUnitPrice": "荷役料単価",
   "storageFeeUnitPrice": "保管料単価",
   "billingClass": "請求区分",
+  "yen": "円",
+  "registerProduct": "品名登録",
   "fullTimeRequest": "全期請求",
   "firstBilling": "１期請求 ",
   "addNew": "新規登録",
   "productName": "品名",
   "productNumber": "番号",
   "productCode": "品名コード",
+  "productPacking": "規格・荷姿",
   "storageFee": "保管料 ",
   "search": "検索",
   "username": "ユーザー名",
@@ -353,5 +174,28 @@
   "precessDate": "処理日時",
   "detail": "明細",
   "unconfirm": "未確認",
-  "lastBilledAmount": "前回請求額"
+  "lastBilledAmount": "前回請求額",
+  "warehouseFeeRegister": "単価",
+  "registerUser": "ユーザー登録",
+  "instockAmount": "入庫数",
+  "cargoPrice": "荷役単価",
+  "storagePrice": "保管単価",
+  "outStockDate": "出庫日",
+  "stockAmount": "現在庫数",
+  "outStockAmount": "出庫数",
+  "targetDate": "対象日",
+  "inventory_report": "在庫報告書",
+  "received_on": "入金日",
+  "processing_on": "処理日",
+  "billingDate": "請求年月",
+  "YM": "年月",
+  "day": "締日",
+  "month": "月",
+  "year": "年",
+  "back": "戻る",
+  "targetPeriod": "対象期間",
+  "targetShipper": "対象荷主",
+  "targetWarehouse": "対象倉庫",
+  "billingCalculation": "請求計算",
+  "billingList": "請求リスト"
 }

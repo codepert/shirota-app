@@ -98,7 +98,6 @@ const BillingListPage = ({ is_edit }) => {
     const arr = record.duration.split("~");
     const filename = record.duration + "_請求書.pdf";
     setIsBillExportSpinLoading(true);
-    debugger;
     API.post(
       billsReportURL,
       {
@@ -114,7 +113,9 @@ const BillingListPage = ({ is_edit }) => {
         setIsBillExportSpinLoading(false);
         downloadPDF(res, filename);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setIsBillExportSpinLoading(false);
+      });
   };
 
   const downloadPDF = (response, filename) => {
@@ -129,8 +130,8 @@ const BillingListPage = ({ is_edit }) => {
   };
 
   const exportBillPDF = (record) => {
-    setIsBillAmountExportSpinLoading(true);
-    setIsBillAmountExportSpinLoading(false);
+    setIsBillExportSpinLoading(false);
+    // setIsBillExportSpinLoading(false);
     const arr = record.duration.split("~");
     const filename = record.duration + "_明細書.pdf";
   };
@@ -157,7 +158,7 @@ const BillingListPage = ({ is_edit }) => {
         <Flex justify="space-between" style={{ marginBottom: 10 }}>
           <Flex justify="item-start">
             <Space>
-              <label>{$lang.billing.YM}:</label>
+              <label>{$lang.YM}:</label>
               <DatePicker
                 format={"YYYY/MM"}
                 value={ym}
@@ -168,7 +169,7 @@ const BillingListPage = ({ is_edit }) => {
               />
             </Space>
             <Space>
-              <label className="ml-8">{$lang.billing.day}:</label>
+              <label className="ml-8">{$lang.day}:</label>
               <Select
                 options={dateOptions.map((item) => {
                   return {
@@ -196,25 +197,23 @@ const BillingListPage = ({ is_edit }) => {
           <Flex>
             <Col>
               <Link to="/bill_process">
-                <Button style={{ float: "right" }}>
-                  {$lang.billing.addNew}
-                </Button>
+                <Button style={{ float: "right" }}>{$lang.addNew}</Button>
               </Link>
             </Col>
           </Flex>
         </Flex>
-        <BillListTable
-          exportBillPDF={exportBillAmountPDF}
-          exportBillAmountPDF={exportBillPDF}
-          dataSource={billData}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          total={total}
-          onChange={handlePageChange}
-          isEdit={is_edit}
-          isBillExportSpinLoading={isBillExportSpinLoading}
-          isBillAmountExportSpinLoading={isBillAmountExportSpinLoading}
-        />
+        <Spin spinning={isBillExportSpinLoading}>
+          <BillListTable
+            exportBillPDF={exportBillPDF}
+            exportBillAmountPDF={exportBillAmountPDF}
+            dataSource={billData}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            total={total}
+            onChange={handlePageChange}
+            isEdit={is_edit}
+          />
+        </Spin>
       </Card>
     </Content>
   );

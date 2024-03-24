@@ -34,6 +34,8 @@ export const AppRouter = () => {
   const user = useAuth();
 
   const getNavigations = () => {
+    console.log("app router component................");
+
     axios.get(`${navigatiionsURL}`).then((res) => {
       const allData = res.data.map((item) => {
         return { ...item, key: item.path, label: item.name, url: item.path };
@@ -43,7 +45,9 @@ export const AppRouter = () => {
   };
 
   useEffect(() => {
-    if (user.authUserName != null) getNavigations();
+    if (user.authUserName != null) {
+      getNavigations();
+    }
   }, [user.authUserName]);
 
   return (

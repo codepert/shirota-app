@@ -129,7 +129,7 @@ const UserPage = ({ is_edit }) => {
         className="mx-auto flex flex-col justify-content content-h"
       >
         <Card style={{ width: "100%" }} bordered={false}>
-          <Flex justify="flex-end">
+          <Flex justify="flex-end" style={{ marginBottom: 10 }}>
             {is_edit === 1 ? (
               <Button
                 onClick={() => {
@@ -138,7 +138,7 @@ const UserPage = ({ is_edit }) => {
                   setModalData(null);
                 }}
               >
-                {$lang.UserPage.buttons.addNew}
+                {$lang.addNew}
               </Button>
             ) : (
               <></>

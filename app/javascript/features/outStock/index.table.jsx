@@ -29,7 +29,7 @@ const OutStockTable = ({ data, editRow, deleteRow, is_edit }) => {
             <span className="text-xs text-blue">{record.shipper_name}</span>
             <span className="px-5 text-xs text-blue">|</span>
             <span className="text-xs text-blue">
-              {$lang.outStock.outStockDate}: {record.inout_on}
+              {$lang.outStockDate}: {record.inout_on}
             </span>
           </p>
         </>

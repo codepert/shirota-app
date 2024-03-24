@@ -54,7 +54,7 @@ const UserRegisterModal = ({
 
   return (
     <Modal
-      title={$lang.UserPage.registerUser}
+      title={$lang.registerUser}
       open={isOpen}
       onCancel={onClose}
       footer={null}

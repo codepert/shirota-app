@@ -25,7 +25,7 @@ const WarehouseRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
 
   return (
     <Modal
-      title={$lang.Maintenance.shipperMaster}
+      title={$lang.shipperMaster}
       open={isOpen}
       onCancel={onClose}
       footer={null}
@@ -41,7 +41,7 @@ const WarehouseRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
         </Form.Item>
         <Form.Item
           name="name"
-          label={$lang.Maintenance.shipperName}
+          label={$lang.shipperName}
           rules={[{ required: true, message: $lang.tableCommon.warning }]}
         >
           <Input />

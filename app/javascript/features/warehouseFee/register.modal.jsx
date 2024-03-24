@@ -30,7 +30,7 @@ const WarehouseFeeRegisterModal = ({
 
   return (
     <Modal
-      title={$lang.Maintenance.shipperMaster}
+      title={$lang.warehouseFeeRegister}
       open={isOpen}
       onCancel={onClose}
       footer={null}
@@ -45,7 +45,7 @@ const WarehouseFeeRegisterModal = ({
           <Input type="hidden" />
         </Form.Item>
         <Form.Item
-          label={$lang.Maintenance.packing}
+          label={$lang.packing}
           name={"packaging"}
           rules={[
             {
@@ -57,7 +57,7 @@ const WarehouseFeeRegisterModal = ({
           <Input />
         </Form.Item>
         <Form.Item
-          label={$lang.shipper.code}
+          label={$lang.code}
           name={"code"}
           rules={[
             {
@@ -69,7 +69,7 @@ const WarehouseFeeRegisterModal = ({
           <Input />
         </Form.Item>
         <Form.Item
-          label={$lang.Maintenance.handlingFeeUnitPrice}
+          label={$lang.handlingFeeUnitPrice}
           name={"handling_fee_rate"}
           rules={[
             {
@@ -81,7 +81,7 @@ const WarehouseFeeRegisterModal = ({
           <Input type="number" />
         </Form.Item>
         <Form.Item
-          label={$lang.Maintenance.storageFeeUnitPrice}
+          label={$lang.storageFeeUnitPrice}
           name={"storage_fee_rate"}
           rules={[
             {
@@ -93,7 +93,7 @@ const WarehouseFeeRegisterModal = ({
           <Input type="number" />
         </Form.Item>
         <Form.Item
-          label={$lang.Maintenance.billingClass}
+          label={$lang.billingClass}
           name={"fee_category"}
           rules={[
             {
@@ -101,17 +101,17 @@ const WarehouseFeeRegisterModal = ({
               message: `${$lang.tableCommon.warning}`,
             },
           ]}
-          initialValue={$lang.Maintenance.fullTimeRequest}
+          initialValue={$lang.fullTimeRequest}
         >
           <Select
             options={[
               {
                 value: 1,
-                label: $lang.Maintenance.fullTimeRequest,
+                label: $lang.fullTimeRequest,
               },
               {
                 value: 2,
-                label: $lang.Maintenance.firstBilling,
+                label: $lang.firstBilling,
               },
             ]}
             allowClear

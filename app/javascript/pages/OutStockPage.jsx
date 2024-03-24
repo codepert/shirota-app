@@ -435,7 +435,7 @@ const OutStockPage = ({ is_edit }) => {
           </Row>
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.inStock.shipper}:</label>
+              <label>{$lang.shipperName}:</label>
             </Col>
             <Col span={6}>
               <Select
@@ -444,13 +444,13 @@ const OutStockPage = ({ is_edit }) => {
                 options={shipperOptions}
                 value={selectedShipperId}
                 defaultValue={""}
-                placeholder={$lang.inStock.shipper}
+                placeholder={$lang.shipperName}
                 disabled={editMode == "edit"}
               />
               <Row>
                 {shipperOptions.length > 0 && (
                   <span className="" style={{ marginLeft: 16 }}>
-                    {$lang.inStock.shipper} :&nbsp;&nbsp;
+                    {$lang.shipperName} :&nbsp;&nbsp;
                     {shipperDisctription.code} &nbsp;/ &nbsp;
                     {shipperDisctription.closingDate}
                   </span>
@@ -460,7 +460,7 @@ const OutStockPage = ({ is_edit }) => {
           </Row>
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.outStock.outStockDate}:</label>
+              <label>{$lang.outStockDate}:</label>
             </Col>
             <Col span={6}>
               <div className="ml-2">
@@ -474,7 +474,7 @@ const OutStockPage = ({ is_edit }) => {
                       setOutStockDate(dayjs(date, dateFormat));
                     }
                   }}
-                  placeholder={$lang.outStock.outStockDate}
+                  placeholder={$lang.outStockDate}
                   className="ml-1"
                   format={dateFormat}
                 />
@@ -483,13 +483,13 @@ const OutStockPage = ({ is_edit }) => {
           </Row>
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.inStock.productName}:</label>
+              <label>{$lang.productName}:</label>
             </Col>
             <Col span={16}>
               <Space.Compact block className="ml-3">
                 <Input
                   style={{ width: 150 }}
-                  placeholder={$lang.inStock.productName}
+                  placeholder={$lang.productName}
                   value={searchProductTxt}
                   onChange={handleSearchProduct}
                   onPressEnter={(e) => {
@@ -500,13 +500,13 @@ const OutStockPage = ({ is_edit }) => {
                 />
                 <Input
                   style={{ width: 150 }}
-                  placeholder={$lang.inStock.packing}
+                  placeholder={$lang.packing}
                   value={packaging}
                   disabled
                 />
                 <Input
                   style={{ width: 100 }}
-                  placeholder={$lang.inStock.cargoPrice}
+                  placeholder={$lang.cargoPrice}
                   value={handlePrice}
                   onChange={(e) => {
                     setHandlePrice(e.target.value);
@@ -514,7 +514,7 @@ const OutStockPage = ({ is_edit }) => {
                 />
                 <Input
                   style={{ width: 100 }}
-                  placeholder={$lang.inStock.storagePrice}
+                  placeholder={$lang.storagePrice}
                   value={storagePrice}
                   disabled
                 />
@@ -527,12 +527,12 @@ const OutStockPage = ({ is_edit }) => {
               <Space.Compact block className="ml-3">
                 <Input
                   style={{ width: 100 }}
-                  placeholder={$lang.inStock.inStockDate}
+                  placeholder={$lang.inStockDate}
                   value={inStockDate}
                   disabled
                 />
                 <Select
-                  placeholder={$lang.inStock.lotNumber}
+                  placeholder={$lang.lotNumber}
                   style={{ width: 150 }}
                   value={selectedStockInoutId}
                   options={stockInoutOptions}
@@ -546,14 +546,14 @@ const OutStockPage = ({ is_edit }) => {
                 <Input
                   type="number"
                   style={{ width: 100 }}
-                  placeholder={$lang.outStock.stockAmount}
+                  placeholder={$lang.stockAmount}
                   value={stockAmount}
                   disabled
                 />
                 <Input
                   style={{ width: 100 }}
                   type="number"
-                  placeholder={$lang.outStock.outStockAmount}
+                  placeholder={$lang.outStockAmount}
                   value={outStockAmount}
                   onChange={(e) => {
                     setOutStockAmount(e.target.value);

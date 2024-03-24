@@ -34,65 +34,71 @@ const NavbarSection = () => {
   };
 
   const getNavigations = () => {
-    axios.get(`${navigatiionsURL}`).then((res) => {
-      const allData = res.data.map((item) => {
-        return {
-          id: item.id,
-          label: item.name,
-          key: item.path,
-          parent_id: item.parent_id,
-        };
-      });
+    console.log("navbar component................");
 
-      const parentArray = allData
-        .map((item) => item.parent_id)
-        .filter((parentId) => parentId !== null);
+    axios
+      .get(`${navigatiionsURL}`)
+      .then((res) => {
+        const allData = res.data.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+            key: item.path,
+            parent_id: item.parent_id,
+          };
+        });
 
-      const newArray = [];
+        const parentArray = allData
+          .map((item) => item.parent_id)
+          .filter((parentId) => parentId !== null);
 
-      allData.forEach((item) => {
-        if (item.parent_id === null) {
-          if (!parentArray.includes(item.id))
-            newArray.push({
-              label: item.label,
-              key: item.key,
-            });
-        } else {
-          const parentItem = newArray.find(
-            (parent) => parent.key === item.parent_id
-          );
-          if (parentItem) {
-            if (!parentItem.children) {
-              parentItem.children = [];
-            }
-            parentItem.children.push({
-              label: item.label,
-              key: item.key,
-            });
+        const newArray = [];
+
+        allData.forEach((item) => {
+          if (item.parent_id === null) {
+            if (!parentArray.includes(item.id))
+              newArray.push({
+                label: item.label,
+                key: item.key,
+              });
           } else {
-            const newParentItem = {
-              label: allData.find((data) => data.id == item.parent_id).label,
-              key: item.parent_id,
-              children: [
-                {
-                  label: item.label,
-                  key: item.key,
-                },
-              ],
-            };
-            newArray.push(newParentItem);
+            const parentItem = newArray.find(
+              (parent) => parent.key === item.parent_id
+            );
+            if (parentItem) {
+              if (!parentItem.children) {
+                parentItem.children = [];
+              }
+              parentItem.children.push({
+                label: item.label,
+                key: item.key,
+              });
+            } else {
+              const newParentItem = {
+                label: allData.find((data) => data.id == item.parent_id).label,
+                key: item.parent_id,
+                children: [
+                  {
+                    label: item.label,
+                    key: item.key,
+                  },
+                ],
+              };
+              newArray.push(newParentItem);
+            }
           }
-        }
-      });
+        });
 
-      setRealData(newArray);
-      setNavigations(allData);
-    });
+        setRealData(newArray);
+        setNavigations(allData);
+      })
+      .catch((error) => {
+        navigate("/signin");
+      });
   };
 
   const logout = async () => {
     const res = await logoutAction();
-    debugger;
     if (res.status == 204) {
       navigate("/signin");
     } else {
@@ -128,7 +134,7 @@ const NavbarSection = () => {
         style={{
           backgroundColor: "#fff",
           width: "100%",
-          borderBottom: "1px solid #eee",
+          borderTop: "2px solid #297afc",
         }}
       >
         <div className="" style={{ backgroundColor: "#fff" }}></div>

@@ -32,11 +32,11 @@ const PrivateRoute = ({ Component, navigations }) => {
     getCurrentPage();
   }, [location]);
 
-  useEffect(() => { }, [currentPage]);
+  useEffect(() => {}, [currentPage]);
 
   return token ? (
     <>
-      <NavbarSection navigations={navigations} />
+      <NavbarSection />
       {currentPage.is_read == 1 ? (
         <Component navigations={navigations} is_edit={currentPage.is_edit} />
       ) : (

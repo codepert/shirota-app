@@ -363,7 +363,7 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const exportBillAmountPDF = (record) => {
-    setIsBillAmountExportSpinLoading(true);
+    setIsBillExportSpinLoading(true);
     API.post(
       billAmountReportURL,
       {
@@ -376,19 +376,19 @@ const BillingProcessPage = ({ is_edit }) => {
       }
     )
       .then((res) => {
-        setIsBillAmountExportSpinLoading(false);
+        setIsBillExportSpinLoading(false);
         const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
         processRangeDates[1].format("YY-MM-DD") + "_請求明細書.pdf";
         downloadPDF(res, fileName);
       })
       .catch((err) => {
-        setIsBillAmountExportSpinLoading(false);
+        setIsBillExportSpinLoading(false);
         console.log("err", err);
       });
   };
 
   const exportBillsPDF = () => {
-    setIsBillsExportSpinLoading(true);
+    setIsBillExportSpinLoading(true);
     API.post(
       billsReportURL,
       {
@@ -400,7 +400,7 @@ const BillingProcessPage = ({ is_edit }) => {
       }
     )
       .then((res) => {
-        setIsBillsExportSpinLoading(false);
+        setIsBillExportSpinLoading(false);
         const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
         processRangeDates[1].format("YY-MM-DD") + "_請求一覧.pdf";
         downloadPDF(res, fileName);
@@ -445,7 +445,7 @@ const BillingProcessPage = ({ is_edit }) => {
         <Row className="my-2">
           <Col span={12}>
             <Space align="center">
-              <label>{$lang.billing.billingDate}:</label>
+              <label>{$lang.billingDate}:</label>
               <Input
                 type="number"
                 className=""
@@ -463,7 +463,7 @@ const BillingProcessPage = ({ is_edit }) => {
               ></Input>
             </Space>
             <Space align="center" className="ml-4">
-              <label>{$lang.billing.month}:</label>
+              <label>{$lang.month}:</label>
               <Select
                 options={monthOptions.map((item) => {
                   return {
@@ -480,7 +480,7 @@ const BillingProcessPage = ({ is_edit }) => {
               />
             </Space>
             <Space align="center" className="ml-4">
-              <label className="">{$lang.billing.day}:</label>
+              <label className="">{$lang.day}:</label>
               <Select
                 options={dateOptions.map((item) => {
                   return {
@@ -498,13 +498,13 @@ const BillingProcessPage = ({ is_edit }) => {
           </Col>
           <Col span={12} align="right">
             <Link to="/bill_list">
-              <Button style={{ float: "right" }}>{$lang.billing.back}</Button>
+              <Button style={{ float: "right" }}>{$lang.back}</Button>
             </Link>
           </Col>
         </Row>
         <Row className="my-2">
           <Space align="center">
-            <label>{$lang.billing.targetPeriod}:</label>
+            <label>{$lang.targetPeriod}:</label>
             <DatePicker.RangePicker
               theme={"light"}
               value={processRangeDates}
@@ -516,7 +516,7 @@ const BillingProcessPage = ({ is_edit }) => {
         </Row>
         <Row className="my-2">
           <Space direction="horizontal">
-            <label>{$lang.billing.targetShipper}:</label>
+            <label>{$lang.targetShipper}:</label>
             <Space.Compact block>
               <Select
                 style={{ width: 300 }}
@@ -524,16 +524,16 @@ const BillingProcessPage = ({ is_edit }) => {
                 options={shipperOptions}
                 value={seletedShipper.value}
                 defaultValue={""}
-                placeholder={$lang.inStock.shipper}
+                placeholder={$lang.shipperName}
               />
             </Space.Compact>
           </Space>
         </Row>
         <Row className="my-2">
           <Space align="center">
-            <label>{$lang.billing.targetWarehouse}:</label>
+            <label>{$lang.targetWarehouse}:</label>
             <Select
-              placeholder={$lang.inStock.warehouse}
+              placeholder={$lang.warehouseName}
               style={{ width: 150 }}
               value={selectedWarehouse}
               options={warehouseOptions}
@@ -554,7 +554,7 @@ const BillingProcessPage = ({ is_edit }) => {
                   getCalculateBillList();
                 }}
               >
-                {$lang.billing.buttons.billingCalculation}
+                {$lang.billingCalculation}
               </Button>
             </Spin>
           </Space>
@@ -565,13 +565,13 @@ const BillingProcessPage = ({ is_edit }) => {
               getBillList();
             }}
           >
-            {$lang.billing.buttons.billingList}
+            {$lang.billingList}
           </Button>
         </Flex>
       </Card>
       <Card className="mb-5">
         <Flex vertical>
-          <div style={{ marginBottom: 10 }}>{$lang.billing.new}</div>
+          <div style={{ marginBottom: 10 }}>{$lang.new}</div>
           <Flex
             justify="space-between"
             style={{
@@ -623,18 +623,18 @@ const BillingProcessPage = ({ is_edit }) => {
           onClose={handleHideConfirmModal}
           message={confirmMessage}
         />
-        <BillProcessTable
-          exportBillPDF={exportBillPDF}
-          exportBillAmountPDF={exportBillAmountPDF}
-          dataSource={billData}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          total={total}
-          onChange={handlePageChange}
-          isBillExportSpinLoading={isBillExportSpinLoading}
-          isBillAmountExportSpinLoading={isBillAmountExportSpinLoading}
-          isEdit={is_edit}
-        />
+        <Spin spinning={isBillExportSpinLoading}>
+          <BillProcessTable
+            exportBillPDF={exportBillPDF}
+            exportBillAmountPDF={exportBillAmountPDF}
+            dataSource={billData}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            total={total}
+            onChange={handlePageChange}
+            isEdit={is_edit}
+          />
+        </Spin>
       </Card>
     </Content>
   );

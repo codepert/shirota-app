@@ -1205,3 +1205,7 @@ video {
 :where(.css-dev-only-do-not-override-1k979oh).ant-input-affix-wrapper {
   border-radius: 0 !important;
 }
+:where(.css-dev-only-do-not-override-1k979oh).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after {
+  border-color: #fff;
+}

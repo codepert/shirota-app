@@ -13,8 +13,6 @@ const BillListTable = ({
   itemsPerPage,
   onChange,
   isEdit,
-  isBillExportSpinLoading,
-  isBillAmountExportSpinLoading,
 }) => {
   const columns = [
     {
@@ -60,39 +58,35 @@ const BillListTable = ({
         render: (text, record, dataIndex) => {
           return (
             <Flex justify="center">
-              <Spin spinning={isBillExportSpinLoading}>
-                <CustomButton
-                  onClick={() => {
-                    console.log("record", record);
-                    exportBillPDF(record);
-                  }}
-                  title={$lang.billingReport}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "#000",
-                    display: "none",
-                  }}
-                  visability={true}
-                />{" "}
-              </Spin>
-              <Spin spinning={isBillAmountExportSpinLoading}>
-                <CustomButton
-                  onClick={() => {
-                    exportBillAmountPDF(record);
-                  }}
-                  title={$lang.detail}
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "#000",
-                    marginLeft: 5,
-                  }}
-                  size="small"
-                  className="btn-default btn-hover-black"
-                  visability={true}
-                />
-              </Spin>
+              <CustomButton
+                onClick={() => {
+                  console.log("record", record);
+                  exportBillPDF(record);
+                }}
+                title={$lang.billingReport}
+                size="small"
+                className="btn-default btn-hover-black"
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#000",
+                  display: "none",
+                }}
+                visability={true}
+              />{" "}
+              <CustomButton
+                onClick={() => {
+                  exportBillAmountPDF(record);
+                }}
+                title={$lang.detail}
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#000",
+                  marginLeft: 5,
+                }}
+                size="small"
+                className="btn-default btn-hover-black"
+                visability={true}
+              />
             </Flex>
           );
         },

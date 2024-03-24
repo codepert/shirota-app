@@ -460,12 +460,12 @@ const InStockPage = ({ is_edit }) => {
         >
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.inStock.warehouse}: </label>
+              <label>{$lang.warehouseName}: </label>
             </Col>
             <Col span={6}>
               {warehouseOptions.length > 0 && (
                 <Select
-                  placeholder={$lang.inStock.warehouse}
+                  placeholder={$lang.warehouseName}
                   style={{ width: 150, marginLeft: 14 }}
                   value={selectedWarehouse}
                   options={warehouseOptions}
@@ -476,7 +476,7 @@ const InStockPage = ({ is_edit }) => {
           </Row>
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.inStock.shipper}:</label>
+              <label>{$lang.shipperName}:</label>
             </Col>
             <Col span={4}>
               {shipperOptions.length > 0 && (
@@ -487,12 +487,12 @@ const InStockPage = ({ is_edit }) => {
                     options={shipperOptions}
                     value={seletedShipper.value}
                     defaultValue={""}
-                    placeholder={$lang.inStock.shipper}
+                    placeholder={$lang.shipperName}
                   />
                   <Row>
                     {shipperOptions.length > 0 && (
                       <span className="" style={{ marginLeft: 16 }}>
-                        {$lang.inStock.shipper} :&nbsp;&nbsp;
+                        {$lang.shipperName} :&nbsp;&nbsp;
                         {shipperDisctription.code} &nbsp;/ &nbsp;
                         {shipperDisctription.closingDate}
                       </span>
@@ -504,7 +504,7 @@ const InStockPage = ({ is_edit }) => {
           </Row>
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.inStock.inStockDate}:</label>
+              <label>{$lang.inStockDate}:</label>
             </Col>
             <Col span={6}>
               <div className="ml-2">
@@ -519,7 +519,7 @@ const InStockPage = ({ is_edit }) => {
                     }
                   }}
                   defaultValue={dayjs(currentDate, dateFormat)}
-                  placeholder={$lang.inStock.inStockDate}
+                  placeholder={$lang.inStockDate}
                   className="ml-1"
                   format={dateFormat}
                 />
@@ -528,13 +528,13 @@ const InStockPage = ({ is_edit }) => {
           </Row>
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.inStock.productName}:</label>
+              <label>{$lang.productName}:</label>
             </Col>
             <Col span={10}>
               <Space.Compact block className="ml-3">
                 <Input
                   style={{ width: 150 }}
-                  placeholder={$lang.inStock.productName}
+                  placeholder={$lang.productName}
                   value={searchProductTxt}
                   onChange={handleSearchProduct}
                   onPressEnter={(e) => {
@@ -545,13 +545,13 @@ const InStockPage = ({ is_edit }) => {
                 />
                 <Input
                   style={{ width: 150 }}
-                  placeholder={$lang.inStock.packing}
+                  placeholder={$lang.packing}
                   value={packaging}
                   disabled
                 />
                 <Input
                   style={{ width: 100 }}
-                  placeholder={$lang.inStock.cargoPrice}
+                  placeholder={$lang.cargoPrice}
                   value={handlePrice}
                   onChange={(e) => {
                     setHandlePrice(e.target.value);
@@ -559,7 +559,7 @@ const InStockPage = ({ is_edit }) => {
                 />
                 <Input
                   style={{ width: 100 }}
-                  placeholder={$lang.inStock.storagePrice}
+                  placeholder={$lang.storagePrice}
                   value={storagePrice}
                   onChange={(e) => {
                     setStoragePrice(e.target.value);
@@ -574,7 +574,7 @@ const InStockPage = ({ is_edit }) => {
               <Space.Compact block className="ml-3">
                 <Input
                   style={{ width: 200 }}
-                  placeholder={$lang.inStock.lotNumber}
+                  placeholder={$lang.lotNumber}
                   value={lotNumber}
                   onChange={(e) => {
                     setLotNumber(e.target.value);
@@ -584,7 +584,7 @@ const InStockPage = ({ is_edit }) => {
                   type="number"
                   min={0}
                   style={{ width: 100 }}
-                  placeholder={$lang.inStock.weight + "(kg)"}
+                  placeholder={$lang.weight + "(kg)"}
                   value={weight}
                   onChange={(e) => {
                     setWeight(e.target.value);
@@ -593,7 +593,7 @@ const InStockPage = ({ is_edit }) => {
                 <Input
                   type="number"
                   style={{ width: 100 }}
-                  placeholder={$lang.inStock.itemNumber}
+                  placeholder={$lang.instockAmount}
                   value={amount}
                   min={0}
                   onChange={(e) => {

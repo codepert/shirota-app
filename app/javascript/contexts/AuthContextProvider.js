@@ -30,7 +30,6 @@ const AuthContextProvider = ({ children }) => {
   const logoutAction = async () => {
     try {
       const res = await services.logout();
-      debugger;
       authActions.logoutAction(dispatch);
       return res;
     } catch (err) {

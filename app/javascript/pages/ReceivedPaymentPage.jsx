@@ -86,7 +86,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
       });
       shippersWithAll.unshift({
         value: "",
-        label: "ALL",
+        label: $lang.all,
         index: 1,
         id: 0,
         code: "",
@@ -356,7 +356,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         bordered={false}
       >
         <Row className="my-2">
-          <Col span={1}>{$lang.deposit.received_on}:</Col>
+          <Col span={1}>{$lang.received_on}:</Col>
           <DatePicker.RangePicker
             style={{ width: 250 }}
             value={inStockRangeDates}
@@ -365,7 +365,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         </Row>
         <Row className="my-2">
           <Col span={1}>
-            <label>{$lang.inStock.shipper}:</label>
+            <label>{$lang.shipperName}:</label>
           </Col>
           <Col span={6}>
             <Select
@@ -377,7 +377,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
             <p>
               {shipperOptions.length > 0 && (
                 <span className="" style={{ marginLeft: 0 }}>
-                  {$lang.inStock.shipper} :&nbsp;&nbsp;
+                  {$lang.shipperName} :&nbsp;&nbsp;
                   {shipperDisctription.code} &nbsp;/ &nbsp;
                   {shipperDisctription.closingDate}
                 </span>
@@ -386,7 +386,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
           </Col>
         </Row>
         <Row className="my-2">
-          <Col span={1}>{$lang.deposit.processing_on}:</Col>
+          <Col span={1}>{$lang.processing_on}:</Col>
           <DatePicker.RangePicker
             style={{ width: 250 }}
             value={processRangeDates}

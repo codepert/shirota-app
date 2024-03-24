@@ -164,7 +164,7 @@ const WarehousePage = ({ is_edit }) => {
               }}
               className="btn-bg-black"
             >
-              {$lang?.Maintenance?.addNew}
+              {$lang.addNew}
             </Button>
           ) : (
             <></>

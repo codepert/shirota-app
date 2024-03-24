@@ -24,20 +24,20 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
           label:
             item.packaging +
             " / " +
-            $lang.ProductPage.handling_fee +
+            $lang.handlingFeeUnitPrice +
             " : " +
             item.handling_fee_rate +
-            $lang.ProductPage.yen +
+            $lang.yen +
             " / " +
-            $lang.ProductPage.storage_fee +
+            $lang.storageFeeUnitPrice +
             " : " +
             item.storage_fee_rate +
             $lang.ProductPage.yen +
             " / " +
             "  " +
             (item.fee_category == 1
-              ? $lang.WarehouseFeePage.fullTimeRequest
-              : $lang.WarehouseFeePage.firstBilling),
+              ? $lang.fullTimeRequest
+              : $lang.firstBilling),
         };
       });
       setWarehouseFees(warehouseFees);
@@ -68,7 +68,7 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
 
   return (
     <Modal
-      title={$lang.ProductPage.registerProduct}
+      title={$lang.registerProduct}
       open={isOpen}
       onCancel={onClose}
       footer={null}
@@ -85,13 +85,13 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
         </Form.Item>
         <Form.Item
           name="code"
-          label={$lang.ProductPage.productCode}
+          label={$lang.productCode}
           rules={[{ required: true, message: $lang.tableCommon.warning }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          label={$lang.ProductPage.productName}
+          label={$lang.productName}
           name={"name"}
           rules={[{ required: true, message: $lang.tableCommon.warning }]}
         >
@@ -99,7 +99,7 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
         </Form.Item>
         <Form.Item
           name="specification"
-          label={$lang.ProductPage.productPacking}
+          label={$lang.productPacking}
           rules={[{ required: true, message: $lang.tableCommon.warning }]}
         >
           <Input />
@@ -107,7 +107,7 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
         {warehouseFees.length > 0 && (
           <Form.Item
             name="warehouse_fee_id"
-            label={$lang.ProductPage.warehouseFee}
+            label={$lang.packing}
             rules={[{ required: true, message: $lang.tableCommon.warning }]}
           >
             <Select options={warehouseFees} allowClear />

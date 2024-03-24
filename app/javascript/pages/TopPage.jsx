@@ -40,7 +40,7 @@ const Top = () => {
 
   useEffect(() => {
     getNavigations();
-    if (eval(moment().format("D")) < 5) {
+    if (moment().format("D") < 5) {
       setIsVisibleAlert(true);
     } else setIsVisibleAlert(false);
   }, []);

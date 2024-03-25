@@ -100,8 +100,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const inStockDateParam =
       inStockRangeDates.length > 0
         ? `&instockFromDate=${new Date(inStockRangeDates[0].toString())
-            .toISOString()
-            .substring(0, 10)}&instockToDate=${new Date(
+          .toISOString()
+          .substring(0, 10)}&instockToDate=${new Date(
             inStockRangeDates[1].toString()
           )
             .toISOString()
@@ -110,8 +110,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const processDateParam =
       processRangeDates.length > 0
         ? `&instockFromDate=${new Date(processRangeDates[0].toString())
-            .toISOString()
-            .substring(0, 10)}&instockToDate=${new Date(
+          .toISOString()
+          .substring(0, 10)}&instockToDate=${new Date(
             processRangeDates[1].toString()
           )
             .toISOString()
@@ -200,8 +200,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const inStockDateParam =
       inStockRangeDates.length > 0
         ? `&instockFromDate=${new Date(inStockRangeDates[0].toString())
-            .toISOString()
-            .substring(0, 10)}&instockToDate=${new Date(
+          .toISOString()
+          .substring(0, 10)}&instockToDate=${new Date(
             inStockRangeDates[1].toString()
           )
             .toISOString()
@@ -210,8 +210,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const processDateParam =
       processRangeDates.length > 0
         ? `&instockFromDate=${new Date(processRangeDates[0].toString())
-            .toISOString()
-            .substring(0, 10)}&instockToDate=${new Date(
+          .toISOString()
+          .substring(0, 10)}&instockToDate=${new Date(
             processRangeDates[1].toString()
           )
             .toISOString()
@@ -395,40 +395,45 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         </Row>
         <Divider />
         <Row>
-          <Space align="center">
-            {" "}
-            <Button
-              className="btn-bg-black"
-              style={{ marginLeft: 70 }}
-              onClick={getReceivePayment}
-            >
-              {$lang.buttons.search}
-            </Button>
-            <Button
-              className="btn-bg-black ml-1"
-              onClick={exportDataAndDownloadCVS}
-            >
-              {$lang.buttons.csvExchange}
-            </Button>
-          </Space>
+          {is_edit === 1 ? (<>
+            <Space align="center">
+              {" "}
+              <Button
+                className="btn-bg-black"
+                style={{ marginLeft: 70 }}
+                onClick={getReceivePayment}
+              >
+                {$lang.buttons.search}
+              </Button>
+              <Button
+                className="btn-bg-black ml-1"
+                onClick={exportDataAndDownloadCVS}
+              >
+                {$lang.buttons.csvExchange}
+              </Button>
+            </Space></>) : (<></>)}
         </Row>
       </Card>
       <Card bordered={false} className="py-4 " style={{ marginTop: "20px" }}>
-        <Row className="mb-5">
-          <Col span={12}></Col>
-          <Col span={12}>
-            <Button
-              className="btn-bg-black"
-              style={{ float: "right", marginBottom: 10 }}
-              onClick={() => {
-                setModalData(null);
-                handleShowModal();
-              }}
-            >
-              {$lang.buttons.register}
-            </Button>
-          </Col>
-        </Row>
+        {is_edit === 1 ? (
+          <>
+            <Row className="mb-5">
+              <Col span={12}></Col>
+              <Col span={12}>
+                <Button
+                  className="btn-bg-black"
+                  style={{ float: "right", marginBottom: 10 }}
+                  onClick={() => {
+                    setModalData(null);
+                    handleShowModal();
+                  }}
+                >
+                  {$lang.buttons.register}
+                </Button>
+              </Col>
+            </Row>
+          </>) :
+          (<></>)}
         <ReceivedPaymentRegisterModal
           isOpen={isModalVisible}
           onClose={handleHideModal}

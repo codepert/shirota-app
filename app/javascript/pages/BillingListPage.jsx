@@ -196,9 +196,11 @@ const BillingListPage = ({ is_edit }) => {
           </Flex>
           <Flex>
             <Col>
-              <Link to="/bill_process">
+              {is_edit === 1 ? (<> <Link to="/bill_process">
                 <Button style={{ float: "right" }}>{$lang.addNew}</Button>
-              </Link>
+              </Link></>)
+                :
+                (<></>)}
             </Col>
           </Flex>
         </Flex>

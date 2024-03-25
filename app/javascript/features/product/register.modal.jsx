@@ -32,7 +32,7 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
             $lang.storageFeeUnitPrice +
             " : " +
             item.storage_fee_rate +
-            $lang.ProductPage.yen +
+            $lang.yen +
             " / " +
             "  " +
             (item.fee_category == 1

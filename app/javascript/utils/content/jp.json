@@ -8,7 +8,7 @@
     "login": "ログイン",
     "signup": "新規登録",
     "warning": "このページは表示できません",
-    "confirm": "本当に削除していいですか?"
+    "confirm": "本当に削除してよろしいですか?"
   },
   "LoginFields": {
     "username": "ログインID",
@@ -94,7 +94,8 @@
     "confirm_bill": "請求を確定しますか？",
     "empty_data": "データはありません。",
     "finish_bill": "請求が確定しました。",
-    "alreayResigered": "これはすでに登録されているデータです。"
+    "alreayResigered": "これはすでに登録されているデータです。",
+    "no_confirm_bill_data": "まだ確定していない資料なので出力できません。"
   },
   "popConfirmType": {
     "success": "成功",

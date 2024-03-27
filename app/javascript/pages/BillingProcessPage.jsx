@@ -14,7 +14,7 @@ import {
   DatePicker,
   Spin,
 } from "antd";
-import { } from "antd";
+import {} from "antd";
 
 import dayjs from "dayjs";
 import CustomButton from "../components/common/CustomButton";
@@ -149,8 +149,8 @@ const BillingProcessPage = ({ is_edit }) => {
     const processDateParam =
       processRangeDates.length > 0
         ? `&from_date=${processRangeDates[0].format(
-          "YYYY-MM-DD"
-        )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
+            "YYYY-MM-DD"
+          )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
 
     const urlParam = `${unCalcBillURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
@@ -205,8 +205,8 @@ const BillingProcessPage = ({ is_edit }) => {
     const processDateParam =
       processRangeDates.length > 0
         ? `&from_date=${processRangeDates[0].format(
-          "YYYY-MM-DD"
-        )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
+            "YYYY-MM-DD"
+          )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
     // const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
     const urlParam = `${billURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&shipper_id=${seletedShipper.value}`;
@@ -339,6 +339,15 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const exportBillPDF = (record) => {
+    if (record.id == "未確認") {
+      openNotificationWithIcon(
+        "warning",
+        $lang.popConfirmType.warning,
+        $lang.messages.no_confirm_bill_data
+      );
+      return;
+    }
+
     setIsBillExportSpinLoading(true);
     API.post(
       billReportURL,
@@ -363,6 +372,14 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const exportBillAmountPDF = (record) => {
+    if (record.id == "未確認") {
+      openNotificationWithIcon(
+        "warning",
+        $lang.popConfirmType.warning,
+        $lang.messages.no_confirm_bill_data
+      );
+      return;
+    }
     setIsBillExportSpinLoading(true);
     API.post(
       billAmountReportURL,
@@ -543,31 +560,36 @@ const BillingProcessPage = ({ is_edit }) => {
         </Row>
         <Divider />
         <Flex justify="item-start">
-          {is_edit === 1 ? (<>
-            {" "}
-            <Space>
-              <Spin spinning={isSpinLoading}>
-                <Button
-                  className="btn-bg-black"
-                  style={{ marginLeft: 60 }}
-                  onClick={() => {
-                    setIsConfirmBillDisabled(false);
-                    getCalculateBillList();
-                  }}
-                >
-                  {$lang.billingCalculation}
-                </Button>
-              </Spin>
-            </Space>
-            <Button
-              className="btn-bg-black ml-1"
-              onClick={() => {
-                setIsConfirmBillDisabled(true);
-                getBillList();
-              }}
-            >
-              {$lang.billingList}
-            </Button></>) : (<></>)}
+          {is_edit === 1 ? (
+            <>
+              {" "}
+              <Space>
+                <Spin spinning={isSpinLoading}>
+                  <Button
+                    className="btn-bg-black"
+                    style={{ marginLeft: 60 }}
+                    onClick={() => {
+                      setIsConfirmBillDisabled(false);
+                      getCalculateBillList();
+                    }}
+                  >
+                    {$lang.billingCalculation}
+                  </Button>
+                </Spin>
+              </Space>
+              <Button
+                className="btn-bg-black ml-1"
+                onClick={() => {
+                  setIsConfirmBillDisabled(true);
+                  getBillList();
+                }}
+              >
+                {$lang.billingList}
+              </Button>
+            </>
+          ) : (
+            <></>
+          )}
         </Flex>
       </Card>
       <Card className="mb-5">

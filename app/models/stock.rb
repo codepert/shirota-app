@@ -63,8 +63,6 @@ class Stock < ApplicationRecord
     if page.present? && limit.present?
       query += " LIMIT #{limit} OFFSET #{page}"
     end
-puts "==================prepare_bill_amounts================="
-puts query
     find_by_sql(query)
   }
   scope :prepare_bill_amounts_20, -> (from_date = nil, to_date = nil, shipper_id = nil, warehouse_id = nil, page = nil, limit = nil) {
@@ -225,8 +223,6 @@ puts query
       sql += " LIMIT #{limit} OFFSET #{page}"
     end
 
-    puts "==============uncalcu bills============="
-    puts sql
     find_by_sql(sql)
 
   }

@@ -28,6 +28,7 @@ import { useAuth } from "../../hooks/useAuth";
 // import ChangePassword from "../../pages/changePasswordPage";
 
 import { navigatiionsURL } from "../../utils/constants";
+import ManageInfoPage from "../../pages/ManageInfoPage";
 
 export const AppRouter = () => {
   const [navigations, setNavigations] = useState([]);
@@ -158,6 +159,15 @@ export const AppRouter = () => {
               <PrivateRoute
                 navigations={navigations}
                 Component={BillingProcessPage}
+              />
+            }
+          />
+          <Route
+            path="/manage_master"
+            element={
+              <PrivateRoute
+                navigations={navigations}
+                Component={ManageInfoPage}
               />
             }
           />

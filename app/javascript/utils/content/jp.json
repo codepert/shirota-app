@@ -198,5 +198,18 @@
   "targetShipper": "対象荷主",
   "targetWarehouse": "対象倉庫",
   "billingCalculation": "請求計算",
-  "billingList": "請求リスト"
+  "billingList": "請求リスト",
+  "companyName" : "社名",
+  "representative":"代表者",
+  "telephoneNumber":"電話番号",
+  "faxNumber":"FAX番号",
+  "firstDate":"期首年月日",
+  "lastDate":"期末年月日",
+  "processYear":"処理年",
+  "processMonth":"処理月",
+  "location":"設置場所",
+  "invoiceNumber":"請求書番号",
+  "registrationNumber":"登録番号"
+
+
 }

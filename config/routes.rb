@@ -41,6 +41,9 @@ Rails.application.routes.draw do
       post "export_bill_report" => "bills#export_bill_report"
       post "export_bill_amount_report" => "bills#export_bill_amount_report"
       post "export_bills_report" => "bills#export_bills_report"
+      resources :management_infos
+      resources :bill_amounts
+      resources :bill_amount_details, only: %i[create, update]
       
       # resources :bill_amounts
     end

@@ -73,7 +73,7 @@ Page.create!([
   },
   {
     name: "管理マスタ",
-    path: "manage_master",
+    path: "/manage_master",
     parent_id: 15
   }
 ])

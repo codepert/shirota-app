@@ -64,6 +64,7 @@ export const billAmountReportURL = "api/v1/export_bill_amount_report";
 export const billsReportURL = "api/v1/export_bills_report";
 export const billURL = "api/v1/bills";
 export const exportStockCSVDataUrl = "api/v1/export_stock_csv";
+export const manageInfoURL = "api/v1/manage_info";
 //unit_price urls
 
 export const httpErrors = {

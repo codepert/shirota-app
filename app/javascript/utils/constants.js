@@ -27,7 +27,7 @@ export const productDetailURL = baseUrl + `api/v1/products_by`;
 
 export const productStockURL = baseUrl + `api/v1/product_in_stock`;
 
-export const manageInfoURL = baseUrl + "api/v1/manage_info";
+export const manageInfoURL = baseUrl + "api/v1/management_infos";
 
 export const saveStockInUrl = baseUrl + "api/v1/stock_in";
 export const saveStockOutUrl = baseUrl + "api/v1/stock_out";

@@ -6,23 +6,28 @@ import $lang from '../utils/content/jp.json'
 import { openNotificationWithIcon } from '../../javascript/components/common/notification'
 
 const ManageInfoPage = () => {
-  const [manageInfo, setMangaeInfo] = useState({});
-  const [form] = Form.useForm();
 
-  useEffect(() => {
-    getManageInfo()
-    if (manageInfo) {
-      form.setFieldsValue(manageInfo);
-    }
-  }, []);
+  const [form] = Form.useForm();
 
 
   const getManageInfo = () => {
     API.get(manageInfoURL)
       .then((res) => {
-        setMangaeInfo(res.data)
+        form.setFieldsValue(res.data[0]);
+        console.log("ddddddddddd", res.data[0].start_date)
+      })
+      .catch((error) => {
+        console.log(error)
       })
   }
+
+  useEffect(() => {
+    getManageInfo()
+  }, []);
+
+
+
+
 
   const onSave = (data) => {
     console.log("register data", data);
@@ -147,7 +152,7 @@ const ManageInfoPage = () => {
               label={$lang.firstDate}
               rules={[{ required: true, message: $lang.tableCommon.warning }]}
             >
-              <DatePicker style={{ marginLeft: 10 }} />
+              <DatePicker style={{ marginLeft: 10 }} format={'YYYY-MM-DD'} />
             </Form.Item>
             <Form.Item
               name="end_date"
@@ -155,7 +160,7 @@ const ManageInfoPage = () => {
               rules={[{ required: true, message: $lang.tableCommon.warning }]}
               style={{ marginLeft: 25 }}
             >
-              <DatePicker style={{ marginLeft: 10 }} />
+              <DatePicker style={{ marginLeft: 10 }} format={'YYYY-MM-DD'} />
             </Form.Item>
           </div>
           <Form.Item
@@ -181,7 +186,7 @@ const ManageInfoPage = () => {
           </Form.Item>
           <Form.Item
             label={$lang.invoiceNumber}
-            name={"invoice_number"}
+            name="invoice_number"
             rules={[{ required: true, message: $lang.tableCommon.warning }]}
           >
             <Input />

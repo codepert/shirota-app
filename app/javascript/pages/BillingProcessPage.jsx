@@ -116,12 +116,7 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const getLastBillDate = () => {
-    const url =
-      lastBillDateURL +
-      "?warehouse_id=" +
-      selectedWarehouse.value +
-      "&shipper_id=" +
-      seletedShipper.value;
+    const url = lastBillDateURL + "?warehouse_id=" + selectedWarehouse.value;
     API.get(url).then((res) => {
       let date = res.data.date;
       if (date != "") date = dayjs(date).format("YYYY/MM/DD HH:mm:ss");
@@ -153,7 +148,7 @@ const BillingProcessPage = ({ is_edit }) => {
           )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
 
-    const urlParam = `${unCalcBillURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipper_id=${seletedShipper.value}&closing_date=${selectedDay}&bill_date=${billDate}`;
+    const urlParam = `${unCalcBillURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&closing_date=${selectedDay}&bill_date=${billDate}`;
     API.get(urlParam)
       .then((res) => {
         let index = 1;
@@ -209,7 +204,7 @@ const BillingProcessPage = ({ is_edit }) => {
           )}&to_date=${processRangeDates[1].format("YYYY-MM-DD")}`
         : "";
     // const urlParam = `${unCalcBillURL}?offset=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&y=${selectedYear}&m=${selectedMonth}&d=${selectedDay}&shipperFrom=${shipperFrom}&shipperTo=${shipperTo}&closing_date=${selectedDay}`;
-    const urlParam = `${billURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}&shipper_id=${seletedShipper.value}`;
+    const urlParam = `${billURL}?page=${currentPage}&limit=${itemsPerPage}${processDateParam}&warehouse_id=${selectedWarehouse.value}`;
 
     API.get(urlParam)
       .then((res) => {
@@ -273,11 +268,11 @@ const BillingProcessPage = ({ is_edit }) => {
   };
 
   const createBill = () => {
-    if (seletedShipper.value == "") {
+    if (billData.length == 0) {
       openNotificationWithIcon(
         "warning",
         $lang.popConfirmType.warning,
-        "select shipper"
+        "データがありません。"
       );
       return;
     }
@@ -294,7 +289,6 @@ const BillingProcessPage = ({ is_edit }) => {
       billed_on: billDate,
       closing_date: selectedDay,
       warehouse_id: selectedWarehouse.value,
-      shipper_id: seletedShipper.value,
       y: selectedYear,
       m: selectedMonth,
       d: selectedDay,
@@ -328,13 +322,12 @@ const BillingProcessPage = ({ is_edit }) => {
 
   const downloadPDF = (response, filename) => {
     const blob = new Blob([response.data], { type: "application/pdf" });
-    const fileName = "generated_pdf.pdf";
 
     // Construct the URL and initiate the download
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.setAttribute("download", fileName);
+    a.setAttribute("download", filename);
     a.click();
   };
 
@@ -362,8 +355,11 @@ const BillingProcessPage = ({ is_edit }) => {
     )
       .then((res) => {
         setIsBillExportSpinLoading(false);
-        const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
-        processRangeDates[1].format("YY-MM-DD") + "_御請求書.pdf";
+        const fileName =
+          processRangeDates[0].format("YY-MM-DD") +
+          "~" +
+          processRangeDates[1].format("YY-MM-DD") +
+          "_御請求書.pdf";
         downloadPDF(res, fileName);
       })
       .catch((err) => {
@@ -394,8 +390,11 @@ const BillingProcessPage = ({ is_edit }) => {
     )
       .then((res) => {
         setIsBillExportSpinLoading(false);
-        const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
-        processRangeDates[1].format("YY-MM-DD") + "_請求明細書.pdf";
+        const fileName =
+          processRangeDates[0].format("YY-MM-DD") +
+          "~" +
+          processRangeDates[1].format("YY-MM-DD") +
+          "_請求明細書.pdf";
         downloadPDF(res, fileName);
       })
       .catch((err) => {
@@ -440,7 +439,7 @@ const BillingProcessPage = ({ is_edit }) => {
   };
   useEffect(() => {
     getWarehouses();
-    getShippers();
+    // getShippers();
   }, []);
 
   useEffect(() => {
@@ -531,6 +530,7 @@ const BillingProcessPage = ({ is_edit }) => {
             />
           </Space>
         </Row>
+        {/* 
         <Row className="my-2">
           <Space direction="horizontal">
             <label>{$lang.targetShipper}:</label>
@@ -545,7 +545,7 @@ const BillingProcessPage = ({ is_edit }) => {
               />
             </Space.Compact>
           </Space>
-        </Row>
+        </Row> */}
         <Row className="my-2">
           <Space align="center">
             <label>{$lang.targetWarehouse}:</label>

@@ -14,11 +14,9 @@ class Api::V1::BillsController < Api::V1::BaseController
     from_date = params[:from_date]
     to_date = params[:to_date]
     warehouse_id = params[:warehouse_id]
-    shipper_id = params[:shipper_id]
 
 
       search = Bill.ransack(
-        shipper_id:     shipper_id,
         warehouse_id:   warehouse_id,
         duration_from:  from_date,
         duration_to:    to_date
@@ -32,7 +30,6 @@ class Api::V1::BillsController < Api::V1::BaseController
   def create
     from_date     = params[:from_date]
     to_date       = params[:to_date]
-    shipper_id    = params[:shipper_id]
     warehouse_id  = params[:warehouse_id]
     closing_date  = params[:closing_date]
     billed_on = Date.today.strftime("%Y-%m-%d")
@@ -43,6 +40,7 @@ class Api::V1::BillsController < Api::V1::BaseController
       }
       return;
     end
+
     prepare_bills = Stock.get_uncalc_bills(from_date, to_date)
     ActiveRecord::Base.transaction do
       prepare_bills.map do |prepare_bill|
@@ -57,7 +55,7 @@ class Api::V1::BillsController < Api::V1::BaseController
 
         
         bill = Bill.create(
-          shipper_id:           shipper_id,
+          shipper_id:           prepare_bill['shipper_id'],
           warehouse_id:         warehouse_id,
           last_amount:          prepare_bill['previous_bill_amount'] == nil ? 0 : prepare_bill['previous_bill_amount'],
           deposit_amount:       prepare_bill['deposit_amount'] == nil ? 0 : prepare_bill['deposit_amount'],
@@ -108,8 +106,7 @@ class Api::V1::BillsController < Api::V1::BaseController
   end
   def last_bill_date
     warehouse_id = params[:warehouse_id]
-    shipper_id = params[:shipper_id]
-    last_bill = Bill.where(billed: 1, warehouse_id: warehouse_id, shipper_id:shipper_id).desc
+    last_bill = Bill.where(billed: 1, warehouse_id: warehouse_id).desc
     last_bill_date = ""
     if last_bill.present?
       last_bill_date = last_bill[0].created_at
@@ -140,15 +137,16 @@ class Api::V1::BillsController < Api::V1::BaseController
     controller.instance_variable_set(:@shipper_post_code, bill.shipper_post_code)
     controller.instance_variable_set(:@shipper_name, bill.shipper_name)
     controller.instance_variable_set(:@shipper_main_address, bill.shipper_main_address)
+    controller.instance_variable_set(:@shipper_tel, bill.shipper_tel)
     controller.instance_variable_set(:@from_date, from_date)
     controller.instance_variable_set(:@to_date, to_date)
     controller.instance_variable_set(:@company_post_code, manangementInfo.post_code)
     controller.instance_variable_set(:@company_name, manangementInfo.company_name)
-    controller.instance_variable_set(:@address1, manangementInfo.address1)
-    controller.instance_variable_set(:@tel_number, manangementInfo.tel_number)
-    controller.instance_variable_set(:@fax_number, manangementInfo.fax_number)
-    controller.instance_variable_set(:@bank, manangementInfo.bank)
-    controller.instance_variable_set(:@bank_number, manangementInfo.bank_number)
+    controller.instance_variable_set(:@company_address, manangementInfo.address1)
+    controller.instance_variable_set(:@company_tel_number, manangementInfo.tel_number)
+    controller.instance_variable_set(:@company_fax_number, manangementInfo.fax_number)
+    controller.instance_variable_set(:@company_bank, manangementInfo.bank)
+    controller.instance_variable_set(:@company_bank_number, manangementInfo.bank_number)
     controller.instance_variable_set(:@register_number, manangementInfo.register_number)
     controller.instance_variable_set(:@invoice_number, manangementInfo.invoice_number)
     controller.instance_variable_set(:@last_amount, bill.last_amount)

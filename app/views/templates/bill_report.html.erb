@@ -5,9 +5,9 @@
       <div style="display:flex">
         <div style="width:30%;font-size:10px">
           <p style="margin-top:50px;margin-bottom:0"><%= @shipper_post_code %></p>
-          <p style="margin-top:0;margin-bottom:5px"><%= @shipper_name %></p>
+          <p style="margin-bottom:0"><%= @shipper_main_address %></p>
           <p style="margin-top:10px;margin-bottom:5px">
-            <span style="border-bottom:1px solid red;letter-spacing:2px"><%= @shipper_main_address %> 殿</span>
+            <span style="border-bottom:1px solid red;letter-spacing:2px"><%= @shipper_name %> 殿</span>
           </p>
         </div>
         <div style="text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:10px">
@@ -15,16 +15,16 @@
           <p style="margin-top:5px;margin-bottom:5px;border-bottom: 1px solid red;width:140px; margin-left:auto;margin-right:auto">
             <span style="letter-spacing: 2px">発行日</span><span style="font-family:'Arial Narrow'"><%= @billed_year %></span> 年 <span style="font-family:'Arial Narrow'"><%= @billed_month %></span> 月 <span style="font-family: 'Arial Narrow'"><%= @billed_day%></span> 日
           </p>  
-          <p style="margin-top:10px;margin-bottom:5px;font-family: 'Arial Narrow';letter-spacing:2px">自 <%= @from_date %></p>
-          <p style="margin-top:0;margin-bottm:5px;border-bottom: 1px solid red;width: 95px;margin:auto;letter-spacing:2px;font-family: 'Arial Narrow';letter-spacing:2px">至 <%= @to_date %> </p>
+          <p style="margin-top:10px;margin-bottom:5px;font-family: 'Arial Narrow';letter-spacing:2px"><span style="color: #090d7e">自</span> <%= @from_date.to_s[0,2] %> <span style="color: #090d7e">年</span> <%= @from_date.to_s[3,2] %> <span style="color: #090d7e">月</span>  <%= @from_date.to_s[6,2] %> <span  style="color: #090d7e"> 日</span></p>
+          <p style="margin-top:0;margin-bottm:5px;border-bottom: 1px solid red;width: 135px;margin:auto;letter-spacing:2px;font-family: 'Arial Narrow';letter-spacing:2px"><span style="color: #090d7e">至</span> <%= @to_date.to_s[0,2] %> <span style="color: #090d7e">年</span> <%= @to_date.to_s[3,2] %> <span style="color: #090d7e">月</span>  <%= @to_date.to_s[6,2] %> <span  style="color: #090d7e"> 日</span> </p>
         </div>
         <div style="width:30%;padding-left:20px;font-size:10px">
           <p style="margin-top:40px;margin-bottom:0;font-size: 14px;letter-spacing:5px"><%= @company_name %></p>
-          <p style="margin-top:5px;margin-bottom:0"><span style="font-family: 'Arial Narrow"><%= @company_post_code %></span> <%= @address1 %></p>
-          <p style="margin-top:0;margin-bottom:2px;padding-left: 40px;font-family: 'Arial Narrow'">TEL <%= @tel_number %></p>
-          <p style="margin-top:0;margin-bottom:2px;padding-left: 40px;font-family: 'Arial Narrow'">FAX <%= @fax_number %></p>
-          <p style="margin-top:0;margin-bottom:2px;"><span>取引銀行</span><span style="font-family: 'Arial Narrow'"> <%= @bank %> </sapn></p>
-          <p style="margin-top:0;margin-bottom:5px;padding-left: 40px;font-family: 'Arial Narrow'"> <%= @bank_number %></p>
+          <p style="margin-top:5px;margin-bottom:0"><span style="font-family: 'Arial Narrow"><%= @company_post_code %></span> <%= @company_address %></p>
+          <p style="margin-top:0;margin-bottom:2px;padding-left: 40px;font-family: 'Arial Narrow'">TEL <%= @company_tel_number %></p>
+          <p style="margin-top:0;margin-bottom:2px;padding-left: 40px;font-family: 'Arial Narrow'">FAX <%= @company_fax_number %></p>
+          <p style="margin-top:0;margin-bottom:2px;"><span>取引銀行</span><span style="font-family: 'Arial Narrow'"> <%= @company_bank %> </sapn></p>
+          <p style="margin-top:0;margin-bottom:5px;padding-left: 40px;font-family: 'Arial Narrow'"> <%= @company_bank_number %></p>
           <p style="margin-top:0;font-family: 'Arial Narrow'">登録番号 <span style="font-family: 'Arial Narrow"><%= @register_number %></span></p>
         </div>
       </div>

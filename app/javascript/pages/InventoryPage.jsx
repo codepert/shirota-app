@@ -254,13 +254,6 @@ const InventoryPage = ({ is_edit }) => {
         document.body.removeChild(link);
 
         setIsSpinLoading(false);
-        setTimeout(() => {
-          openNotificationWithIcon(
-            "success",
-            $lang.popConfirmType.success,
-            $lang.messages.success
-          );
-        }, 1000);
       })
       .catch((err) => {
         setIsSpinLoading(false);

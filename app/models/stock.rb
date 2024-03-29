@@ -178,7 +178,7 @@ class Stock < ApplicationRecord
     find_by_sql(query)
   }
 
-  scope :get_uncalc_bills ,-> (from_date, to_date, shipper_id=nil, warehouse_id=nil, page = nil, limit = nil) {
+  scope :get_uncalc_bills ,-> (from_date, to_date, warehouse_id=nil, page = nil, limit = nil) {
     sql = <<-SQL
     SELECT (COALESCE(in_stock_amount,0)*DATEDIFF('#{to_date}', in_stock_date)-COALESCE(out_stock_amount,0)*DATEDIFF('#{to_date}',out_stock_date)) as storage_cost, 
 			handle_cost, tt.shipper_id, COALESCE(received_payment_amount,0) as deposit_amount,
@@ -195,14 +195,14 @@ class Stock < ApplicationRecord
         SELECT stocks.product_id, stock_inouts.*, shipper_id
         FROM stock_inouts
         JOIN stocks ON stocks.id = stock_inouts.stock_id
-        WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}'  AND is_billed=0 #{shipper_id.present? ? " AND shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " AND warehouse_id = '#{warehouse_id}'" : ''}
+        WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}'  AND is_billed=0 #{warehouse_id.present? ? " AND warehouse_id = '#{warehouse_id}'" : ''}
       ) t
       GROUP BY shipper_id
       ) tt
       LEFT JOIN (
         SELECT shipper_id, SUM(amount) as received_payment_amount
         FROM received_payments
-        WHERE received_on BETWEEN '#{from_date}' AND '#{to_date}' #{shipper_id.present? ? " AND shipper_id = '#{shipper_id}'" : ''}
+        WHERE received_on BETWEEN '#{from_date}' AND '#{to_date}' 
 
         GROUP BY shipper_id
         ) received_payments ON received_payments.shipper_id= tt.shipper_id
@@ -211,7 +211,7 @@ class Stock < ApplicationRecord
         FROM bills AS TBL_B
         JOIN (
             SELECT MAX(billed_on) AS max_billed_on, shipper_id AS max_shipper_id
-            FROM bills #{shipper_id.present? ? " WHERE shipper_id = '#{shipper_id}'" : ''}
+            FROM bills 
             GROUP BY shipper_id
         ) AS TBL_A
         ON TBL_A.max_billed_on = TBL_B.billed_on AND TBL_A.max_shipper_id = TBL_B.shipper_id

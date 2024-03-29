@@ -142,8 +142,8 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
     page          = params[:page]
     limit         = params[:limit]
     
-    prepare_bill_amounts    = Stock.get_uncalc_bills(from_date, to_date, nil, warehouse_id, page, limit)
-    prepare_bill_amount_cnt = Stock.get_uncalc_bills(from_date, to_date, nil, warehouse_id).length
+    prepare_bill_amounts    = Stock.get_uncalc_bills(from_date, to_date, warehouse_id, page, limit)
+    prepare_bill_amount_cnt = Stock.get_uncalc_bills(from_date, to_date, warehouse_id).length
 
     render :json => {
       data:             prepare_bill_amounts,
@@ -152,14 +152,14 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
   end
   def stock_in_csv_export
     data = params.require(:data)
-    csv_data = CSV.generate do |csv|
+    csv_data = CSV.generate(encoding: 'Shift_JIS') do |csv|
       csv << ["品名", "荷姿", "ロット番号", "重量", "数量"]
       data.each do |record|
         csv << [record.dig(:product_name), record.dig(:product_type), record.dig(:lot_number), record.dig(:weight), record.dig(:amount)]
       end
     end
     
-    send_data csv_data, filename: "stock.csv", type: "text/csv", disposition: "inline"
+    send_data csv_data, type: 'text/csv; charset=shift_jis; header=present', filename: "stock.csv", disposition: "inline"
   end
   def export_stock_csv
     shipper_id = params[:shipper_id].presence || ''
@@ -167,7 +167,7 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
     out_date = params[:out_date].presence || ''
 
     data = StockInout.inventory(shipper_id, warehouse_id, out_date)
-    csv_data = CSV.generate do |csv|
+    csv_data = CSV.generate(encoding: 'Shift_JIS') do |csv|
       csv << ["NO", "ロット番号", "倉庫",  "品名", "規格・荷姿", "入目","在庫数" ]
       index = 1
       data.each do |record|
@@ -177,7 +177,7 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
        index += 1
       end
     end
-    send_data csv_data, filename: "stock.csv", type: "text/csv", disposition: "inline"
+    send_data csv_data, filename: "stock.csv", type: "text/csv; charset=shift_jis; header=present", disposition: "inline"
   end
   private
   def calculate_adjusted_total_amount(stock, stock_inout_params)

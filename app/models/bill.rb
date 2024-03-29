@@ -7,7 +7,7 @@ class Bill < ApplicationRecord
   scope :desc, -> { order(id: :desc) }
   
   scope :with_shipper_by_id, -> (bill_id) {
-    select("shippers.name as shipper_name, shippers.post_code as shipper_post_code, shippers.main_address as shipper_main_address, bills.*")
+    select("shippers.name as shipper_name, shippers.post_code as shipper_post_code, shippers.main_address as shipper_main_address, shippers.tel as shipper_tel, bills.*")
       .joins('LEFT JOIN shippers ON shippers.id= bills.shipper_id')
       .where('bills.id', bill_id)
   }

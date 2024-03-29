@@ -1203,7 +1203,9 @@ video {
 :where(.css-dev-only-do-not-override-1k979oh).ant-pagination
   .ant-pagination-item-active,
 :where(.css-dev-only-do-not-override-1k979oh).ant-input-affix-wrapper,
-:where(.css-dev-only-do-not-override-1k979oh).ant-alert {
+:where(.css-dev-only-do-not-override-1k979oh).ant-alert,
+:where(.css-dev-only-do-not-override-1k979oh).ant-notification
+  .ant-notification-notice-wrapper {
   border-radius: 0 !important;
 }
 :where(.css-dev-only-do-not-override-1k979oh).ant-menu-light.ant-menu-horizontal

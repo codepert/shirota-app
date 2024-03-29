@@ -35,16 +35,16 @@ const WarehouseFeePage = ({ is_edit }) => {
     });
   };
 
-  const handleRegister = (data) => {
+  const handleRegister = (data, form) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {
-      createWarehouseFee(data);
+      createWarehouseFee(data, form);
     } else {
-      updateWarehouseFee(data);
+      updateWarehouseFee(data, form);
     }
   };
 
-  const createWarehouseFee = (data) => {
+  const createWarehouseFee = (data, form) => {
     API.post(warehouseFeeURL, data)
       .then((res) => {
         openNotificationWithIcon(
@@ -54,6 +54,7 @@ const WarehouseFeePage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(
@@ -64,7 +65,7 @@ const WarehouseFeePage = ({ is_edit }) => {
       });
   };
 
-  const updateWarehouseFee = (data) => {
+  const updateWarehouseFee = (data, form) => {
     API.put(`${warehouseFeeURL}/${data.id}`, data)
       .then((res) => {
         openNotificationWithIcon(
@@ -74,6 +75,7 @@ const WarehouseFeePage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(

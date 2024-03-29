@@ -15,8 +15,7 @@ const ShipperRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
     form
       .validateFields()
       .then((values) => {
-        form.resetFields();
-        onSave(values);
+        onSave(values, form);
       })
       .catch((info) => {
         console.log("Validate Failed:", info);

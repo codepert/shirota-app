@@ -35,12 +35,12 @@ const UserPage = ({ is_edit }) => {
     });
   };
 
-  const handleRegister = (data) => {
+  const handleRegister = (data, form) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {
-      createUser(data);
+      createUser(data, form);
     } else {
-      updateUser(data);
+      updateUser(data, form);
     }
   };
 
@@ -54,6 +54,7 @@ const UserPage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isPosted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(
@@ -74,6 +75,7 @@ const UserPage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isPosted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(

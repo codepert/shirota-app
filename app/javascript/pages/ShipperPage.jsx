@@ -35,17 +35,17 @@ const ShipperList = ({ is_edit }) => {
     });
   };
 
-  const handleRegister = (data) => {
+  const handleRegister = (data, form) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {
-      createShipper(data);
+      createShipper(data, form);
     } else {
-      updateShipper(data);
+      updateShipper(data, form);
     }
   };
 
-  const createShipper = (data) => {
-    API.post(shipperURL, data)
+  const createShipper = (data, form) => {
+    API.post(shipperURL, data, form)
       .then((res) => {
         openNotificationWithIcon(
           "success",
@@ -54,6 +54,7 @@ const ShipperList = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(
@@ -64,7 +65,7 @@ const ShipperList = ({ is_edit }) => {
       });
   };
 
-  const updateShipper = (data) => {
+  const updateShipper = (data, form) => {
     API.put(`${shipperURL}/${data.id}`, data)
       .then((res) => {
         openNotificationWithIcon(
@@ -74,6 +75,7 @@ const ShipperList = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(

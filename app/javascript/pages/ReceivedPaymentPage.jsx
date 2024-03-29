@@ -100,8 +100,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const inStockDateParam =
       inStockRangeDates.length > 0
         ? `&instockFromDate=${new Date(inStockRangeDates[0].toString())
-          .toISOString()
-          .substring(0, 10)}&instockToDate=${new Date(
+            .toISOString()
+            .substring(0, 10)}&instockToDate=${new Date(
             inStockRangeDates[1].toString()
           )
             .toISOString()
@@ -110,8 +110,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const processDateParam =
       processRangeDates.length > 0
         ? `&instockFromDate=${new Date(processRangeDates[0].toString())
-          .toISOString()
-          .substring(0, 10)}&instockToDate=${new Date(
+            .toISOString()
+            .substring(0, 10)}&instockToDate=${new Date(
             processRangeDates[1].toString()
           )
             .toISOString()
@@ -200,8 +200,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const inStockDateParam =
       inStockRangeDates.length > 0
         ? `&instockFromDate=${new Date(inStockRangeDates[0].toString())
-          .toISOString()
-          .substring(0, 10)}&instockToDate=${new Date(
+            .toISOString()
+            .substring(0, 10)}&instockToDate=${new Date(
             inStockRangeDates[1].toString()
           )
             .toISOString()
@@ -210,8 +210,8 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     const processDateParam =
       processRangeDates.length > 0
         ? `&instockFromDate=${new Date(processRangeDates[0].toString())
-          .toISOString()
-          .substring(0, 10)}&instockToDate=${new Date(
+            .toISOString()
+            .substring(0, 10)}&instockToDate=${new Date(
             processRangeDates[1].toString()
           )
             .toISOString()
@@ -250,7 +250,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
       });
   };
 
-  const handleRegister = (data) => {
+  const handleRegister = (data, form) => {
     data.received_on = data.received_on.format("YYYY-MM-DD");
     data.processing_on = data.processing_on
       ? data.processing_on.format("YYYY-MM-DD")
@@ -258,13 +258,13 @@ const ReceivedPaymentPage = ({ is_edit }) => {
     data.received = data.processing_on ? 1 : 0;
 
     if (typeof data.id == "undefined") {
-      createReceivePayment(data);
+      createReceivePayment(data, form);
     } else {
-      updateReceivePayment(data);
+      updateReceivePayment(data, form);
     }
   };
 
-  const createReceivePayment = (data) => {
+  const createReceivePayment = (data, form) => {
     API.post(receivedPaymentURL, data)
       .then((res) => {
         openNotificationWithIcon(
@@ -274,6 +274,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(
@@ -284,7 +285,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
       });
   };
 
-  const updateReceivePayment = (data) => {
+  const updateReceivePayment = (data, form) => {
     API.put(`${receivedPaymentURL}/${data.id}`, data)
       .then((res) => {
         openNotificationWithIcon(
@@ -294,6 +295,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(
@@ -395,23 +397,28 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         </Row>
         <Divider />
         <Row>
-          {is_edit === 1 ? (<>
-            <Space align="center">
-              {" "}
-              <Button
-                className="btn-bg-black"
-                style={{ marginLeft: 70 }}
-                onClick={getReceivePayment}
-              >
-                {$lang.buttons.search}
-              </Button>
-              <Button
-                className="btn-bg-black ml-1"
-                onClick={exportDataAndDownloadCVS}
-              >
-                {$lang.buttons.csvExchange}
-              </Button>
-            </Space></>) : (<></>)}
+          {is_edit === 1 ? (
+            <>
+              <Space align="center">
+                {" "}
+                <Button
+                  className="btn-bg-black"
+                  style={{ marginLeft: 70 }}
+                  onClick={getReceivePayment}
+                >
+                  {$lang.buttons.search}
+                </Button>
+                <Button
+                  className="btn-bg-black ml-1"
+                  onClick={exportDataAndDownloadCVS}
+                >
+                  {$lang.buttons.csvExchange}
+                </Button>
+              </Space>
+            </>
+          ) : (
+            <></>
+          )}
         </Row>
       </Card>
       <Card bordered={false} className="py-4 " style={{ marginTop: "20px" }}>
@@ -432,8 +439,10 @@ const ReceivedPaymentPage = ({ is_edit }) => {
                 </Button>
               </Col>
             </Row>
-          </>) :
-          (<></>)}
+          </>
+        ) : (
+          <></>
+        )}
         <ReceivedPaymentRegisterModal
           isOpen={isModalVisible}
           onClose={handleHideModal}

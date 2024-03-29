@@ -61,16 +61,16 @@ const ProductPage = ({ is_edit }) => {
     setSearchText(e.target.value);
   };
 
-  const handleRegister = (data) => {
+  const handleRegister = (data, form) => {
     console.log("register data", data);
     if (typeof data.id == "undefined") {
-      createProduct(data);
+      createProduct(data, form);
     } else {
-      updateProduct(data);
+      updateProduct(data, form);
     }
   };
 
-  const createProduct = (data) => {
+  const createProduct = (data, form) => {
     API.post(productURL, data)
       .then((res) => {
         openNotificationWithIcon(
@@ -80,6 +80,7 @@ const ProductPage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(
@@ -90,7 +91,7 @@ const ProductPage = ({ is_edit }) => {
       });
   };
 
-  const updateProduct = (data) => {
+  const updateProduct = (data, form) => {
     API.put(`${productURL}/${data.id}`, data)
       .then((res) => {
         openNotificationWithIcon(
@@ -100,6 +101,7 @@ const ProductPage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(

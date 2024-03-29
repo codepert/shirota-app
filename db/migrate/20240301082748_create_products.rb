@@ -7,8 +7,8 @@ class CreateProducts < ActiveRecord::Migration[7.1]
       t.string :specification,          null: false, comment: '規格・荷姿'
       t.timestamps
     end
-    add_index :products, :code,                         unique: true
-    add_index :products, :name,                         unique: true
-    add_index :products, :specification,                unique: true
+    add_index :products, :code                    
+    add_index :products, :name
+    add_index :products, :specification               
   end
 end

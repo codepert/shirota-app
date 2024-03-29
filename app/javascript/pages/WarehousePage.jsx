@@ -43,12 +43,11 @@ const WarehousePage = ({ is_edit }) => {
     setIsModalVisible(true);
   };
 
-  const handleRegister = (data) => {
-    console.log("register data", data);
+  const handleRegister = (data, form) => {
     if (data.id == null) {
-      createWarehouse(data);
+      createWarehouse(data, form);
     } else {
-      updateWarehouse(data);
+      updateWarehouse(data, form);
     }
   };
 
@@ -62,6 +61,7 @@ const WarehousePage = ({ is_edit }) => {
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(

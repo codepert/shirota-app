@@ -3,6 +3,7 @@ import { Form, Card, DatePicker, Input, Button, Select } from "antd";
 import { manageInfoURL } from "../utils/constants";
 import { API } from "../utils/helper";
 import $lang from '../utils/content/jp.json'
+import dayjs from "dayjs";
 import { openNotificationWithIcon } from '../../javascript/components/common/notification'
 
 const ManageInfoPage = () => {
@@ -13,8 +14,7 @@ const ManageInfoPage = () => {
   const getManageInfo = () => {
     API.get(manageInfoURL)
       .then((res) => {
-        form.setFieldsValue(res.data[0]);
-        console.log("ddddddddddd", res.data[0].start_date)
+        form.setFieldsValue({ ...res.data[0], start_date: dayjs(new Date(res.data[0].start_date)), end_date: dayjs(new Date(res.data[0].end_date)) });
       })
       .catch((error) => {
         console.log(error)

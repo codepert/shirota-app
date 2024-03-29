@@ -197,6 +197,7 @@ const NavbarSection = () => {
               marginLeft: 190,
               backgroundColor: "#fff",
               border: "none",
+              width: "100%"
             }}
           />
         </Flex>

@@ -70,6 +70,11 @@ Page.create!([
   {
     name: "請求処理",
     path: "#/bill",
+  },
+  {
+    name: "管理マスタ",
+    path: "manage_master",
+    parent_id: 15
   }
 ])
 
@@ -331,6 +336,11 @@ AuthorityPage.create([{
 },{
   user_authority_id: 3,
   page_id: 16,
+  is_read: 1,
+  is_edit: 1
+},{
+  user_authority_id: 3,
+  page_id: 17,
   is_read: 1,
   is_edit: 1
 }])

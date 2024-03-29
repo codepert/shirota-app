@@ -1,0 +1,128 @@
+import React, { useState, useEffect } from "react";
+import { Form, Modal, Input, Button, Select } from "antd";
+import { warehouseFeeURL } from "../../utils/constants";
+import { API } from "../../utils/helper";
+import $lang from "../../utils/content/jp.json";
+
+const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
+  const [form] = Form.useForm();
+  const [warehouseFees, setWarehouseFees] = useState([]);
+
+  const getWarehouseFees = () => {
+    API.get(warehouseFeeURL).then((res) => {
+      let index = 1;
+      const priceData = res.data.map((item) => {
+        return {
+          ...item,
+          // code: item.
+          key: index++,
+        };
+      });
+      const warehouseFees = priceData.map((item) => {
+        return {
+          value: item.id,
+          label:
+            item.packaging +
+            " / " +
+            $lang.handlingFeeUnitPrice +
+            " : " +
+            item.handling_fee_rate +
+            $lang.yen +
+            " / " +
+            $lang.storageFeeUnitPrice +
+            " : " +
+            item.storage_fee_rate +
+            $lang.yen +
+            " / " +
+            "  " +
+            (item.fee_category == 1
+              ? $lang.fullTimeRequest
+              : $lang.firstBilling),
+        };
+      });
+      setWarehouseFees(warehouseFees);
+    });
+  };
+
+  useEffect(() => {
+    getWarehouseFees();
+  }, []);
+
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue(initialValues);
+    }
+  }, [initialValues]);
+
+  const handleSave = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        form.resetFields();
+        onSave(values);
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
+  };
+
+  return (
+    <div>
+      <Form
+        form={form}
+        // layout="vertical"
+        labelCol={{ span: 7 }}
+        labelAlign="left"
+      >
+        <Form.Item name="id" style={{ height: 0 }}>
+          <Input type="hidden" />
+        </Form.Item>
+        <Form.Item
+          name="code"
+          label={$lang.productCode}
+          rules={[{ required: true, message: $lang.tableCommon.warning }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={$lang.productName}
+          name={"name"}
+          rules={[{ required: true, message: $lang.tableCommon.warning }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="specification"
+          label={$lang.productPacking}
+          rules={[{ required: true, message: $lang.tableCommon.warning }]}
+        >
+          <Input />
+        </Form.Item>
+        {warehouseFees.length > 0 && (
+          <Form.Item
+            name="warehouse_fee_id"
+            label={$lang.packing}
+            rules={[{ required: true, message: $lang.tableCommon.warning }]}
+          >
+            <Select options={warehouseFees} allowClear />
+          </Form.Item>
+        )}
+        <div style={{ textAlign: "right" }}>
+          <Button
+            onClick={handleSave}
+            style={{ marginRight: 10 }}
+            type="primary"
+          >
+            {" "}
+            {$lang.newResiger}
+          </Button>
+          <Button onClick={onClose} style={{ marginRight: "10px" }}>
+            {$lang.cancel}
+          </Button>
+        </div>
+      </Form>
+    </div>
+  );
+};
+
+export default ManageInfo;

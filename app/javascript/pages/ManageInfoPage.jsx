@@ -14,7 +14,7 @@ const ManageInfoPage = () => {
     if (manageInfo) {
       form.setFieldsValue(manageInfo);
     }
-  }, [manageInfo]);
+  }, []);
 
 
   const getManageInfo = () => {

@@ -40,7 +40,7 @@ class StockInout < ApplicationRecord
       JOIN warehouses ON warehouses.id = stocks.warehouse_id
       JOIN warehouse_fees ON warehouse_fees.id = products.warehouse_fee_id
       WHERE 
-          inout_on <= '#{out_date}' #{shipper_id.present? ? " WHERE shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " WHERE warehouse_id = '#{warehouse_id}'" : ''}
+          inout_on <= '#{out_date}' #{shipper_id.present? ? " AND shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " AND warehouse_id = '#{warehouse_id}'" : ''}
       GROUP BY 
           stock_id, lot_number
     SQL

@@ -85,7 +85,7 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
     if resource.persisted?
       render json: {
         status: {code: 200, message: 'Signed in successfully.'},
-        data: UserSerializer.new(current_user).serialize,
+        data: UserSerializer.new(current_user),
         permission_pages: permission_pages
       }
     else

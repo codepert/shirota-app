@@ -88,7 +88,7 @@ const NavbarSection = () => {
   }, [current, navigations]);
 
   useEffect(() => {
-    if (user) setUserName(user.state.authUserName);
+    // if (user) setUserName(user.state.authUserName);
   }, [user]);
 
   return (

@@ -21,16 +21,16 @@ export const falsy = (d) => d === undefined || d === null;
 export const getAuthUser = () => {
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
-  const pemissionpage = localStorage.getItem("pemission_page");
+  const pemissionPages = localStorage.getItem("pemission_pages");
 
   return falsy(username) ||
     falsy(token) ||
     isEmpty(username) ||
     isEmpty(token) ||
-    falsy(pemissionpage) ||
-    isEmpty(pemissionpage)
-    ? { username: null, token: null, pemissionpage: [] }
-    : { username, token, pemissionpage };
+    falsy(pemissionPages) ||
+    isEmpty(pemissionPages)
+    ? { username: null, token: null, pemissionPages: [] }
+    : { username, token, pemissionPages };
 };
 
 export const getAuthUserToken = () => getAuthUser()?.token;
@@ -102,12 +102,12 @@ export const makeURLOptionsWtoken = (token, body = {}, method = "GET") => ({
 });
 
 export const getAuthUsername = () => getAuthUser()?.username;
-export const getPermissionPage = () => getAuthUser()?.pemissionpage;
+export const getPermissionPage = () => getAuthUser()?.pemissionPages;
 
 export const saveAuthUser = (username, token, pemissionPage) => {
   localStorage.setItem("username", username);
   localStorage.setItem("token", token);
-  localStorage.setItem("pemission_page", JSON.stringify(pemissionPage));
+  localStorage.setItem("pemission_pages", pemissionPage);
 };
 
 export const clearStorage = () => localStorage.clear();

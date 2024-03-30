@@ -14,9 +14,9 @@ export const AuthReducer = (state = initialAuthState, action) => {
     case "Login":
       return {
         ...state,
-        authUsername: action.payload.login_id,
+        authUserName: action.payload.login_id,
         token: action.payload.token,
-        permission_pages: action.payload.permission_pages,
+        permissionPages: action.payload.permissionPages,
         loginErrors: null,
       };
     case "Signup":

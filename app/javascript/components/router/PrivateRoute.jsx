@@ -28,7 +28,6 @@ const PrivateRoute = ({ Component }) => {
         return item;
       }
     });
-    setAccessPages(accessPages);
     if (accessPages.length > 0) {
       const currentPageInfo = accessPages.find((item) => {
         return item.path === location.pathname;

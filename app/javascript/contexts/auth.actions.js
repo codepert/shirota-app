@@ -14,16 +14,16 @@ const loginAction = (res) => (dispatch) => {
   dispatch({
     type: "Login",
     payload: {
-      authUserName: res?.data?.data?.name,
+      login_id: res?.data?.data?.name,
       token: res?.headers?.authorization,
-      permission_pages: res?.data?.permission_pages,
+      permissionPages: JSON.stringify(res?.data?.permission_pages),
     },
   });
 
   saveAuthUser(
-    JSON.parse(res.data.data).name,
+    res?.data?.data?.name,
     res?.headers?.authorization,
-    res?.data?.permission_pages
+    JSON.stringify(res?.data?.permission_pages)
   );
 };
 

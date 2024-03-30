@@ -10,16 +10,6 @@ const AuthContextProvider = ({ children }) => {
   const loginAction = async (payload) => {
     try {
       const res = await services.login(payload);
-      // const permissionPages = res.data.permission_pages;
-      // debugger;
-      // const data = permissionPages.filter((item) => {
-      //   if (
-      //     permissionPages.filter((i) => i.parent_id == item.page_id).length == 0
-      //   ) {
-      //     return item;
-      //   }
-      // });
-      // res.data.permission_pages = data;
       authActions.loginAction(res)(dispatch);
       return { state: "success" };
     } catch (err) {

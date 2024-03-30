@@ -7,7 +7,7 @@ import {
 export const initialAuthState = {
   authUserName: getAuthUsername(),
   token: getAuthUserToken(),
-  authority_client_pages: getPermissionPage(),
+  permissionPages: getPermissionPage(),
 };
 export const AuthReducer = (state = initialAuthState, action) => {
   switch (action.type) {

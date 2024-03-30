@@ -79,7 +79,8 @@ class Api::V1::Users::SessionsController < Devise::SessionsController
                           .select('authority_pages.page_id, 
                                   authority_pages.is_edit, 
                                   authority_pages.is_read, 
-                                  pages.path')
+                                  pages.path, pages.name,
+                                  pages.parent_id')
 
     if resource.persisted?
       render json: {

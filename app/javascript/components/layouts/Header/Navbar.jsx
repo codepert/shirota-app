@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Typography, Breadcrumb, Button, Flex } from "antd";
 import { Layout, Menu } from "antd";
 import { siteInfo } from "../../../utils/content";
 import { useAuth } from "../../../hooks/useAuth";
-import { navigatiionsURL } from "../../../utils/constants";
 import $lang from "../../../utils/content/jp.json";
 import moment from "moment";
 import { getAuthUsername } from "../../../utils/helper";
@@ -14,13 +12,11 @@ import { openNotificationWithIcon } from "../../common/notification";
 const NavbarSection = () => {
   const { logoutAction } = useAuth();
   const { Title } = Typography;
-  const { Header } = Layout;
   const navigate = useNavigate();
   const location = useLocation();
   const [current, setCurrent] = useState("");
   const [title, setTitle] = useState("");
   const [navigations, setNavigations] = useState([]);
-  const [realData, setRealData] = useState([]);
   const [username, setUserName] = useState("");
   const user = useAuth();
 
@@ -31,68 +27,6 @@ const NavbarSection = () => {
     setTitle(label);
     setCurrent(e.key);
     navigate(e.key);
-  };
-
-  const getNavigations = () => {
-    axios
-      .get(`${navigatiionsURL}`)
-      .then((res) => {
-        const allData = res.data.map((item) => {
-          return {
-            id: item.id,
-            label: item.name,
-            key: item.path,
-            parent_id: item.parent_id,
-          };
-        });
-
-        const parentArray = allData
-          .map((item) => item.parent_id)
-          .filter((parentId) => parentId !== null);
-
-        const newArray = [];
-
-        allData.forEach((item) => {
-          if (item.parent_id === null) {
-            if (!parentArray.includes(item.id))
-              newArray.push({
-                label: item.label,
-                key: item.key,
-              });
-          } else {
-            const parentItem = newArray.find(
-              (parent) => parent.key === item.parent_id
-            );
-            if (parentItem) {
-              if (!parentItem.children) {
-                parentItem.children = [];
-              }
-              parentItem.children.push({
-                label: item.label,
-                key: item.key,
-              });
-            } else {
-              const newParentItem = {
-                label: allData.find((data) => data.id == item.parent_id).label,
-                key: item.parent_id,
-                children: [
-                  {
-                    label: item.label,
-                    key: item.key,
-                  },
-                ],
-              };
-              newArray.push(newParentItem);
-            }
-          }
-        });
-
-        setRealData(newArray);
-        setNavigations(allData);
-      })
-      .catch((error) => {
-        navigate("/signin");
-      });
   };
 
   const logout = async () => {
@@ -106,6 +40,38 @@ const NavbarSection = () => {
         HttpResponseErrorMessage(res.code, res.status)
       );
     }
+  };
+
+  const getNavigations = () => {
+    const navigations = JSON.parse(user.state.permissionPages);
+
+    const nestedNavigations = navigations.reduce((acc, current) => {
+      if (current.parent_id === null) {
+        const children = navigations
+          .filter((item) => item.parent_id === current.page_id)
+          .map(({ name, path }) => ({
+            label: name,
+            key: path,
+          }));
+
+        if (children.length > 0) {
+          acc.push({
+            key: current.path,
+            label: current.name,
+            children,
+          });
+        } else {
+          acc.push({
+            key: current.path,
+            label: current.name,
+          });
+        }
+      }
+
+      return acc;
+    }, []);
+
+    setNavigations(nestedNavigations);
   };
 
   useEffect(() => {
@@ -192,7 +158,7 @@ const NavbarSection = () => {
             onClick={onMenuClick}
             selectedKeys={[current]}
             mode="horizontal"
-            items={realData}
+            items={navigations}
             style={{
               marginLeft: 190,
               backgroundColor: "#fff",

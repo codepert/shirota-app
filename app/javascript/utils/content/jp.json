@@ -98,7 +98,15 @@
     "alreayResigered": "これはすでに登録されているデータです。",
     "no_confirm_bill_data": "まだ確定していない資料なので出力できません。",
 
-    "success_register_warehouse": "倉庫マスターが正常に登録されました。"
+    "success_register_warehouse": "倉庫マスターが正常に登録されました。",
+    "success_update_warehouse": "倉庫マスターが正常に変更されました。",
+    "success_delete_warehouse": "倉庫マスターが正常に削除されました。",
+
+    "success_register_user": "ユーザーデータが正常に登録されました。",
+    "success_update_user": "ユーザーデータが正常に変更されました。",
+    "success_delete_user": "ユーザーデータが正常に削除されました。",
+
+    "success_change_user_passowrd": "パスワード正常に変更されました。"
   },
   "popConfirmType": {
     "success": "success",

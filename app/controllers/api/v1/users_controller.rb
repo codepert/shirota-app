@@ -2,7 +2,8 @@ class Api::V1::UsersController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    render json: User.with_authority_info.to_json
+    # render json: User.with_authority_info.to_json
+    render json: UserSerializer.new(User.all)
   end
   def create
     user = User.new(register_params);
@@ -35,6 +36,6 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
   def register_params
-    params.permit(:name, :password, :login_id, :user_authority_id, :email)
+    params.permit(:name, :password, :login_id, :user_authority_id, :email, :responsible_category_id)
   end
 end

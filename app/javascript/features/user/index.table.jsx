@@ -12,36 +12,43 @@ const UserTable = ({ data, editRow, isEdit }) => {
       dataIndex: "key",
       key: "key",
       render: (text) => <a>{text}</a>,
-      width: "8%",
+      width: "5%",
     },
     {
       title: $lang.username,
       dataIndex: "name",
       key: "name",
-      width: "20%",
+      width: "15%",
     },
     {
       title: $lang.loginId,
       dataIndex: "login_id",
       key: "login_id",
-      width: "20%",
+      width: "15%",
     },
     {
       title: $lang.email,
       dataIndex: "email",
       key: "email",
-      width: "20%",
+      width: "15%",
     },
     {
       title: $lang.authority,
-      dataIndex: "authority_name",
-      key: "authority_name",
-      width: "20%",
+      dataIndex: "authority",
+      key: "authority",
+      width: "15%",
+    },
+    {
+      title: $lang.responsibleCategory,
+      dataIndex: "responsible_category",
+      key: "responsible_category",
+      width: "15%",
     },
     isEdit === 1 ? (
       {
         title: "#",
         key: "action",
+        width: "5%",
         render: (_, record) => (
           <div className="p-2 rounded-full cursor-pointer items-center text-center">
             <CustomButton

@@ -70,8 +70,9 @@ const ShipperTable = ({ data, editRow, deleteRow, isEdit }) => {
     },
     isEdit === 1 ? (
       {
-        title: `${$lang.change}`,
+        title: `#`,
         dataIndex: "operation",
+        width: "10%",
         render: (text, record) => {
           return (
             <div className="flex justify-center items-center">

@@ -452,12 +452,11 @@ const BillingProcessPage = ({ is_edit }) => {
     getLastBillDate();
   }, [selectedWarehouse, seletedShipper]);
   return (
-    <Content style={{ margin: 20 }} className="mx-auto content-h">
-      <Card
-        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-        className="py-2 my-2"
-        bordered={false}
-      >
+    <Content
+      style={{ margin: "120px 10% 30px 10%" }}
+      className="mx-auto content-h"
+    >
+      <Card style={{ width: "100%" }} className="py-2 mb-2" bordered={false}>
         <Row className="my-2">
           <Col span={12}>
             <Space align="center">

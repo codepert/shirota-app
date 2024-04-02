@@ -38,18 +38,7 @@ const ReceivedPaymentRegisterModal = ({
       form.setFieldsValue({
         ...initialValues,
       });
-    } else {
-      // form.setFieldsValue({
-      //   processing_on: dayjs(dayjs().tz("Asia/Tokyo"), dateFormat),
-      //   name: null,
-      //   description: null,
-      //   shipper_id: null,
-      //   received_on: null,
-      //   amount: null,
-      //   id: null,
-      // });
     }
-    console.log("initial values", initialValues);
   }, [initialValues]);
 
   const handleSave = () => {
@@ -57,7 +46,7 @@ const ReceivedPaymentRegisterModal = ({
       .validateFields()
       .then((values) => {
         form.resetFields();
-        onSave(values);
+        onSave(values, form);
       })
       .catch((info) => {
         console.log("Validate Failed:", info);
@@ -93,14 +82,9 @@ const ReceivedPaymentRegisterModal = ({
           rules={[{ required: true, message: $lang.tableCommon.warning }]}
         >
           <DatePicker
-            style={{ width: 200 }}
+            style={{ width: "100%" }}
             placeholder={$lang.depositDate}
             format={"YYYY/MM/DD"}
-            // value={
-            //   initialValues?.received_on
-            //     ? dayjs.tz(new Date(initialValues.received_on), "Asia/Tokyo")
-            //     : null
-            // }
           />
         </Form.Item>
         <Form.Item
@@ -113,21 +97,6 @@ const ReceivedPaymentRegisterModal = ({
         <Form.Item name="description" label={$lang.receivePaymentDescription}>
           <Input />
         </Form.Item>
-        {/* <Form.Item
-          name="processing_on"
-          label={$lang.receivePaymentProcessingDate}
-        >
-          <DatePicker
-            style={{ width: 200 }}
-            placeholder={$lang.receivePaymentProcessingDate}
-            format={"YYYY/MM/DD"}
-            // value={
-            //   initialValues?.processing_on
-            //     ? dayjs.tz(new Date(initialValues.processing_on), "Asia/Tokyo")
-            //     : null
-            // }
-          />
-        </Form.Item> */}
         <div style={{ textAlign: "right" }}>
           <Button
             onClick={handleSave}

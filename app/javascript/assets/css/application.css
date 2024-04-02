@@ -1205,7 +1205,8 @@ video {
 :where(.css-dev-only-do-not-override-1k979oh).ant-input-affix-wrapper,
 :where(.css-dev-only-do-not-override-1k979oh).ant-alert,
 :where(.css-dev-only-do-not-override-1k979oh).ant-notification
-  .ant-notification-notice-wrapper {
+  .ant-notification-notice-wrapper,
+:where(.css-dev-only-do-not-override-1k979oh).ant-modal .ant-modal-content {
   border-radius: 0 !important;
 }
 :where(.css-dev-only-do-not-override-1k979oh).ant-menu-light.ant-menu-horizontal
@@ -1213,4 +1214,9 @@ video {
 :where(.css-dev-only-do-not-override-1k979oh).ant-menu-light.ant-menu-horizontal
   > .ant-menu-submenu-selected::after {
   border-color: #fff;
+}
+
+:where(.css-dev-only-do-not-override-1k979oh).ant-form-item
+  .ant-form-item-explain-error {
+  font-size: 10px;
 }

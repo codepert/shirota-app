@@ -58,8 +58,9 @@ const ProductTable = ({
     },
     isEdit === 1 ? (
       {
-        title: `${$lang.change}`,
+        title: `#`,
         dataIndex: "operation",
+        width: "10%",
         render: (text, record, dataIndex) => {
           return (
             // <div className="flex justify-center">
@@ -83,7 +84,7 @@ const ProductTable = ({
                 icon={<DeleteOutlined />}
                 style={{ backgroundColor: "transparent", color: "#000" }}
                 size="small"
-                className="btn-default btn-hover-black"
+                className="btn-default btn-hover-black ml-2"
                 visability={true}
               />
             </Flex>
@@ -91,7 +92,6 @@ const ProductTable = ({
           );
         },
         align: "center",
-        width: "25%",
       }
     ) : (
       <div></div>

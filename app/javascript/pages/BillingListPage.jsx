@@ -149,12 +149,11 @@ const BillingListPage = ({ is_edit }) => {
     setDateOptions([20, endDay.getDate()]);
   }, [ym]);
   return (
-    <Content style={{ margin: 20 }} className="mx-auto content-h">
-      <Card
-        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-        className="py-2 my-2"
-        bordered={false}
-      >
+    <Content
+      style={{ margin: "120px 10% 30px 10%" }}
+      className="mx-auto content-h"
+    >
+      <Card style={{ width: "100%" }} className="py-2 mb-2" bordered={false}>
         <Flex justify="space-between" style={{ marginBottom: 10 }}>
           <Flex justify="item-start">
             <Space>
@@ -196,11 +195,16 @@ const BillingListPage = ({ is_edit }) => {
           </Flex>
           <Flex>
             <Col>
-              {is_edit === 1 ? (<> <Link to="/bill_process">
-                <Button style={{ float: "right" }}>{$lang.addNew}</Button>
-              </Link></>)
-                :
-                (<></>)}
+              {is_edit === 1 ? (
+                <>
+                  {" "}
+                  <Link to="/bill_process">
+                    <Button style={{ float: "right" }}>{$lang.addNew}</Button>
+                  </Link>
+                </>
+              ) : (
+                <></>
+              )}
             </Col>
           </Flex>
         </Flex>

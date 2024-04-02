@@ -49,19 +49,15 @@ const ShipperList = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_register_shipper
         );
         handleHideModal();
         setIsPosted(!isposted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -70,19 +66,15 @@ const ShipperList = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_update_shipper
         );
         handleHideModal();
         setIsPosted(!isposted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -99,18 +91,14 @@ const ShipperList = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_delete_shipper
         );
         setIsPosted(!isposted);
         handleHideDeleteModal();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -136,12 +124,11 @@ const ShipperList = ({ is_edit }) => {
   }, [isposted]);
 
   return (
-    <Content style={{ margin: 20 }} className="mx-auto flex flex-col content-h">
-      <Card
-        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-        className="py-2 my-2"
-        bordered={false}
-      >
+    <Content
+      style={{ margin: "120px 10% 30px 10%" }}
+      className="mx-auto flex flex-col content-h"
+    >
+      <Card style={{ width: "100%" }} className="py-2 my-2" bordered={false}>
         <Flex
           justify="flex-end"
           className="mb-5"
@@ -154,7 +141,16 @@ const ShipperList = ({ is_edit }) => {
             <Button
               onClick={() => {
                 handleShowModal();
-                setModalData(null);
+                setModalData({
+                  id: undefined,
+                  name: null,
+                  code: null,
+                  post_code: null,
+                  main_address: null,
+                  sub_address: null,
+                  tel: null,
+                  closing_date: null,
+                });
               }}
               className="btn-bg-black"
             >

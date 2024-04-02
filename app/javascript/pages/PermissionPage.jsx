@@ -126,9 +126,10 @@ const PemissionPage = () => {
         style={{
           display: "flex",
           justifyContent: "center",
+          margin: "120px 10% 30px 10%",
         }}
       >
-        <Card style={{ margin: 20 }} className="py-2 " bordered={false}>
+        <Card className="py-2 " bordered={false}>
           <Tabs
             defaultActiveKey="1"
             tabPosition="left"
@@ -139,7 +140,7 @@ const PemissionPage = () => {
             ))}
           </Tabs>
         </Card>
-        <Card style={{ margin: 20 }} className="py-2" bordered={false}>
+        <Card className="py-2" bordered={false} style={{ marginLeft: 20 }}>
           {" "}
           <div>
             <div className="">

@@ -60,7 +60,7 @@
 #     parent_id: 15
 #   },
 #   {
-#     name: "マスタジ管理",
+#     name: "マスタ管理",
 #     path: "#/master",
 #   },
 #   {

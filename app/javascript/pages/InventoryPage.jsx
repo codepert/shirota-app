@@ -286,7 +286,7 @@ const InventoryPage = ({ is_edit }) => {
   return (
     <div>
       <Content
-        style={{ margin: 20 }}
+        style={{ margin: "120px 10% 30px 10%" }}
         className="mx-auto flex flex-col justify-content content-h"
       >
         <Card

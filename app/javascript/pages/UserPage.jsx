@@ -116,7 +116,7 @@ const UserPage = ({ is_edit }) => {
   return (
     <>
       <Content
-        style={{ margin: 20 }}
+        style={{ margin: "120px 10% 30px 10%" }}
         className="mx-auto flex flex-col justify-content content-h"
       >
         <Card style={{ width: "100%" }} bordered={false}>
@@ -126,7 +126,16 @@ const UserPage = ({ is_edit }) => {
                 onClick={() => {
                   handleShowModal();
                   setEditMode("create");
-                  setModalData(null);
+                  setModalData({
+                    id: undefined,
+                    email: null,
+                    name: null,
+                    login_id: null,
+                    user_authority_id: null,
+                    responsible_category_id: null,
+                    password: null,
+                    repassword: null,
+                  });
                 }}
               >
                 {$lang.addNew}

@@ -269,19 +269,15 @@ const ReceivedPaymentPage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_register_deposit
         );
         handleHideModal();
         setIsPosted(!isposted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -290,24 +286,16 @@ const ReceivedPaymentPage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_update_deposit
         );
         handleHideModal();
         setIsPosted(!isposted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
-  };
-  const deleteRow = (id) => {
-    setHandleId(id);
-    setIsDeletedModalVisible(true);
   };
 
   const deleteReceivePayment = () => {
@@ -315,19 +303,15 @@ const ReceivedPaymentPage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_delete_deposit
         );
         setIsPosted(!isposted);
         setHandleId(null);
         handleHideDeleteModal();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -349,14 +333,10 @@ const ReceivedPaymentPage = ({ is_edit }) => {
 
   return (
     <Content
-      style={{ margin: 20 }}
+      style={{ margin: "120px 10% 30px 10%" }}
       className="mx-auto flex flex-col justify-content content-h s-content"
     >
-      <Card
-        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-        className="py-2 my-2"
-        bordered={false}
-      >
+      <Card style={{ width: "100%" }} className="py-2 my-2" bordered={false}>
         <Row className="my-2">
           <Col span={1}>{$lang.received_on}:</Col>
           <DatePicker.RangePicker

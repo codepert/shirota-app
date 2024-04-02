@@ -65,6 +65,7 @@ export const billsReportURL = "api/v1/export_bills_report";
 export const billURL = "api/v1/bills";
 export const exportStockCSVDataUrl = "api/v1/export_stock_csv";
 export const responsibleCategoryURL = "api/v1/responsible_category";
+export const exportStockInoutPdfURL = "api/v1/export_stock_inout_pdf";
 //unit_price urls
 
 export const httpErrors = {

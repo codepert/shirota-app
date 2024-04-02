@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_01_131210) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_02_034019) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -102,10 +102,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_131210) do
     t.string "specification", null: false, comment: "規格・荷姿"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "warehouse_id", default: 1, null: false
     t.index ["code"], name: "index_products_on_code"
     t.index ["name"], name: "index_products_on_name"
     t.index ["specification"], name: "index_products_on_specification"
     t.index ["warehouse_fee_id"], name: "index_products_on_warehouse_fee_id"
+    t.index ["warehouse_id"], name: "index_products_on_warehouse_id"
   end
 
   create_table "received_payments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -226,6 +228,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_01_131210) do
     t.index ["responsible_category_id"], name: "index_warehouses_on_responsible_category_id"
   end
 
+  add_foreign_key "products", "warehouses"
   add_foreign_key "users", "responsible_categories"
   add_foreign_key "users", "user_authorities"
   add_foreign_key "warehouses", "responsible_categories"

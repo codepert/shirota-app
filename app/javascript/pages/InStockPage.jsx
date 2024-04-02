@@ -450,14 +450,10 @@ const InStockPage = ({ is_edit }) => {
   return (
     <div>
       <Content
-        style={{ margin: 20 }}
+        style={{ margin: "120px 10% 30px 10%" }}
         className="mx-auto flex flex-col justify-content content-h"
       >
-        <Card
-          style={{ width: "100%", marginTop: 10, marginBottom: 10 }}
-          className="py-2 my-2"
-          bordered={false}
-        >
+        <Card style={{ width: "100%" }} className="py-2" bordered={false}>
           <Row className="my-2">
             <Col span={1}>
               <label>{$lang.warehouseName}: </label>

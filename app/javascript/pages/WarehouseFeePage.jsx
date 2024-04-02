@@ -49,19 +49,15 @@ const WarehouseFeePage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_register_warehouse_fee
         );
         handleHideModal();
         setIsPosted(!isposted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -70,19 +66,15 @@ const WarehouseFeePage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_update_warehouse_fee
         );
         handleHideModal();
         setIsPosted(!isposted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -91,18 +83,14 @@ const WarehouseFeePage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_delete_warehouse_fee
         );
         setIsPosted(!isposted);
         handleHideDeleteModal();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -123,6 +111,7 @@ const WarehouseFeePage = ({ is_edit }) => {
   };
 
   const editRow = (row) => {
+    console.log("row", row);
     setModalData(row);
     handleShowModal();
   };
@@ -137,12 +126,11 @@ const WarehouseFeePage = ({ is_edit }) => {
   }, [isposted]);
 
   return (
-    <Content style={{ margin: 20 }} className="mx-auto flex flex-col content-h">
-      <Card
-        style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
-        className="py-2 my-2"
-        bordered={false}
-      >
+    <Content
+      style={{ margin: "120px 10% 30px 10%" }}
+      className="mx-auto flex flex-col content-h"
+    >
+      <Card style={{ width: "100%" }} className="py-2 my-2" bordered={false}>
         <Flex
           justify="flex-end"
           style={{
@@ -153,7 +141,14 @@ const WarehouseFeePage = ({ is_edit }) => {
           {is_edit === 1 ? (
             <Button
               onClick={() => {
-                setModalData(null);
+                setModalData({
+                  id: undefined,
+                  code: null,
+                  packaging: null,
+                  handling_fee_rate: null,
+                  storage_fee_rate: null,
+                  fee_category: null,
+                });
                 handleShowModal();
               }}
               className="px-5 btn-bg-black"

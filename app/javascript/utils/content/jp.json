@@ -98,15 +98,33 @@
     "alreayResigered": "これはすでに登録されているデータです。",
     "no_confirm_bill_data": "まだ確定していない資料なので出力できません。",
 
-    "success_register_warehouse": "倉庫マスターが正常に登録されました。",
-    "success_update_warehouse": "倉庫マスターが正常に変更されました。",
-    "success_delete_warehouse": "倉庫マスターが正常に削除されました。",
-
     "success_register_user": "ユーザーデータが正常に登録されました。",
     "success_update_user": "ユーザーデータが正常に変更されました。",
     "success_delete_user": "ユーザーデータが正常に削除されました。",
 
-    "success_change_user_passowrd": "パスワード正常に変更されました。"
+    "success_change_user_passowrd": "パスワード正常に変更されました。",
+
+    "select_warehouse": "対象倉庫を選択してください。",
+
+    "success_register_warehouse": "倉庫マスターが正常に登録されました。",
+    "success_update_warehouse": "倉庫マスターが正常に変更されました。",
+    "success_delete_warehouse": "倉庫マスターが正常に削除されました。",
+
+    "success_register_warehouse_fee": "単価区分マスタが正常に登録されました。",
+    "success_update_warehouse_fee": "単価区分マスタが正常に変更されました。",
+    "success_delete_warehouse_fee": "単価区分マスタが正常に削除されました。",
+
+    "success_register_shipper": "荷主マスタが正常に登録されました。",
+    "success_update_shipper": "荷主マスタが正常に変更されました。",
+    "success_delete_shipper": "荷主マスタが正常に削除されました。",
+
+    "success_register_product": "品名マスタが正常に登録されました。",
+    "success_update_product": "品名マスタが正常に変更されました。",
+    "success_delete_product": "品名マスタが正常に削除されました。",
+
+    "success_register_deposit": "入金額が正常に登録されました。",
+    "success_update_deposit": "入金額が正常に変更されました。",
+    "success_delete_deposit": "入金額が正常に削除されました。"
   },
   "popConfirmType": {
     "success": "success",
@@ -135,7 +153,7 @@
   "storageFeeUnitPrice": "保管料単価",
   "billingClass": "請求区分",
   "yen": "円",
-  "registerProduct": "品名登録",
+  "registerProduct": "品名マスタ",
   "fullTimeRequest": "全期請求",
   "firstBilling": "１期請求 ",
   "addNew": "新規登録",
@@ -188,7 +206,7 @@
   "detail": "明細",
   "unconfirm": "未確認",
   "lastBilledAmount": "前回請求額",
-  "warehouseFeeRegister": "単価",
+  "warehouseFeeRegister": "単価マスタ",
   "registerUser": "ユーザー登録",
   "instockAmount": "入庫数",
   "cargoPrice": "荷役単価",

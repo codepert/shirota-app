@@ -51,8 +51,9 @@ const WarehouseFeeTable = ({ data, editRow, deleteRow, isEdit }) => {
     },
     isEdit === 1 ? (
       {
-        title: `${$lang.change}`,
+        title: `#`,
         dataIndex: "operation",
+        width: "10%",
         render: (_, record) => {
           return (
             <div className="flex justify-center items-center">

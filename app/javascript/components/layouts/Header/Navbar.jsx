@@ -92,93 +92,95 @@ const NavbarSection = () => {
   }, [user]);
 
   return (
-    <Layout>
-      <Flex
-        justify="space-between"
-        style={{
-          backgroundColor: "#fff",
-          width: "100%",
-          borderTop: "5px solid #297afc",
-        }}
-      >
-        <div className="" style={{ backgroundColor: "#fff" }}></div>
-        <div className="items-center">
-          <div className="flex justify-between">
-            <p
-              style={{
-                backgroundColor: "#fff",
-              }}
-              className="mt-2"
-            >
-              {$lang.user}：<b>{name}</b>
-            </p>
-            <Button
-              className="btn-bg-black"
-              onClick={logout}
-              style={{
-                marginLeft: "10px",
-                border: "none",
-                float: "right",
-              }}
-            >
-              {$lang.buttons.logout}
-            </Button>
+    <div style={{ position: "fixed", width: "100%", top: 0, zIndex: 5 }}>
+      <Layout>
+        <Flex
+          justify="space-between"
+          style={{
+            backgroundColor: "#fff",
+            width: "100%",
+            borderTop: "5px solid #297afc",
+          }}
+        >
+          <div className="" style={{ backgroundColor: "#fff" }}></div>
+          <div className="items-center">
+            <div className="flex justify-between">
+              <p
+                style={{
+                  backgroundColor: "#fff",
+                }}
+                className="mt-2"
+              >
+                {$lang.user}：<b>{name}</b>
+              </p>
+              <Button
+                className="btn-bg-black"
+                onClick={logout}
+                style={{
+                  marginLeft: "10px",
+                  border: "none",
+                  float: "right",
+                }}
+              >
+                {$lang.buttons.logout}
+              </Button>
+            </div>
           </div>
-        </div>
-      </Flex>
-      <Flex
-        justify="space-between"
-        style={{
-          backgroundColor: "#fff",
-          borderBottom: "1px solid #0505050f",
-          boxShadow: "0 5px 10px rgba(204,204,204,.4)",
-        }}
-      >
-        <Flex horizontal="true" align="start">
-          <Title
-            level={5}
-            style={{
-              marginTop: 10,
-              marginLeft: 20,
-              paddingLeft: 10,
-              paddingRight: 10,
-            }}
-          >
-            <Link
-              to="/"
+        </Flex>
+        <Flex
+          justify="space-between"
+          style={{
+            backgroundColor: "#fff",
+            borderBottom: "1px solid #0505050f",
+            boxShadow: "0 5px 10px rgba(204,204,204,.4)",
+          }}
+        >
+          <Flex horizontal="true" align="start">
+            <Title
+              level={5}
               style={{
-                fontWeight: 800,
-                fontSize: 14,
+                marginTop: 10,
+                marginLeft: 20,
+                paddingLeft: 10,
+                paddingRight: 10,
               }}
             >
-              {siteInfo.title}
-            </Link>
-          </Title>
-          <Menu
-            onClick={onMenuClick}
-            selectedKeys={[current]}
-            mode="horizontal"
-            items={navigations}
-            style={{
-              marginLeft: 190,
-              backgroundColor: "#fff",
-              border: "none",
-            }}
-          />
+              <Link
+                to="/"
+                style={{
+                  fontWeight: 800,
+                  fontSize: 14,
+                }}
+              >
+                {siteInfo.title}
+              </Link>
+            </Title>
+            <Menu
+              onClick={onMenuClick}
+              selectedKeys={[current]}
+              mode="horizontal"
+              items={navigations}
+              style={{
+                marginLeft: 190,
+                backgroundColor: "#fff",
+                border: "none",
+              }}
+            />
+          </Flex>
+          <div style={{ marginTop: 10, marginRight: 20 }}>
+            <span>Date : </span>
+            <span>{moment().format("YYYY/MM/DD")}</span>
+          </div>
         </Flex>
-        <div style={{ marginTop: 10, marginRight: 20 }}>
-          <span>Date : </span>
-          <span>{moment().format("YYYY/MM/DD")}</span>
-        </div>
-      </Flex>
-      {/* <Breadcrumb
+        {/* <Breadcrumb
         items={[{ title }]}
         style={{
           padding: "10px 20px ",
           backgroundColor: "#fff",
         }}
       /> */}
-    </Layout>
+      </Layout>
+    </div>
   );
 };
 

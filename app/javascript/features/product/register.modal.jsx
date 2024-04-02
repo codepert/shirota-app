@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form, Modal, Input, Button, Select } from "antd";
-import { warehouseFeeURL } from "../../utils/constants";
+import { warehouseFeeURL, warehouseURL } from "../../utils/constants";
 import { API } from "../../utils/helper";
 import $lang from "../../utils/content/jp.json";
 
 const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
   const [form] = Form.useForm();
   const [warehouseFees, setWarehouseFees] = useState([]);
+  const [warehouseOptions, setWarehouseOptions] = useState([]);
 
   const getWarehouseFees = () => {
     API.get(warehouseFeeURL).then((res) => {
@@ -44,8 +45,23 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
     });
   };
 
+  const getWarehouses = () => {
+    API.get(warehouseURL).then((res) => {
+      let index = 1;
+      const data = res.data.map((item) => {
+        return {
+          key: index++,
+          value: item.id,
+          label: item.name + " / " + item.responsible_category.name,
+        };
+      });
+
+      setWarehouseOptions(data);
+    });
+  };
   useEffect(() => {
     getWarehouseFees();
+    getWarehouses();
   }, []);
 
   useEffect(() => {
@@ -103,6 +119,17 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
         >
           <Input />
         </Form.Item>
+        {warehouseOptions.length > 0 && (
+          <Form.Item
+            name="warehouse_id"
+            label={$lang.targetWarehouse}
+            rules={[
+              { required: true, message: $lang.messages.select_warehouse },
+            ]}
+          >
+            <Select options={warehouseOptions} allowClear />
+          </Form.Item>
+        )}
         {warehouseFees.length > 0 && (
           <Form.Item
             name="warehouse_fee_id"

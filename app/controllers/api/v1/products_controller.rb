@@ -84,6 +84,6 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
   
   def create_or_update_params
-    params.permit(:name, :code, :warehouse_fee_id, :specification)
+    params.permit(:name, :code, :warehouse_fee_id, :warehouse_id, :specification)
   end
 end

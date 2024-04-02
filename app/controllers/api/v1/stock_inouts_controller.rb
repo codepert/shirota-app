@@ -179,6 +179,10 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
     end
     send_data csv_data, filename: "stock.csv", type: "text/csv; charset=shift_jis; header=present", disposition: "inline"
   end
+  def export_stock_inout_pdf
+    inout_on = params[:inout_on]
+    category = params[:category]
+  end
   private
   def calculate_adjusted_total_amount(stock, stock_inout_params)
     existing_total_amount = stock[0].total_amount

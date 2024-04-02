@@ -6,13 +6,6 @@ import moment from "moment";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-class HTTPError extends Error {
-  constructor(message, statusCode) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}
-
 export const isEmpty = (d) => d?.toString().trim().length === 0;
 
 export const hasKey = (obj, key) => typeof obj === "object" && !falsy(obj[key]);
@@ -43,6 +36,25 @@ export const API = axios.create({
     // Authorization: getAuthUserToken(),
   },
 });
+
+API.interceptors.request.use((config) => {
+  const token = getAuthUserToken();
+  if (token) {
+    config.headers["Authorization"] = ` ${token}`;
+  }
+
+  return config;
+});
+
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 401) {
+      clearStorage();
+    }
+    throw error;
+  }
+);
 
 export const makeHttpReq = async (options = {}) => {
   const apiClient = axios.create({ baseURL: "/" });

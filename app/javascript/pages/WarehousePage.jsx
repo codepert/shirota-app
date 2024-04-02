@@ -29,6 +29,8 @@ const WarehousePage = ({ is_edit }) => {
         return {
           ...item,
           key: index++,
+          category: item.responsible_category.name,
+          responsible_category_id: item.responsible_category.id,
         };
       });
       setTableData(warehouseData);
@@ -51,13 +53,13 @@ const WarehousePage = ({ is_edit }) => {
     }
   };
 
-  const createWarehouse = (data) => {
+  const createWarehouse = (data, form) => {
     API.post(warehouseURL, data)
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_register_warehouse
         );
         handleHideModal();
         setIsPosted(!isposted);
@@ -66,27 +68,28 @@ const WarehousePage = ({ is_edit }) => {
       .catch((err) => {
         openNotificationWithIcon(
           "error",
-          $lang.popConfirmType.success,
+          $lang.popConfirmType.error,
           err.message
         );
       });
   };
 
-  const updateWarehouse = (data) => {
+  const updateWarehouse = (data, form) => {
     API.put(`${warehouseURL}/${data.id}`, data)
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_register_warehouse
         );
         handleHideModal();
         setIsPosted(!isposted);
+        form.resetFields();
       })
       .catch((err) => {
         openNotificationWithIcon(
           "error",
-          $lang.popConfirmType.success,
+          $lang.popConfirmType.error,
           err.message
         );
       });
@@ -154,11 +157,6 @@ const WarehousePage = ({ is_edit }) => {
                 setModalData({
                   id: null,
                   name: null,
-                  packaging: null,
-                  code: null,
-                  handling_fee_rate: null,
-                  storage_fee_rate: null,
-                  fee_category: null,
                 });
                 handleShowModal();
               }}

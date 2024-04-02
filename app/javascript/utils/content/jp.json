@@ -81,6 +81,7 @@
     "empty_during": "対象期間を入力してください。",
     "empty_shipper_range": "対象荷主を入力してください。",
     "select_authority": "ユーザー権利を選択してください。",
+    "select_responsible_category": "担当区分を選択してください。",
     "input_product_code": "品名コードを入力してください。",
     "input_product_name": "品名を入力してください。",
     "input_packaging": "規格・荷姿を入力してください。",
@@ -95,12 +96,14 @@
     "empty_data": "データはありません。",
     "finish_bill": "請求が確定しました。",
     "alreayResigered": "これはすでに登録されているデータです。",
-    "no_confirm_bill_data": "まだ確定していない資料なので出力できません。"
+    "no_confirm_bill_data": "まだ確定していない資料なので出力できません。",
+
+    "success_register_warehouse": "倉庫マスターが正常に登録されました。"
   },
   "popConfirmType": {
-    "success": "成功",
-    "warning": "注意",
-    "error": "エラー"
+    "success": "success",
+    "warning": "warning",
+    "error": "error"
   },
   "string": {
     "start_date": "",
@@ -117,6 +120,7 @@
   "no": "No",
   "delete": "削除",
   "change": "変更",
+  "warehouseMaster": "倉庫マスタ",
   "warehouseName": "倉庫名",
   "packing": "単価区分",
   "handlingFeeUnitPrice": "荷役料単価",
@@ -198,5 +202,6 @@
   "targetShipper": "対象荷主",
   "targetWarehouse": "対象倉庫",
   "billingCalculation": "請求計算",
-  "billingList": "請求リスト"
+  "billingList": "請求リスト",
+  "responsibleCategory": "担当区分"
 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_01_131210) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -73,14 +73,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
     t.string "representative", comment: "代表者"
     t.string "tel_number", comment: "電話番号"
     t.string "fax_number", comment: "FAX番号\t"
-    t.string "start_date", comment: "期首年月日"
-    t.string "end_date", comment: "期末年月日"
+    t.date "start_date", comment: "期首年月日"
+    t.date "end_date", comment: "期末年月日"
     t.string "processing_year", comment: "処理年"
     t.string "processing_month", comment: "処理月"
     t.string "management_pw", comment: "管理PW"
     t.string "installation_location", comment: "設置場所"
     t.string "invoice_number", comment: "請求書番号"
     t.string "register_number", comment: "登録番号"
+    t.string "bank", comment: "bank"
+    t.string "bank_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -100,9 +102,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
     t.string "specification", null: false, comment: "規格・荷姿"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["code"], name: "index_products_on_code", unique: true
-    t.index ["name"], name: "index_products_on_name", unique: true
-    t.index ["specification"], name: "index_products_on_specification", unique: true
+    t.index ["code"], name: "index_products_on_code"
+    t.index ["name"], name: "index_products_on_name"
+    t.index ["specification"], name: "index_products_on_specification"
     t.index ["warehouse_fee_id"], name: "index_products_on_warehouse_fee_id"
   end
 
@@ -111,11 +113,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
     t.date "received_on", null: false, comment: "入金日"
     t.integer "amount", null: false, comment: "入金額"
     t.text "description", comment: "摘要"
-    t.date "processing_on", comment: "処理日"
+    t.datetime "processing_on", comment: "処理日"
     t.integer "received", limit: 1, null: false, comment: "入金済みかどうか"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shipper_id"], name: "index_received_payments_on_shipper_id"
+  end
+
+  create_table "responsible_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "shippers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -161,12 +169,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
     t.index ["warehouse_id"], name: "index_stocks_on_warehouse_id"
   end
 
-  create_table "test_db", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.date "inout_on"
-    t.integer "shipper_id"
-    t.integer "amount"
-  end
-
   create_table "user_authorities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.integer "auth_num", default: 1, null: false
@@ -187,11 +189,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
     t.string "name", null: false
     t.string "login_id"
     t.bigint "user_authority_id", default: 1, null: false
+    t.bigint "responsible_category_id", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["login_id"], name: "index_users_on_login_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["responsible_category_id"], name: "index_users_on_responsible_category_id"
     t.index ["user_authority_id"], name: "index_users_on_user_authority_id"
+  end
+
+  create_table "warehouse_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "category", null: false, comment: "倉庫区分"
+    t.integer "lot", null: false, comment: "倉庫コード"
+    t.string "storage_category", null: false, comment: "保管区分"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "warehouse_fees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -209,8 +221,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_21_062422) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "responsible_category_id", null: false
     t.index ["name"], name: "index_warehouses_on_name", unique: true
+    t.index ["responsible_category_id"], name: "index_warehouses_on_responsible_category_id"
   end
 
+  add_foreign_key "users", "responsible_categories"
   add_foreign_key "users", "user_authorities"
+  add_foreign_key "warehouses", "responsible_categories"
 end

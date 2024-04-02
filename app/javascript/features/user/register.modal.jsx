@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Modal, Input, Button, Select } from "antd";
-import { userAuthURL } from "../../utils/constants";
+import { userAuthURL, responsibleCategoryURL } from "../../utils/constants";
 import { API } from "../../utils/helper";
 import $lang from "../../utils/content/jp.json";
 
@@ -14,7 +14,9 @@ const UserRegisterModal = ({
 }) => {
   const [form] = Form.useForm();
   const [authorityOptions, setAuthorityOptions] = useState([]);
-
+  const [responsibleCategoryOptions, setResponsibleCategoryOptions] = useState(
+    []
+  );
   const getAuthorities = () => {
     API.get(userAuthURL).then((res) => {
       let index = 1;
@@ -30,8 +32,25 @@ const UserRegisterModal = ({
     });
   };
 
+  const getResponsibleCategoryOptions = () => {
+    API.get(responsibleCategoryURL).then((res) => {
+      let index = 1;
+
+      setResponsibleCategoryOptions(
+        res.data.map((item) => {
+          return {
+            key: index++,
+            value: item.id,
+            label: item.name,
+          };
+        })
+      );
+    });
+  };
+
   useEffect(() => {
     getAuthorities();
+    getResponsibleCategoryOptions();
   }, []);
 
   useEffect(() => {
@@ -103,6 +122,20 @@ const UserRegisterModal = ({
             ]}
           >
             <Select options={authorityOptions} allowClear />
+          </Form.Item>
+        )}
+        {responsibleCategoryOptions.length > 0 && (
+          <Form.Item
+            name="responsible_category_id"
+            label={$lang.responsibleCategory}
+            rules={[
+              {
+                required: true,
+                message: $lang.messages.select_responsible_category,
+              },
+            ]}
+          >
+            <Select options={responsibleCategoryOptions} allowClear />
           </Form.Item>
         )}
         {editMode == "create" && (

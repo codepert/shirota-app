@@ -80,7 +80,7 @@ const WarehousePage = ({ is_edit }) => {
         openNotificationWithIcon(
           "success",
           "",
-          $lang.messages.success_register_warehouse
+          $lang.messages.success_update_warehouse
         );
         handleHideModal();
         setIsPosted(!isposted);
@@ -100,18 +100,14 @@ const WarehousePage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_delete_warehouse
         );
         setIsPosted(!isposted);
         handleHideDeleteModal();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 

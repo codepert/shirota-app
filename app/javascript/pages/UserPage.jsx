@@ -29,6 +29,8 @@ const UserPage = ({ is_edit }) => {
         return {
           ...item,
           key: index++,
+          authority: item.user_authority.name,
+          responsible_category: item.responsible_category.name,
         };
       });
       setUserList(users);
@@ -44,45 +46,37 @@ const UserPage = ({ is_edit }) => {
     }
   };
 
-  const createUser = (data) => {
+  const createUser = (data, form) => {
     API.post(userURL, data)
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_register_user
         );
         handleHideModal();
         setIsPosted(!isPosted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
-  const updateUser = (data) => {
+  const updateUser = (data, form) => {
     API.put(`${userURL}/${data.id}`, data)
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_update_user
         );
         handleHideModal();
         setIsPosted(!isPosted);
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.success,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -91,18 +85,13 @@ const UserPage = ({ is_edit }) => {
       .then((res) => {
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_change_user_passowrd
         );
-
         handleHideModal();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 

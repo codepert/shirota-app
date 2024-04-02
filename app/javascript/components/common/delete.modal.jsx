@@ -6,14 +6,14 @@ import $lang from "../../utils/content/jp.json";
 const DeleteModal = ({ isOpen, onDelete, onClose, deletedId }) => {
   return (
     <Modal
-      title={$lang.popConfirmType.warning}
+      title={""}
       open={isOpen}
       onCancel={onClose}
       className="py-5"
       footer={null}
     >
       <br />
-      <p className="items-center" style={{ fontSize: 20 }}>
+      <p className="" style={{ fontSize: 16, textAlign: "left" }}>
         {$lang.pages.confirm}
       </p>
       <br />
@@ -22,6 +22,8 @@ const DeleteModal = ({ isOpen, onDelete, onClose, deletedId }) => {
           <Button
             onClick={() => onDelete(deletedId)}
             className="items-center btn-bg-black"
+            type="primary"
+            danger
           >
             <DeleteOutlined />
             {$lang.buttons.delete}

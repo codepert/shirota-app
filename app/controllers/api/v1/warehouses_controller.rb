@@ -38,6 +38,6 @@ class Api::V1::WarehousesController < Api::V1::BaseController
     end
   end
   def create_or_update_params
-    params.permit(:name)
+    params.permit(:name, :responsible_category_id)
   end
 end

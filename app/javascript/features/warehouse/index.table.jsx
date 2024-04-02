@@ -26,10 +26,17 @@ const WarehouseTable = ({ data, editRow, deleteRow, isEdit }) => {
         );
       },
     },
+    {
+      title: `${$lang.responsibleCategory}`,
+      dataIndex: "category",
+      align: "center",
+      width: "8%",
+    },
     isEdit === 1 ? (
       {
         title: `#`,
         dataIndex: "operation",
+        width: "10%",
         render: (_, record) => {
           return (
             <div className="flex justify-center items-center">

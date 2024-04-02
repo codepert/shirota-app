@@ -1,0 +1,2 @@
+class WarehouseCategory < ApplicationRecord
+end

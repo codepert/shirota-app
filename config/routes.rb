@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       post "export_bill_report" => "bills#export_bill_report"
       post "export_bill_amount_report" => "bills#export_bill_amount_report"
       post "export_bills_report" => "bills#export_bills_report"
+      resources :responsible_category, only: %i[index]
       
       # resources :bill_amounts
     end

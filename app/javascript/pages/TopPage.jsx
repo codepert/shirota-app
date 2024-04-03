@@ -119,7 +119,7 @@ const Top = () => {
             </Link>
           </Col>
         ))}
-        <Col style={{ margin: 20 }}>
+        <Col style={{ margin: 20 }} span={7}>
           <Card bordered={false} style={{ borderLeft: "1px solid #357df9" }}>
             <Row>
               <DatePicker

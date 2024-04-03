@@ -234,19 +234,11 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         document.body.removeChild(link);
 
         setTimeout(() => {
-          openNotificationWithIcon(
-            "success",
-            $lang.popConfirmType.success,
-            $lang.messages.success
-          );
+          openNotificationWithIcon("success", "", $lang.messages.success);
         }, 1000);
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.messages
-        );
+        openNotificationWithIcon("error", "", err.messages);
       });
   };
 

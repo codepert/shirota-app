@@ -157,7 +157,7 @@ const OutStockPage = ({ is_edit }) => {
       } else {
         openNotificationWithIcon(
           "warning",
-          $lang.popConfirmType.warning,
+          "",
           $lang.messages.not_register_or_in_stock
         );
       }
@@ -168,7 +168,7 @@ const OutStockPage = ({ is_edit }) => {
     if (selectedStockInoutId == "") {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.input_product_name
       );
       return false;
@@ -176,25 +176,17 @@ const OutStockPage = ({ is_edit }) => {
     if (outStockDate == "") {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.input_out_stock_date
       );
       return false;
     }
     if (outStockAmount == "") {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.input_out_amount
-      );
+      openNotificationWithIcon("warning", "", $lang.messages.input_out_amount);
       return false;
     }
     if (outStockAmount > stockAmount) {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.stockAmountError
-      );
+      openNotificationWithIcon("warning", "", $lang.messages.stockAmountError);
 
       return false;
     }
@@ -339,7 +331,7 @@ const OutStockPage = ({ is_edit }) => {
     if (prepareProducts.length == 0) {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.empty_out_stock_data
       );
       return;
@@ -351,16 +343,12 @@ const OutStockPage = ({ is_edit }) => {
         initPrepareProductItem();
         openNotificationWithIcon(
           "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
+          "",
+          $lang.messages.success_outstock
         );
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.messages
-        );
+        openNotificationWithIcon("error", "", err.messages);
       });
   };
 

@@ -124,7 +124,10 @@
 
     "success_register_deposit": "入金額が正常に登録されました。",
     "success_update_deposit": "入金額が正常に変更されました。",
-    "success_delete_deposit": "入金額が正常に削除されました。"
+    "success_delete_deposit": "入金額が正常に削除されました。",
+
+    "success_instock": "データを正確に入庫しました",
+    "success_outstock": "データを正確に出庫しました"
   },
   "popConfirmType": {
     "success": "success",

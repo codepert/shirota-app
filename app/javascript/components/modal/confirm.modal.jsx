@@ -5,14 +5,14 @@ import $lang from "../../utils/content/jp.json";
 const ConfirmModal = ({ isOpen, onConfirm, onClose, message }) => {
   return (
     <Modal
-      title={$lang.popConfirmType.warning}
+      title={""}
       open={isOpen}
       onCancel={onClose}
       className="py-5"
       footer={null}
     >
       <br />
-      <p className="items-center" style={{ fontSize: 20 }}>
+      <p className="" style={{ fontSize: 16, textAlign: "left" }}>
         {message}
       </p>
       <br />

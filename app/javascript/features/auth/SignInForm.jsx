@@ -26,8 +26,6 @@ const LoginForm = () => {
   };
 
   return (
-    // <div className="mx-auto px-6 sm:px-8 md:px-28 lg:px-20 xl:px-0 max-w-screen-sm ">
-    //   <div className="flex flex-col justify-center h-full min-h-screen gap-6 xs:gap-7 xs:mt-0">
     <div
       className="mx-auto px-6 sm:px-8 md:px-28 lg:px-20 xl:px-0 max-w-screen-sm "
       style={{ width: 500 }}

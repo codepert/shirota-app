@@ -92,4 +92,15 @@ class StockInout < ApplicationRecord
     find_by_sql(query)
 
   }
+  scope :get_export_data, ->(inout_on, category) {
+    query = <<-SQL
+    SELECT  warehouses.`name` as warehouse_name, inout_on, products.code as product_code, products.`name` as product_name, products.specification, lot_number, weight, amount
+    FROM `stock_inouts`
+    JOIN stocks on stocks.id = stock_inouts.stock_id
+    JOIN products ON products.id = stocks.product_id
+    JOIN warehouses ON warehouses.id=products.warehouse_id
+    WHERE inout_on ='#{inout_on}' AND category='#{category}'
+    SQL
+    find_by_sql(query)
+  }
 end

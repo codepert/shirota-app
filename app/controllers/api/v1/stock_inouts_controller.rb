@@ -5,6 +5,9 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
   require 'grover'
   require 'nokogiri'
 
+  include PdfRender
+  include ActionController::MimeResponds # API モードで respond_to を使うために必要
+  
   def index
     shipper_id = params[:shipper_id].presence || ''
     warehouse_id = params[:warehouse_id].presence || ''
@@ -182,6 +185,35 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
   def export_stock_inout_pdf
     inout_on = params[:inout_on]
     category = params[:category]
+    export_data = StockInout.get_export_data(inout_on, category)
+    export_sum_data = compute_stock_inout_sum(export_data)
+    category_str = category==1 ? "出庫" : "入庫"
+    controller = ActionController::Base.new
+
+    controller.instance_variable_set(:@stock_inouts, export_data)
+    controller.instance_variable_set(:@category_str, category_str)
+    controller.instance_variable_set(:@inout_on, inout_on)
+    controller.instance_variable_set(:@export_sum_data, export_sum_data)
+    html = controller.render_to_string(template: 'templates/inout_stock', layout: nil)
+    pdf = Grover.new(html).to_pdf
+    send_data(pdf, filename: 'sample.pdf', type: 'application/pdf', disposition: 'inline')
+  end
+  
+  def compute_stock_inout_sum(stock_inout_data)
+
+    types = ['weight', 'amount']
+
+    total = Hash.new(0)
+    types.each { |type| total[:"#{type}"] = 0 }
+
+    stock_inout_data.each do |record|
+      types.each do |type|
+        puts "=============record ============"
+        puts eval("record.#{type}")
+        total[:"#{type}"] += eval("record.#{type}").to_i
+      end
+    end
+    total
   end
   private
   def calculate_adjusted_total_amount(stock, stock_inout_params)

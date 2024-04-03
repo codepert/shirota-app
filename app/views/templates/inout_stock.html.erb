@@ -1,0 +1,96 @@
+<html>
+  <meta charset="UTF-8" />
+  <body>
+    <div style="width:100%;margin-left:30px">
+      <div style="width: 30%; font-size: 10px">
+        <p style="margin-top: 50px; font-size: 16px; font-style: italic;font-family:'MizukiMinchoU';">
+          入力モニター(<%= @category_str%>)
+        </p>
+      </div>
+      <div style="margin-left:550">
+        <p style="">
+          <span style="color: #090d7e;font-size: 12px; font-style: italic;font-family:'MizukiMinchoU';">処理年月日:</span> 
+          <span style="font-size: 12px;font-family: 'Arial Narrow'"><%= @inout_on.to_s[0,4] %></span>
+          <span style="color: #090d7e;font-size: 12px;font-family: 'MizukiMinchoU'">
+            年</span>
+          <span style="font-size: 12px;font-family: 'Arial Narrow'"><%= @inout_on.to_s[5,2] %></span>
+          <span style="color: #090d7e;font-size: 12px;font-family: 'MizukiMinchoU'">月</span>
+          <span style="font-size: 12px;font-family: 'Arial Narrow'"><%= @inout_on.to_s[8,2]%></span>
+          <span style="color: #090d7e;font-size: 12px;font-family: 'MizukiMinchoU'">日</span> 
+          </span>
+        </p>
+      </div>
+      <table
+        style="
+          font-size: 10px;
+          width: '100%'
+          border-bottom: 1px solid #090d7e;
+          border-spacing: 0;
+        "
+      >
+        <thead>
+          <tr style="color: #090d7e;;font-family:'MizukiMinchoU';">
+            <td style="padding: 1px" width="12.5%">倉庫</td>
+            <td style="padding: 1px" width="12.5%"><%= @category_str%>年月日</td>
+            <td style="padding: 1px" width="12.5%">品名コード</td>
+            <td style="padding: 1px" width="12.5%">品名</td>
+            <td style="padding: 1px" width="12.5%">規格・荷姿</td>
+            <td style="padding: 1px" width="12.5%">ロット番号</td>
+            <td style="padding: 1px" width="12.5%">重量</td>
+            <td style="padding: 1px" width="12.5%"><%= @category_str%>数</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background-color: blue; height: 2px">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <% @stock_inouts.each do |record| %>
+          <tr style="font-size: 10px; margin-top: 2px">
+            <td style="text-align: left">
+              <%= record.warehouse_name %>
+            </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.inout_on %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.product_code %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.product_name %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.specification %></td>
+            <td style="padding: 1px"><%= record.lot_number %></td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.weight %> </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'"><%= record.amount %></td>
+          </tr>
+          <% end %>
+          <tr style="background-color: blue; height: 2px;border-top:2px solid #090d7e;">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr style="font-size: 10px; margin-top: 2px;border-top:2px solid #eee">
+            <td style="color: #090d7e;padding: 1px;font-family: 'Arial Narrow';" colspan="6">
+              <span style="float:right;margin-right:50px">合計</span>
+            </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">
+              <%= @export_sum_data[:weight]%>
+            </td>
+            <td style="padding: 1px;font-family: 'Arial Narrow'">
+              <%= @export_sum_data[:amount]%>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

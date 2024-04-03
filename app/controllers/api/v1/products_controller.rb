@@ -50,7 +50,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
 
     product = Product.joins(:stock)
                     .where(
-                      "(code LIKE :q OR name LIKE :q) AND shipper_id = :shipper_id AND warehouse_id = :warehouse_id",
+                      "(code LIKE :q OR name LIKE :q) AND shipper_id = :shipper_id AND stocks.warehouse_id = :warehouse_id",
                       q: "%#{params[:q]}%",
                       shipper_id: params[:shipper_id],
                       warehouse_id: params[:warehouse_id]

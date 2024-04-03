@@ -83,7 +83,7 @@ const Top = () => {
   return (
     <Content
       className="mx-auto flex flex-col justify-content content-h"
-      style={{ width: 1024, marginTop: 100 }}
+      style={{ width: 1280, marginTop: 100 }}
     >
       <Row
         style={{
@@ -121,33 +121,46 @@ const Top = () => {
         ))}
         <Col style={{ margin: 20 }}>
           <Card bordered={false} style={{ borderLeft: "1px solid #357df9" }}>
-            <DatePicker
-              style={{ width: 150 }}
-              value={targetDate}
-              onChange={(date, dateStr) => {
-                if (dateStr == "") {
-                  setTargetDate(dayjs(currentDate, dateFormat));
-                } else setTargetDate(dayjs(dateStr, dateFormat));
+            <Row>
+              <DatePicker
+                style={{ width: 150 }}
+                value={targetDate}
+                onChange={(date, dateStr) => {
+                  if (dateStr == "") {
+                    setTargetDate(dayjs(currentDate, dateFormat));
+                  } else setTargetDate(dayjs(dateStr, dateFormat));
+                }}
+                placeholder={""}
+                className="ml-1"
+                format={dateFormat}
+              />
+              <Radio.Group
+                onChange={(e) => {
+                  setIoutVal(e.target.value);
+                }}
+                value={inoutVal}
+                style={{ marginLeft: 10 }}
+              >
+                <Radio value={0}>入庫</Radio>
+                <Radio value={1}>出庫</Radio>
+              </Radio.Group>
+            </Row>
+            <Row
+              style={{
+                marginTop: 10,
+                display: "flex",
+                justifyContent: "space-between",
               }}
-              placeholder={""}
-              className="ml-1"
-              format={dateFormat}
-            />
-            <Radio.Group
-              onChange={(e) => {
-                setIoutVal(e.target.value);
-              }}
-              value={inoutVal}
-              style={{ marginLeft: 10 }}
             >
-              <Radio value={0}>入庫</Radio>
-              <Radio value={1}>出庫</Radio>
-            </Radio.Group>
-            <Spin spinning={isExportSpinLoading}>
-              <Button type="primary" onClick={exportInoutStockPDF}>
-                モニター出力
-              </Button>
-            </Spin>
+              <Col></Col>
+              <Col>
+                <Spin spinning={isExportSpinLoading}>
+                  <Button type="primary" onClick={exportInoutStockPDF}>
+                    モニター出力
+                  </Button>
+                </Spin>
+              </Col>
+            </Row>
           </Card>
         </Col>
       </Row>

@@ -190,7 +190,7 @@ const InStockPage = ({ is_edit }) => {
     if (prepareProducts.length == 0) {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.empty_in_stock_data
       );
       return;
@@ -200,18 +200,10 @@ const InStockPage = ({ is_edit }) => {
       .then((res) => {
         setPrepareProducts([]);
         initPrepareProductItem();
-        openNotificationWithIcon(
-          "success",
-          $lang.popConfirmType.success,
-          $lang.messages.success
-        );
+        openNotificationWithIcon("success", "", $lang.messages.success_instock);
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.messages
-        );
+        openNotificationWithIcon("error", "", err.messages);
       });
   };
 
@@ -223,35 +215,23 @@ const InStockPage = ({ is_edit }) => {
     if (inStockDate == "") {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.input_inStock_date
       );
       return false;
     } else if (lotNumber == "") {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.input_lotNumber
-      );
+      openNotificationWithIcon("warning", "", $lang.messages.input_lotNumber);
       return false;
     } else if (amount == "") {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.input_stock
-      );
+      openNotificationWithIcon("warning", "", $lang.messages.input_stock);
       return false;
     } else if (weight == "") {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.input_weight
-      );
+      openNotificationWithIcon("warning", "", $lang.messages.input_weight);
       return false;
     } else if (selectedProductId == "") {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.input_product_name
       );
       return false;
@@ -281,7 +261,7 @@ const InStockPage = ({ is_edit }) => {
         if (res.data.status != "ok") {
           openNotificationWithIcon(
             "warning",
-            $lang.popConfirmType.warning,
+            "",
             $lang.messages.alreayResigered
           );
           return;
@@ -374,11 +354,7 @@ const InStockPage = ({ is_edit }) => {
   const exportDataAndDownloadCVS = async () => {
     const csvData = getCSVData();
     if (csvData.length == 0) {
-      openNotificationWithIcon(
-        "warning",
-        $lang.messages.warning,
-        "empty data to export"
-      );
+      openNotificationWithIcon("warning", "", "empty data to export");
       return;
     }
 
@@ -394,19 +370,11 @@ const InStockPage = ({ is_edit }) => {
         document.body.removeChild(link);
 
         setTimeout(() => {
-          openNotificationWithIcon(
-            "success",
-            $lang.popConfirmType.success,
-            $lang.messages.success
-          );
+          openNotificationWithIcon("success", "", $lang.messages.success);
         }, 1000);
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.messages
-        );
+        openNotificationWithIcon("error", "", err.messages);
       });
   };
   const handleSearchProduct = (e) => {
@@ -425,7 +393,7 @@ const InStockPage = ({ is_edit }) => {
       } else {
         openNotificationWithIcon(
           "warning",
-          $lang.popConfirmType.warning,
+          "",
           $lang.messages.not_register_product
         );
       }

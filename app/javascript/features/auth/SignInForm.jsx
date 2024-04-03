@@ -19,7 +19,7 @@ const LoginForm = () => {
     } else {
       openNotificationWithIcon(
         "error",
-        $lang.popConfirmType.error,
+        "",
         HttpResponseErrorMessage(res.code, res.status)
       );
     }

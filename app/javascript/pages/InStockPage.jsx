@@ -424,12 +424,12 @@ const InStockPage = ({ is_edit }) => {
         <Card style={{ width: "100%" }} className="py-2" bordered={false}>
           <Row className="my-2">
             <Col span={1}>
-              <label>{$lang.warehouseName}: </label>
+              <label>{$lang.handling_warehouse}: </label>
             </Col>
             <Col span={6}>
               {warehouseOptions.length > 0 && (
                 <Select
-                  placeholder={$lang.warehouseName}
+                  placeholder={$lang.handling_warehouse}
                   style={{ width: 150, marginLeft: 14 }}
                   value={selectedWarehouse}
                   options={warehouseOptions}

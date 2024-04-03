@@ -125,11 +125,7 @@ const BillingProcessPage = ({ is_edit }) => {
   };
   const getCalculateBillList = () => {
     if (processRangeDates.length == 0) {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.empty_during
-      );
+      openNotificationWithIcon("warning", "", $lang.messages.empty_during);
 
       return;
     }
@@ -188,11 +184,7 @@ const BillingProcessPage = ({ is_edit }) => {
 
   const getBillList = () => {
     if (processRangeDates.length == 0) {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        $lang.messages.empty_during
-      );
+      openNotificationWithIcon("warning", "", $lang.messages.empty_during);
 
       return;
     }
@@ -269,11 +261,7 @@ const BillingProcessPage = ({ is_edit }) => {
 
   const createBill = () => {
     if (billData.length == 0) {
-      openNotificationWithIcon(
-        "warning",
-        $lang.popConfirmType.warning,
-        "データがありません。"
-      );
+      openNotificationWithIcon("warning", "", "データがありません。");
       return;
     }
     const billDate =
@@ -298,17 +286,13 @@ const BillingProcessPage = ({ is_edit }) => {
       .then((res) => {
         SetIsCreateSpinLoading(false);
         getBillList();
-        openNotificationWithIcon(
-          "success",
-          $lang.popConfirmType.success,
-          $lang.messages.finish_bill
-        );
+        openNotificationWithIcon("success", "", $lang.messages.finish_bill);
         console.log(res);
         // getLastBillDate();
       })
       .catch((err) => {
         console.log(err);
-        openNotificationWithIcon("error", $lang.popConfirmType.error, err);
+        openNotificationWithIcon("error", "", err);
       });
   };
 
@@ -335,7 +319,7 @@ const BillingProcessPage = ({ is_edit }) => {
     if (record.id == "未確認") {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.no_confirm_bill_data
       );
       return;
@@ -371,7 +355,7 @@ const BillingProcessPage = ({ is_edit }) => {
     if (record.id == "未確認") {
       openNotificationWithIcon(
         "warning",
-        $lang.popConfirmType.warning,
+        "",
         $lang.messages.no_confirm_bill_data
       );
       return;

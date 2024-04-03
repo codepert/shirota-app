@@ -267,92 +267,92 @@ User.create([{
 }])
 
 
-AuthorityPage.create([{
-  user_authority_id: 3,
-  page_id: 1,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 2,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 3,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 4,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 5,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 6,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 7,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 8,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 9,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 10,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 11,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 12,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 13,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 14,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 15,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 16,
-  is_read: 1,
-  is_edit: 1
-},{
-  user_authority_id: 3,
-  page_id: 17,
-  is_read: 1,
-  is_edit: 1
-}])
+# AuthorityPage.create([{
+#   user_authority_id: 3,
+#   page_id: 1,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 2,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 3,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 4,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 5,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 6,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 7,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 8,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 9,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 10,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 11,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 12,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 13,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 14,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 15,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 16,
+#   is_read: 1,
+#   is_edit: 1
+# },{
+#   user_authority_id: 3,
+#   page_id: 17,
+#   is_read: 1,
+#   is_edit: 1
+# }])
 
 ManagementInfo.create([{
   company_name: '城田運送株式会社',

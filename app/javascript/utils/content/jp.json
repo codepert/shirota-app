@@ -232,5 +232,7 @@
   "targetWarehouse": "対象倉庫",
   "billingCalculation": "請求計算",
   "billingList": "請求リスト",
-  "responsibleCategory": "担当区分"
+  "responsibleCategory": "担当区分",
+  "handling_warehouse":"取扱倉庫"
+
 }

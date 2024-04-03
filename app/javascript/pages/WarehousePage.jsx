@@ -66,11 +66,7 @@ const WarehousePage = ({ is_edit }) => {
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 
@@ -87,11 +83,7 @@ const WarehousePage = ({ is_edit }) => {
         form.resetFields();
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.message
-        );
+        openNotificationWithIcon("error", "", err.message);
       });
   };
 

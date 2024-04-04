@@ -4,7 +4,7 @@ import { Input, Layout, Card, Flex, Button } from "antd";
 import { openNotificationWithIcon } from "../components/common/notification";
 import ProductRegisterModal from "../features/product/register.modal";
 import ProductTable from "../features/product/index.table";
-import DeleteModal from "../components/common/delete.modal";
+import DeleteModal from "../components/common/modal/delete.modal";
 import $lang from "../utils/content/jp.json";
 import { productURL } from "../utils/constants";
 import { API } from "../utils/helper";

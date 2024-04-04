@@ -249,22 +249,20 @@
 #   },
 # ])
 
-ResponsibleCategory.create([{
-  name: '本社	
-'
-},{
-  name: '員弁	
-'
-}])
+# ResponsibleCategory.create([{
+#   name: '本社'
+# },{
+#   name: '員弁'
+# }])
 
-User.create([{
-  name: 'systemadmin',
-  login_id: 'systemadmin',
-  user_authority_id: 3,
-  email: 'warehouse@test.com',
-  password: 'p@ssW0rd!',
-  responsible_category_id: 1
-}])
+# User.create([{
+#   name: 'systemadmin',
+#   login_id: 'systemadmin',
+#   user_authority_id: 3,
+#   email: 'warehouse@test.com',
+#   password: 'p@ssW0rd!',
+#   responsible_category_id: 1
+# }])
 
 
 # AuthorityPage.create([{
@@ -354,56 +352,79 @@ User.create([{
 #   is_edit: 1
 # }])
 
-ManagementInfo.create([{
-  company_name: '城田運送株式会社',
-  post_code: '511-0944',
-  address1: '三重県桑名市',
-  address2: '芳ヶ崎７７８',
-  representative: '城田 真理子',
-  tel_number: '0594-31-2532',
-  fax_number: '2024-04-01',
-  start_date: '2025-03-31',
-  end_date: '1',
-  processing_year: '2024',
-  processing_month: '1',
-  installation_location: '本社',
-  management_pw: 'XXXX',
-  invoice_number: '123456	',
-  register_number: 'T1234567890123',
-  bank: 'xxxxxx-xxxxxx',
-  bank_number: '123'
-}])
+# ManagementInfo.create([{
+#   company_name: '城田運送株式会社',
+#   post_code: '511-0944',
+#   address1: '三重県桑名市',
+#   address2: '芳ヶ崎７７８',
+#   representative: '城田 真理子',
+#   tel_number: '0594-31-2532',
+#   fax_number: '2024-04-01',
+#   start_date: '2025-03-31',
+#   end_date: '1',
+#   processing_year: '2024',
+#   processing_month: '1',
+#   installation_location: '本社',
+#   management_pw: 'XXXX',
+#   invoice_number: '123456	',
+#   register_number: 'T1234567890123',
+#   bank: 'xxxxxx-xxxxxx',
+#   bank_number: '123'
+# }])
 
-WarehouseCategory.create([{
-  category: '11',
-  lot: '1',
-  storage_category: '一般'
-},{
-  category: '21',
-  lot: '2',
-  storage_category: '員弁一般'
-},{
-  category: '22',
-  lot: '2',
-  storage_category: '員弁危険物'
-},{
-  category: '31',
-  lot: '3',
-  storage_category: '平古原料'
-},{
-  category: '32',
-  lot: '3',
-  storage_category: '平古中間体'
-},{
-  category: '41',
-  lot: '4',
-  storage_category: '東員原料'
-},{
-  category: '42',
-  lot: '4',
-  storage_category: '東員中間体'
-},{
-  category: '51',
-  lot: '5',
-  storage_category: 'その他ドラム倉庫'
-}])
+# WarehouseCategory.create([{
+#   category: '11',
+#   lot: '1',
+#   storage_category: '一般'
+# },{
+#   category: '21',
+#   lot: '2',
+#   storage_category: '員弁一般'
+# },{
+#   category: '22',
+#   lot: '2',
+#   storage_category: '員弁危険物'
+# },{
+#   category: '31',
+#   lot: '3',
+#   storage_category: '平古原料'
+# },{
+#   category: '32',
+#   lot: '3',
+#   storage_category: '平古中間体'
+# },{
+#   category: '41',
+#   lot: '4',
+#   storage_category: '東員原料'
+# },{
+#   category: '42',
+#   lot: '4',
+#   storage_category: '東員中間体'
+# },{
+#   category: '51',
+#   lot: '5',
+#   storage_category: 'その他ドラム倉庫'
+# }])
+
+Warehouse.create([
+  {
+    name: '本社倉庫',
+    responsible_category_id: 1
+  },
+  {
+    name: '員弁倉庫',
+    responsible_category_id: 2
+  },
+  {
+    name: '平古倉庫',
+    responsible_category_id: 1
+  },
+  {
+    name: '東員倉庫',
+    responsible_category_id: 1
+  },
+  {
+    name: 'その他	',
+    responsible_category_id: 1
+  }
+])

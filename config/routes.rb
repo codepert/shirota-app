@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       get "product_in_stock" => "products#show_with_stock"
       resources :stocks
       resources :stock_inouts
+      get "inventory" => "stock_inouts#inventory"
       get "check_stock_in" => "stock_inouts#check_stock_in"
       post "stock_in" => "stock_inouts#stock_in"
       post "stock_in_csv_export" => "stock_inouts#export_stock_in_csv"
@@ -43,6 +44,7 @@ Rails.application.routes.draw do
       post "export_bill_amount_report" => "bills#export_bill_amount_report"
       post "export_bills_report" => "bills#export_bills_report"
       resources :responsible_category, only: %i[index]
+      resources :warehouse_categories
       
       # resources :bill_amounts
     end

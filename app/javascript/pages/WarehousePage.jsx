@@ -6,7 +6,7 @@ import { openNotificationWithIcon } from "../components/common/notification";
 
 import WarehouseRegisterModal from "../features/warehouse/register.modal";
 import WarehouseTable from "../features/warehouse/index.table";
-import DeleteModal from "../components/common/delete.modal";
+import DeleteModal from "../components/common/modal/delete.modal";
 
 import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";

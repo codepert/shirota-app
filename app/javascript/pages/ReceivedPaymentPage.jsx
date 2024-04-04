@@ -17,7 +17,7 @@ import {
 import { API } from "../utils/helper";
 import ReceivedPaymentTable from "../features/receivedPayment/index.table";
 import ReceivedPaymentRegisterModal from "../features/receivedPayment/register.modal";
-import DeleteModal from "../components/common/delete.modal";
+import DeleteModal from "../components/common/modal/delete.modal";
 import { openNotificationWithIcon } from "../components/common/notification";
 import {
   shipperURL,

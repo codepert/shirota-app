@@ -46,9 +46,11 @@
     "billingConfirmed": "請求確定",
     "next": "次へ",
     "yes": "はい",
-    "no": "いいえ",
+    "no": "いえ",
     "initPassword": "パスワード初期化",
-    "newResiger": "登録"
+    "newResiger": "登録",
+    "reset": "リセット",
+    "find": "参照"
   },
   "tableCommon": {
     "no": "No",
@@ -105,6 +107,7 @@
     "success_change_user_passowrd": "パスワード正常に変更されました。",
 
     "select_warehouse": "対象倉庫を選択してください。",
+    "selected_warehouse_category": "保管区分選択してください。",
 
     "success_register_warehouse": "倉庫マスターが正常に登録されました。",
     "success_update_warehouse": "倉庫マスターが正常に変更されました。",
@@ -127,7 +130,9 @@
     "success_delete_deposit": "入金額が正常に削除されました。",
 
     "success_instock": "データを正確に入庫しました",
-    "success_outstock": "データを正確に出庫しました"
+    "success_outstock": "データを正確に出庫しました",
+    "warning_reset_prepare_inout_stock_list": "入庫確定が行われていないデータは保存されませんのでご注意ください。",
+    "warning_stock_inout_section_1_change": "取扱倉庫・荷主・入庫日を変更する場合、入庫確定してないデータは保存されませんのでご注意ください。"
   },
   "popConfirmType": {
     "success": "success",
@@ -233,6 +238,6 @@
   "billingCalculation": "請求計算",
   "billingList": "請求リスト",
   "responsibleCategory": "担当区分",
-  "handling_warehouse":"取扱倉庫"
-
+  "handling_warehouse": "取扱倉庫",
+  "storageDivision": "保管区分"
 }

@@ -41,6 +41,8 @@ class Api::V1::ProductsController < Api::V1::BaseController
     if params[:q].present?
       product = Product.where("code like '%" + params[:q] + "%' or name like '%" + params[:q] + "%'")
       render json:  ProductSerializer.new(product)
+    else
+      render json: {}
     end
   end
   def show_with_stock

@@ -25,7 +25,6 @@ import {
   warehouseURL,
   shipperURL,
   unCalcBillURL,
-  exportBillOne,
   billReportURL,
   billAmountReportURL,
   billURL,
@@ -37,7 +36,7 @@ import $lang from "../utils/content/jp.json";
 const { RangePicker } = DatePicker;
 
 import { openNotificationWithIcon } from "../components/common/notification";
-import ConfirmModal from "../components/modal/confirm.modal";
+import ConfirmModal from "../components/common/modal/confirm.modal";
 import BillProcessTable from "../features/bill/process.table";
 
 const { Content } = Layout;

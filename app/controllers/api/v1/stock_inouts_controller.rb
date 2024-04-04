@@ -236,8 +236,6 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
 
     stock_inout_data.each do |record|
       types.each do |type|
-        puts "=============record ============"
-        puts eval("record.#{type}")
         total[:"#{type}"] += eval("record.#{type}").to_i
       end
     end

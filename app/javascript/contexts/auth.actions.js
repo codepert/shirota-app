@@ -11,17 +11,21 @@ const signupAction = (res) => (dispatch) => {
 };
 
 const loginAction = (res) => (dispatch) => {
+  const username =
+    res?.data?.data?.responsible_category_id == 1
+      ? res?.data?.data?.name + "[本社]"
+      : res?.data?.data?.name;
   dispatch({
     type: "Login",
     payload: {
-      login_id: res?.data?.data?.name,
+      login_id: username,
       token: res?.headers?.authorization,
       permissionPages: JSON.stringify(res?.data?.permission_pages),
     },
   });
 
   saveAuthUser(
-    res?.data?.data?.name,
+    username,
     res?.headers?.authorization,
     JSON.stringify(res?.data?.permission_pages)
   );

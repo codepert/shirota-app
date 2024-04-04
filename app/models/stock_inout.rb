@@ -20,7 +20,6 @@ class StockInout < ApplicationRecord
                 WHERE product_id = #{product_id} AND category = 0 AND shipper_id='#{shipper_id}' AND stocks.warehouse_id='#{warehouse_id}'
               GROUP BY stock_id, lot_number 
     SQL
-    puts sql
     find_by_sql(sql)
 
   }
@@ -103,7 +102,7 @@ class StockInout < ApplicationRecord
             products.name as product_name, 
             products.specification, 
             lot_number, 
-            weight, 
+            stock_inouts.weight, 
             amount
     FROM stock_inouts
     JOIN stocks on stocks.id = stock_inouts.stock_id
@@ -137,7 +136,6 @@ class StockInout < ApplicationRecord
       JOIN warehouse_categories ON warehouse_categories.id = stock_inouts.warehouse_category_id
       WHERE inout_on ='#{inout_on}' AND shipper_id='#{shipper_id}' AND stocks.warehouse_id='#{warehouse_id}' AND is_billed='0'
     SQL
-    puts query
     find_by_sql(query)
   }
   scope :get_out_stock_edit_data, -> (shipper_id, warehouse_id, inout_on) {
@@ -175,7 +173,6 @@ class StockInout < ApplicationRecord
       ) stock_amount ON stock_amount.stock_id = stock_inouts.stock_id
       WHERE inout_on ='#{inout_on}' AND shipper_id='#{shipper_id}' AND stocks.warehouse_id='#{warehouse_id}' AND is_billed='0' AND stock_inouts.category = 1
     SQL
-    puts query
     find_by_sql(query)
   }
 end

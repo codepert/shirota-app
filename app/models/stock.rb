@@ -43,7 +43,7 @@ class Stock < ApplicationRecord
         FROM stock_inouts
         JOIN stocks on stocks.id = stock_inouts.stock_id
         JOIN products on products.id = stocks.product_id
-        WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}' AND is_billed = 0  #{shipper_id.present? ? " And shipper_id = '#{shipper_id}'" : ''}  #{warehouse_id.present? ? " And warehouse_id = '#{warehouse_id}'" : ''}
+        WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}' AND is_billed = 0  #{shipper_id.present? ? " And shipper_id = '#{shipper_id}'" : ''}  #{warehouse_id.present? ? " And stocks.warehouse_id = '#{warehouse_id}'" : ''}
         GROUP BY stock_id, lot_number
         ) current_bill_amounts
         LEFT JOIN (
@@ -104,7 +104,7 @@ class Stock < ApplicationRecord
         FROM stock_inouts
         JOIN stocks on stocks.id = stock_inouts.stock_id
         JOIN products on products.id = stocks.product_id
-        WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}' AND is_billed = 0  #{shipper_id.present? ? " AND shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " AND warehouse_id = '#{warehouse_id}'" : ''}
+        WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}' AND is_billed = 0  #{shipper_id.present? ? " AND shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " AND stocks.warehouse_id = '#{warehouse_id}'" : ''}
         GROUP BY stock_id, lot_number
       ) current_bill_amounts
       LEFT JOIN (
@@ -159,7 +159,7 @@ class Stock < ApplicationRecord
           JOIN stocks ON stocks.id = stock_inouts.stock_id
           JOIN products ON products.id = stocks.product_id
           JOIN shippers ON shippers.id = stocks.shipper_id
-          WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}' #{shipper_id.present? ? " AND shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " AND warehouse_id = '#{warehouse_id}'" : ''}
+          WHERE inout_on BETWEEN '#{from_date}' AND '#{to_date}' #{shipper_id.present? ? " AND shipper_id = '#{shipper_id}'" : ''} #{warehouse_id.present? ? " AND stock_inouts.warehouse_id = '#{warehouse_id}'" : ''}
           GROUP BY stock_id, shipper_id
         ) stock_t
         JOIN stocks on stocks.id = stock_t.stock_id 

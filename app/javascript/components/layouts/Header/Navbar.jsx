@@ -44,7 +44,7 @@ const NavbarSection = () => {
 
   const getNavigations = () => {
     const navigations = JSON.parse(user.state.permissionPages);
-
+    navigations.shift();
     const nestedNavigations = navigations.reduce((acc, current) => {
       if (current.parent_id === null) {
         const children = navigations

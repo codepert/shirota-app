@@ -9,7 +9,7 @@ class Api::V1::BillsController < Api::V1::BaseController
   
   include PdfRender
   include ActionController::MimeResponds # API モードで respond_to を使うために必要
-
+  include ApplicationHelper
   def index
     from_date = params[:from_date]
     to_date = params[:to_date]
@@ -123,6 +123,7 @@ class Api::V1::BillsController < Api::V1::BaseController
     manangementInfo = ManagementInfo.all.first
 
     sum_amount = bill.handling_cost + bill.storage_cost + bill.deposit_amount
+    
     billed_on = bill.billed_on
     billed_on_str = billed_on.to_s[0,4] + "年" + billed_on.to_s[5,2] + "月" + billed_on.to_s[8,2] + "日"
     year_last_two_digits = billed_on.to_s[2, 2]
@@ -148,13 +149,14 @@ class Api::V1::BillsController < Api::V1::BaseController
     controller.instance_variable_set(:@company_bank, manangementInfo.bank)
     controller.instance_variable_set(:@company_bank_number, manangementInfo.bank_number)
     controller.instance_variable_set(:@register_number, manangementInfo.register_number)
+    controller.instance_variable_set(:@deposit_amount, format_number_manual_insertion(bill.deposit_amount.to_i))
     controller.instance_variable_set(:@invoice_number, manangementInfo.invoice_number)
-    controller.instance_variable_set(:@last_amount, bill.last_amount)
-    controller.instance_variable_set(:@handling_cost, bill.handling_cost)
-    controller.instance_variable_set(:@storage_cost, bill.storage_cost)
-    controller.instance_variable_set(:@sum_amount, sum_amount)
-    controller.instance_variable_set(:@tax, bill.tax)
-    controller.instance_variable_set(:@current_amount, bill.current_amount)
+    controller.instance_variable_set(:@last_amount, format_number_manual_insertion(bill.last_amount.to_i))
+    controller.instance_variable_set(:@handling_cost, format_number_manual_insertion(bill.handling_cost.to_i))
+    controller.instance_variable_set(:@storage_cost, format_number_manual_insertion(bill.storage_cost.to_i))
+    controller.instance_variable_set(:@sum_amount, format_number_manual_insertion(sum_amount.to_i))
+    controller.instance_variable_set(:@tax, format_number_manual_insertion(bill.tax.to_i))
+    controller.instance_variable_set(:@current_amount, format_number_manual_insertion(bill.current_amount.to_i))
 
     html = controller.render_to_string(template: 'templates/bill_report', layout: nil)
     pdf = Grover.new(html).to_pdf

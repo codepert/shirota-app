@@ -407,3 +407,6 @@ WarehouseCategory.create([{
   lot: '5',
   storage_category: 'その他ドラム倉庫'
 }])
+
+
+

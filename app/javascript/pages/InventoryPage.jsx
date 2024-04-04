@@ -30,7 +30,7 @@ import $lang from "../utils/content/jp.json";
 import { formatNumberManualInsertion } from "../utils/helper";
 
 const { Content } = Layout;
-const dateFormat = "YYYY/MM/DD";  
+const dateFormat = "YYYY/MM/DD";
 
 const InventoryPage = ({ is_edit }) => {
   // ---------Warehouse--------
@@ -258,11 +258,7 @@ const InventoryPage = ({ is_edit }) => {
       .catch((err) => {
         setIsSpinLoading(false);
 
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.messages
-        );
+        openNotificationWithIcon("error", "", err.messages);
       });
   };
 

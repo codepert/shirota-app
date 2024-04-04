@@ -2,6 +2,7 @@
 class Stock < ApplicationRecord
   has_many :stock_inout
   belongs_to :product
+  belongs_to :warehouse
   scope :prepare_bill_amounts, -> (from_date = nil, to_date = nil, shipper_id = nil, warehouse_id = nil, page = nil, limit = nil) {
     query = <<-SQL
      SELECT   current_bill_amounts.*, COALESCE(latest_bill_amounts.current_stock_amount, 0) as previous_stock_amount, 

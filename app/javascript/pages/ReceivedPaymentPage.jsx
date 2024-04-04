@@ -17,7 +17,7 @@ import {
 import { API } from "../utils/helper";
 import ReceivedPaymentTable from "../features/receivedPayment/index.table";
 import ReceivedPaymentRegisterModal from "../features/receivedPayment/register.modal";
-import DeleteModal from "../components/common/delete.modal";
+import DeleteModal from "../components/common/modal/delete.modal";
 import { openNotificationWithIcon } from "../components/common/notification";
 import {
   shipperURL,
@@ -234,19 +234,11 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         document.body.removeChild(link);
 
         setTimeout(() => {
-          openNotificationWithIcon(
-            "success",
-            $lang.popConfirmType.success,
-            $lang.messages.success
-          );
+          openNotificationWithIcon("success", "", $lang.messages.success);
         }, 1000);
       })
       .catch((err) => {
-        openNotificationWithIcon(
-          "error",
-          $lang.popConfirmType.error,
-          err.messages
-        );
+        openNotificationWithIcon("error", "", err.messages);
       });
   };
 

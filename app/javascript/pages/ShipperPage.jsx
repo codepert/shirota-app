@@ -4,7 +4,7 @@ import { Layout, Button, Card, Flex } from "antd";
 import { openNotificationWithIcon } from "../components/common/notification";
 import ShipperRegisterModal from "../features/shipper/register.modal";
 import ShipperTable from "../features/shipper/index.table";
-import DeleteModal from "../components/common/delete.modal";
+import DeleteModal from "../components/common/modal/delete.modal";
 
 import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";

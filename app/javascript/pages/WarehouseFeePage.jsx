@@ -6,7 +6,7 @@ import { Layout, Button, Card, Flex } from "antd";
 import WarehouseFeeRegisterModal from "../features/warehouseFee/register.modal";
 import WarehouseFeeTable from "../features/warehouseFee/index.table";
 
-import DeleteModal from "../components/common/delete.modal";
+import DeleteModal from "../components/common/modal/delete.modal";
 import { openNotificationWithIcon } from "../components/common/notification";
 
 import $lang from "../utils/content/jp.json";

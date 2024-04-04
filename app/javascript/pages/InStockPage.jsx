@@ -23,10 +23,13 @@ import {
   saveStockInUrl,
   exportCSVDataUrl,
   checkStockInUrl,
+  stockInoutURL,
+  warehouseCategoryURL,
 } from "../utils/constants";
 
 import CustomButton from "../components/common/CustomButton";
-import ConfirmModal from "../components/modal/confirm.modal";
+import ConfirmModal from "../components/common/modal/confirm.modal";
+import ConfirmPopver from "../components/common/popver/confirm.popver";
 import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";
 
@@ -64,13 +67,12 @@ const InStockPage = ({ is_edit }) => {
   const [inStockDate, setInstockDate] = useState(
     dayjs(currentDate, dateFormat)
   );
-  //
 
-  // ---------product----------
-  // const [selectedProduct, setSelectedProduct] = useState({
-  //   value: "",
-  //   label: "",
-  // });
+  const [warehouseCategoryOptions, setWarehouseCategoryOptions] = useState([]);
+  const [selectedWarehouseCategory, setSelectedWarehouseCategory] = useState({
+    value: "",
+    label: "",
+  });
   const [isModalVisible, setIsConfirmModalVisible] = useState(false);
 
   const [product, setProduct] = useState("");
@@ -78,6 +80,7 @@ const InStockPage = ({ is_edit }) => {
   const [selectedProductId, setSelectedProductId] = useState("");
   // const [productOptions, setProductOptions] = useState("");
 
+  const [productName, setProductName] = useState("");
   // -----------packing---------
   const [packaging, setPackaging] = useState("");
 
@@ -96,6 +99,8 @@ const InStockPage = ({ is_edit }) => {
   // -------------amount--------------
   const [amount, setStock] = useState("");
 
+  const [isConfirmResetModalOpen, setIsConfirmResetModalOpen] = useState(false);
+  const [isFindButtonDisabled, setIsFindButtonDisabled] = useState(false);
   //  -------init prepareProductItem--------
   const initPrepareProductItem = () => {
     setLotNumber("");
@@ -105,6 +110,7 @@ const InStockPage = ({ is_edit }) => {
 
   const setPrepareProductItem = (editData) => {
     setLotNumber(editData.lot_number);
+    setProductName(editData.product_name);
     setStock(editData.amount);
     setWeight(editData.weight);
     setPackaging(editData.product_type);
@@ -122,7 +128,7 @@ const InStockPage = ({ is_edit }) => {
     });
 
     setSelectedProductId(editData.product_id);
-    setSearchProductTxt(editData.product_name);
+    setSearchProductTxt(editData.product_code);
 
     setInstockDate(dayjs.tz(new Date(editData.inout_on), "Asia/Tokyo"));
   };
@@ -201,6 +207,7 @@ const InStockPage = ({ is_edit }) => {
         setPrepareProducts([]);
         initPrepareProductItem();
         openNotificationWithIcon("success", "", $lang.messages.success_instock);
+        setIsFindButtonDisabled(false);
       })
       .catch((err) => {
         openNotificationWithIcon("error", "", err.messages);
@@ -240,16 +247,6 @@ const InStockPage = ({ is_edit }) => {
     return true;
   };
 
-  const checkStockIn = async () => {
-    const url =
-      checkStockInUrl +
-      `?lot_number=${lotNumber}&warehouse_id=${selectedWarehouse.value}&shipper_id=${seletedShipper.value}&product_id=${selectedProductId}`;
-    const res = await API.get(url);
-    if (res.data.status != "ok") {
-      return false;
-    }
-    return true;
-  };
   const doPrepareProducts = () => {
     if (!isReadyPrepareProducts()) return;
 
@@ -270,10 +267,12 @@ const InStockPage = ({ is_edit }) => {
         const inStockDateStr = inStockDate.format("YYYY/MM/DD");
 
         const newData = {
+          stock_inout_id: 0,
           handling_fee_rate: handlePrice,
           storage_fee_rate: storagePrice,
           product_id: selectedProductId,
-          product_name: searchProductTxt,
+          product_code: searchProductTxt,
+          product_name: productName,
           product_type: packaging,
           catagory: 0,
           lot_number: lotNumber,
@@ -285,6 +284,8 @@ const InStockPage = ({ is_edit }) => {
           shipper_name: seletedShipper.label,
           inout_on: inStockDateStr,
           idx: selectedProductArr.length + 1,
+          warehouse_category_id: selectedWarehouseCategory.value,
+          warehouse_category_name: selectedWarehouseCategory.label,
           category: 0,
         };
 
@@ -334,6 +335,8 @@ const InStockPage = ({ is_edit }) => {
     updateData.amount = amount;
     updateData.handling_fee_rate = handlePrice;
     updateData.storage_fee_rate = storagePrice;
+    updateData.warehouse_category_id = selectedWarehouseCategory.value;
+    updateData.warehouse_category_name = selectedWarehouseCategory.label;
 
     setPrepareProducts(oldData);
     setEditMode("new");
@@ -385,8 +388,9 @@ const InStockPage = ({ is_edit }) => {
     API.get(`${productDetailURL}?q=${searchProductTxt}`).then((res) => {
       if (res.data.length > 0) {
         const warehouseFee = res.data[0].warehouse_fee;
+        setProductName(res.data[0].name);
         setPackaging(warehouseFee.packaging);
-        setSearchProductTxt(res.data[0].name);
+        setSearchProductTxt(res.data[0].code);
         setSelectedProductId(res.data[0].id);
         setStoragePrice(warehouseFee.storage_fee_rate);
         setHandlePrice(warehouseFee.handling_fee_rate);
@@ -399,7 +403,79 @@ const InStockPage = ({ is_edit }) => {
       }
     });
   };
-  // ----------When rerender, get all data------
+
+  const resetPrepareProducts = () => {
+    setPrepareProducts([]);
+    setIsFindButtonDisabled(false);
+  };
+
+  const handleHideConfirmResetModal = () => {
+    setIsConfirmResetModalOpen(false);
+  };
+
+  const getInStockData = () => {
+    const url =
+      stockInoutURL +
+      "?shipper_id=" +
+      seletedShipper.value +
+      "&warehouse_id=" +
+      selectedWarehouse.value +
+      "&inout_on=" +
+      inStockDate.format("YYYY-MM-DD") +
+      "&category=0";
+
+    API.get(url)
+      .then((res) => {
+        console.log(res.data);
+        const data = res.data.map((item, i) => {
+          return {
+            stock_inout_id: item.id,
+            handling_fee_rate: item.handling_fee_rate,
+            storage_fee_rate: item.storage_fee_rate,
+            product_id: item.product_id,
+            product_code: item.product_code,
+            product_name: item.product_name,
+            product_type: item.product_type,
+            catagory: 0,
+            lot_number: item.lot_number,
+            weight: item.weight,
+            amount: item.amount,
+            warehouse_id: selectedWarehouse.value,
+            warehouse_name: selectedWarehouse.label,
+            shipper_id: seletedShipper.value,
+            shipper_name: seletedShipper.label,
+            inout_on: item.inout_on.replace(/\-/g, "/"),
+            warehouse_category_id: item.warehouse_category_id,
+            warehouse_category_name: item.warehouse_category_name,
+            idx: i,
+          };
+        });
+        setPrepareProducts(data);
+      })
+      .catch((err) => {});
+  };
+
+  const getWarehouseCategory = () => {
+    API.get(warehouseCategoryURL + "?warehouse_id=" + selectedWarehouse.value)
+      .then((res) => {
+        const data = res.data.map((item) => {
+          return {
+            value: item.id,
+            label: item.storage_category,
+          };
+        });
+
+        if (data.length > 0) {
+          setWarehouseCategoryOptions(data);
+          setSelectedWarehouseCategory({
+            value: data[0].value,
+            label: data[0].label,
+          });
+        }
+      })
+      .catch((err) => {});
+  };
+
   useEffect(() => {
     getWarehouses();
     getShippers();
@@ -413,7 +489,53 @@ const InStockPage = ({ is_edit }) => {
       code: shipper.length > 0 ? shipper[0].code : "",
       closingDate: shipper.length > 0 ? shipper[0].closingDate : "",
     });
+    if (prepareProducts.length > 0 && editMode == "create") {
+      openNotificationWithIcon(
+        "warning",
+        "",
+        $lang.messages.warning_stock_inout_section_1_change
+      );
+      const oldData = prepareProducts.slice();
+      for (let i = 0; i < oldData.length; i++) {
+        oldData[i].shipper_id = seletedShipper.value;
+        oldData[i].shipper_name = seletedShipper.label;
+      }
+
+      setPrepareProducts(oldData);
+    }
   }, [seletedShipper]);
+
+  useEffect(() => {
+    if (prepareProducts.length > 0 && editMode == "create") {
+      openNotificationWithIcon(
+        "warning",
+        "",
+        $lang.messages.warning_stock_inout_section_1_change
+      );
+      const oldData = prepareProducts.slice();
+      for (let i = 0; i < oldData.length; i++) {
+        oldData[i].warehouse_id = selectedWarehouse.value;
+        oldData[i].warehouse_name = selectedWarehouse.label;
+      }
+      setPrepareProducts(oldData);
+    }
+    getWarehouseCategory();
+  }, [selectedWarehouse]);
+
+  useEffect(() => {
+    if (prepareProducts.length > 0 && editMode == "create") {
+      openNotificationWithIcon(
+        "warning",
+        "",
+        $lang.messages.warning_stock_inout_section_1_change
+      );
+      const oldData = prepareProducts.slice();
+      for (let i = 0; i < prepareProducts.length; i++) {
+        oldData[i].inout_on = inStockDate.format("YYYY-MM-DD");
+      }
+      setPrepareProducts(oldData);
+    }
+  }, [inStockDate]);
 
   return (
     <div>
@@ -422,83 +544,102 @@ const InStockPage = ({ is_edit }) => {
         className="mx-auto flex flex-col justify-content content-h"
       >
         <Card style={{ width: "100%" }} className="py-2" bordered={false}>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.warehouseName}: </label>
-            </Col>
-            <Col span={6}>
-              {warehouseOptions.length > 0 && (
-                <Select
-                  placeholder={$lang.warehouseName}
-                  style={{ width: 150, marginLeft: 14 }}
-                  value={selectedWarehouse}
-                  options={warehouseOptions}
-                  onChange={onChangeWarehouse}
-                />
-              )}
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.shipperName}:</label>
-            </Col>
-            <Col span={4}>
-              {shipperOptions.length > 0 && (
-                <>
+          <div
+            style={{
+              padding: "10px 20px 0 20px",
+            }}
+          >
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.handling_warehouse}: </label>
+              </Col>
+              <Col span={6}>
+                {warehouseOptions.length > 0 && (
                   <Select
-                    style={{ width: 300, marginLeft: 14 }}
-                    onChange={onChangeShipper}
-                    options={shipperOptions}
-                    value={seletedShipper.value}
-                    defaultValue={""}
-                    placeholder={$lang.shipperName}
+                    placeholder={$lang.handling_warehouse}
+                    style={{ width: 150 }}
+                    value={selectedWarehouse}
+                    options={warehouseOptions}
+                    onChange={onChangeWarehouse}
                   />
-                  <Row>
-                    {shipperOptions.length > 0 && (
-                      <span className="" style={{ marginLeft: 16 }}>
-                        {$lang.shipperName} :&nbsp;&nbsp;
-                        {shipperDisctription.code} &nbsp;/ &nbsp;
-                        {shipperDisctription.closingDate}
-                      </span>
-                    )}
-                  </Row>
-                </>
-              )}
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.inStockDate}:</label>
-            </Col>
-            <Col span={6}>
-              <div className="ml-2">
-                <DatePicker
-                  style={{ width: 150 }}
-                  value={inStockDate}
-                  onChange={(date, dt) => {
-                    if (dt == "") {
-                      setInstockDate(dayjs(currentDate, dateFormat));
-                    } else {
-                      setInstockDate(dayjs(date, dateFormat));
-                    }
-                  }}
-                  defaultValue={dayjs(currentDate, dateFormat)}
-                  placeholder={$lang.inStockDate}
-                  className="ml-1"
-                  format={dateFormat}
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.productName}:</label>
-            </Col>
-            <Col span={10}>
-              <Space.Compact block className="ml-3">
+                )}
+              </Col>
+            </Row>
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.shipperName}:</label>
+              </Col>
+              <Col span={4}>
+                {shipperOptions.length > 0 && (
+                  <>
+                    <Select
+                      style={{ width: 300 }}
+                      onChange={onChangeShipper}
+                      options={shipperOptions}
+                      value={seletedShipper.value}
+                      defaultValue={""}
+                      placeholder={$lang.shipperName}
+                    />
+                    <Row>
+                      {shipperOptions.length > 0 && (
+                        <span className="" style={{ fontSize: 12 }}>
+                          {$lang.shipperCode} :&nbsp;&nbsp;
+                          {shipperDisctription.code} &nbsp; &nbsp;
+                          {$lang.closingDate}: {shipperDisctription.closingDate}
+                        </span>
+                      )}
+                    </Row>
+                  </>
+                )}
+              </Col>
+            </Row>
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.inStockDate}:</label>
+              </Col>
+              <Col span={6}>
+                <div>
+                  <DatePicker
+                    style={{ width: 150 }}
+                    value={inStockDate}
+                    onChange={(date, dt) => {
+                      if (dt == "") {
+                        setInstockDate(dayjs(currentDate, dateFormat));
+                      } else {
+                        setInstockDate(dayjs(date, dateFormat));
+                      }
+                    }}
+                    defaultValue={dayjs(currentDate, dateFormat)}
+                    placeholder={$lang.inStockDate}
+                    className="ml-1"
+                    format={dateFormat}
+                  />
+                  <Button
+                    style={{ marginLeft: 10 }}
+                    onClick={getInStockData}
+                    disabled={isFindButtonDisabled}
+                    type="primary"
+                  >
+                    {$lang.buttons.find}
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </div>
+          <Divider />
+          <div
+            style={{
+              padding: "0px 20px 10px 20px",
+            }}
+          >
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.productCode}:</label>
+              </Col>
+              <Col span={10}>
                 <Input
                   style={{ width: 150 }}
-                  placeholder={$lang.productName}
+                  placeholder={$lang.productCode}
                   value={searchProductTxt}
                   onChange={handleSearchProduct}
                   onPressEnter={(e) => {
@@ -507,95 +648,121 @@ const InStockPage = ({ is_edit }) => {
                     }
                   }}
                 />
-                <Input
-                  style={{ width: 150 }}
-                  placeholder={$lang.packing}
-                  value={packaging}
-                  disabled
-                />
-                <Input
-                  style={{ width: 100 }}
-                  placeholder={$lang.cargoPrice}
-                  value={handlePrice}
-                  onChange={(e) => {
-                    setHandlePrice(e.target.value);
-                  }}
-                />
-                <Input
-                  style={{ width: 100 }}
-                  placeholder={$lang.storagePrice}
-                  value={storagePrice}
-                  onChange={(e) => {
-                    setStoragePrice(e.target.value);
-                  }}
-                />
-              </Space.Compact>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={1}></Col>
-            <Col span={16}>
-              <Space.Compact block className="ml-3">
-                <Input
-                  style={{ width: 200 }}
-                  placeholder={$lang.lotNumber}
-                  value={lotNumber}
-                  onChange={(e) => {
-                    setLotNumber(e.target.value);
-                  }}
-                />
-                <Input
-                  type="number"
-                  min={0}
-                  style={{ width: 100 }}
-                  placeholder={$lang.weight + "(kg)"}
-                  value={weight}
-                  onChange={(e) => {
-                    setWeight(e.target.value);
-                  }}
-                />
-                <Input
-                  type="number"
-                  style={{ width: 100 }}
-                  placeholder={$lang.instockAmount}
-                  value={amount}
-                  min={0}
-                  onChange={(e) => {
-                    setStock(e.target.value);
-                  }}
-                />
-              </Space.Compact>
-            </Col>
-          </Row>
-          <Divider />
-          <Row>
-            <Col span={1}></Col>
-            {is_edit === 1 ? (
-              <Col span={6}>
-                <CustomButton
-                  onClick={doPrepareProducts}
-                  className="px-5 ml-2 btn-bg-black"
-                  title={$lang.buttons.add}
-                  htmlType="submit"
-                  visability={editMode != "edit"}
-                />
-                <CustomButton
-                  onClick={updatePrepareProduct}
-                  className="px-5 ml-2 btn-bg-black"
-                  title={$lang.buttons.change}
-                  visability={editMode == "edit"}
-                />
-                <CustomButton
-                  onClick={cancelEdit}
-                  className="px-5 ml-2 default"
-                  title={$lang.buttons.cancel}
-                  visability={editMode == "edit"}
-                />
               </Col>
-            ) : (
-              <></>
-            )}
-          </Row>
+            </Row>
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.productName}:</label>
+              </Col>
+              <Col span={10}>
+                <Space className="">
+                  <Input
+                    style={{ width: 150 }}
+                    placeholder={$lang.productName}
+                    value={productName}
+                  />
+                  <Input
+                    style={{ width: 150 }}
+                    placeholder={$lang.packing}
+                    value={packaging}
+                    disabled
+                  />
+                  <Input
+                    type="number"
+                    min={0}
+                    style={{ width: 120 }}
+                    placeholder={$lang.weight + "(kg)"}
+                    value={weight}
+                    onChange={(e) => {
+                      setWeight(e.target.value);
+                    }}
+                  />
+                  <Input
+                    style={{ width: 100 }}
+                    placeholder={$lang.cargoPrice}
+                    value={handlePrice}
+                    onChange={(e) => {
+                      setHandlePrice(e.target.value);
+                    }}
+                  />
+                  <Input
+                    style={{ width: 100 }}
+                    placeholder={$lang.storagePrice}
+                    value={storagePrice}
+                    onChange={(e) => {
+                      setStoragePrice(e.target.value);
+                    }}
+                  />
+                </Space>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={2}></Col>
+              <Col span={16}>
+                <Space.Compact block>
+                  <Select
+                    placeholder={$lang.storageDivision}
+                    style={{ width: 150 }}
+                    value={selectedWarehouseCategory}
+                    options={warehouseCategoryOptions}
+                    onChange={(val, options) => {
+                      setSelectedWarehouseCategory({
+                        value: val,
+                        label: options.label,
+                      });
+                    }}
+                  />
+                  <Input
+                    style={{ width: 200 }}
+                    placeholder={$lang.lotNumber}
+                    value={lotNumber}
+                    onChange={(e) => {
+                      setLotNumber(e.target.value);
+                    }}
+                  />
+                  <Input
+                    type="number"
+                    style={{ width: 100 }}
+                    placeholder={$lang.instockAmount}
+                    value={amount}
+                    min={0}
+                    onChange={(e) => {
+                      setStock(e.target.value);
+                    }}
+                  />
+                </Space.Compact>
+              </Col>
+            </Row>
+            <Divider />
+            <Row>
+              <Col span={2}></Col>
+              {is_edit === 1 ? (
+                <Col span={6}>
+                  <CustomButton
+                    onClick={doPrepareProducts}
+                    className="px-5 ml-2 btn-bg-black"
+                    title={$lang.buttons.add}
+                    htmlType="submit"
+                    visability={editMode != "edit"}
+                  />
+                  <CustomButton
+                    onClick={updatePrepareProduct}
+                    className="px-5 ml-2 btn-bg-black"
+                    title={$lang.buttons.change}
+                    visability={editMode == "edit"}
+                  />
+                  <CustomButton
+                    onClick={cancelEdit}
+                    className="px-5 ml-2 default"
+                    title={$lang.buttons.cancel}
+                    visability={editMode == "edit"}
+                  />
+                </Col>
+              ) : (
+                <></>
+              )}
+            </Row>
+          </div>
         </Card>
         <Card
           style={{ width: "100%", marginTop: 10, marginBottom: 20 }}
@@ -610,39 +777,61 @@ const InStockPage = ({ is_edit }) => {
             is_edit={is_edit}
           />
           {is_edit === 1 ? (
-            <div
+            <Row
               style={{
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 display: "flex",
                 marginTop: 15,
               }}
             >
-              <Button
-                onClick={exportDataAndDownloadCVS}
-                visability={true}
-                style={{
-                  marginRight: 10,
-                }}
-              >
-                {$lang.buttons.csvExchange}
-              </Button>
-              <ConfirmModal
-                isOpen={isModalVisible}
-                onConfirm={() => {
-                  handleHideConfirmModal();
-                  savePrepareProducts();
-                }}
-                onClose={handleHideConfirmModal}
-                message={$lang.messages.confirm_instock}
-              />
-              <Button
-                onClick={setIsConfirmModalVisible}
-                visability={true}
-                type="primary"
-              >
-                {$lang.buttons.confirmInStock}
-              </Button>
-            </div>
+              <Col>
+                <Button
+                  onClick={() => {
+                    if (prepareProducts.length > 0)
+                      setIsConfirmResetModalOpen(true);
+                  }}
+                  style={{
+                    marginRight: 10,
+                  }}
+                  danger
+                >
+                  {$lang.buttons.reset}
+                </Button>
+                <ConfirmModal
+                  isOpen={isConfirmResetModalOpen}
+                  onConfirm={() => {
+                    handleHideConfirmResetModal();
+                    resetPrepareProducts();
+                  }}
+                  onClose={handleHideConfirmResetModal}
+                  message={
+                    $lang.messages.warning_reset_prepare_inout_stock_list
+                  }
+                />
+              </Col>
+              <Col>
+                <Button
+                  onClick={exportDataAndDownloadCVS}
+                  style={{
+                    marginRight: 10,
+                  }}
+                >
+                  {$lang.buttons.csvExchange}
+                </Button>
+                <ConfirmModal
+                  isOpen={isModalVisible}
+                  onConfirm={() => {
+                    handleHideConfirmModal();
+                    savePrepareProducts();
+                  }}
+                  onClose={handleHideConfirmModal}
+                  message={$lang.messages.confirm_instock}
+                />
+                <Button onClick={setIsConfirmModalVisible} type="primary">
+                  {$lang.buttons.confirmInStock}
+                </Button>
+              </Col>
+            </Row>
           ) : (
             <div></div>
           )}

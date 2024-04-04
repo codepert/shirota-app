@@ -7,10 +7,10 @@ import $lang from "../../utils/content/jp.json";
 const IncomeTable = ({ data, editRow, deleteRow, is_edit }) => {
   const columns = [
     {
-      title: $lang.no,
-      key: "idx",
-      dataIndex: "idx",
-      width: 70,
+      title: $lang.productCode,
+      key: "product_code",
+      dataIndex: "product_code",
+      width: 150,
     },
     {
       title: $lang.productName,
@@ -19,11 +19,13 @@ const IncomeTable = ({ data, editRow, deleteRow, is_edit }) => {
       width: "35%",
       render: (_, record) => (
         <>
-          <p className="text-lg">{record.product_name}</p>
+          <p className="text-xs">{record.product_name}</p>
           <p>
             <span className="text-xs text-blue">{record.shipper_name}</span>{" "}
             <span className="px-5 text-xs text-blue">|</span>
-            <span className="text-xs text-blue">{record.warehouse_name}</span>
+            <span className="text-xs text-blue">
+              {record.warehouse_name} ({record.warehouse_category_name})
+            </span>
             <span className="px-5 text-xs text-blue">|</span>
             <span className="text-xs text-blue">
               {$lang.inStockDate}: {record.inout_on}

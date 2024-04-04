@@ -8,253 +8,251 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-# Page.create!([
-#   {
-#     name: 'トップ',
-#     path: '/home',
-#   },{
-#     name: '入庫処理',
-#     path: '/stock_in',
-#   },{
-#     name: '出庫処理',
-#     path: '/stock_out',
-#   },{
-#     name: '在庫管理',
-#     path: '/stock',
-#   },{
-#     name: '入金処理',
-#     path: '/receive_payment',
-#   },{
-#     name: '請求一覧',
-#     path: '/bill_list',
-#     parent_id: 16
-#   },{
-#     name: '請求処理',
-#     path: '/bill_process',
-#     parent_id: 16
-#   },{
-#     name: '品名一覧',
-#     path: '/product',
-#     parent_id: 14
-#   },{
-#     name: '荷主マスタ',
-#     path: '/shipper',
-#     parent_id: 14
-#   },{
-#     name: '倉庫マスタ',
-#     path: '/warehouse',
-#     parent_id: 14
-#   },{
-#     name: '単価区分マスタ',
-#     path: '/warehouse_fee',
-#     parent_id: 14
-#   },
-#   {
-#     name: '権限別ペジ管理',
-#     path: '/auth_permission',
-#     parent_id: 15
-#   },
-#   {
-#     name: 'ユーザー管理',
-#     path: '/user_managent',
-#     parent_id: 15
-#   },
-#   {
-#     name: "マスタ管理",
-#     path: "#/master",
-#   },
-#   {
-#     name: "Administrator",
-#     path: "#/admin",
-#   },
-#   {
-#     name: "請求処理",
-#     path: "#/bill",
-#   },
-#   {
-#     name: "管理マスタ",
-#     path: "/manage_master",
-#     parent_id: 15
-#   }
-# ])
+Page.create!([
+  {
+    name: 'Top',
+    path: '/home',
+  },{
+    name: '入庫処理',
+    path: '/stock_in',
+  },{
+    name: '出庫処理',
+    path: '/stock_out',
+  },{
+    name: '在庫管理',
+    path: '/stock',
+  },{
+    name: '入金処理',
+    path: '/receive_payment',
+  },{
+    name: '請求一覧',
+    path: '/bill_list',
+    parent_id: 16
+  },{
+    name: '請求処理',
+    path: '/bill_process',
+    parent_id: 16
+  },{
+    name: '品名一覧',
+    path: '/product',
+    parent_id: 14
+  },{
+    name: '荷主マスタ',
+    path: '/shipper',
+    parent_id: 14
+  },{
+    name: '倉庫マスタ',
+    path: '/warehouse',
+    parent_id: 14
+  },{
+    name: '単価区分マスタ',
+    path: '/warehouse_fee',
+    parent_id: 14
+  },
+  {
+    name: '権限別ペジ管理',
+    path: '/auth_permission',
+    parent_id: 15
+  },
+  {
+    name: 'ユーザー管理',
+    path: '/user_managent',
+    parent_id: 15
+  },
+  {
+    name: "マスタ管理",
+    path: "#/master",
+  },
+  {
+    name: "Administrator",
+    path: "#/admin",
+  },
+  {
+    name: "請求処理",
+    path: "#/bill",
+  },
+  {
+    name: "管理マスタ",
+    path: "/manage_master",
+    parent_id: 15
+  }
+])
 
-# UserAuthority.insert_all([{
-#   name: '入出庫の入力・編集のみ',
-#   auth_num: 1,
-# },{
-#   name: '1＋請求書発行（締日処理）',
-#   auth_num: 2,
-# },{
-#   name: 'admin',
-#   auth_num: 7,
-# },{
-#   name: '2 + マスタ管理機能',
-#   auth_num: 9,
-# }])
+UserAuthority.insert_all([{
+  name: '入出庫の入力・編集のみ',
+  auth_num: 1,
+},{
+  name: '1＋請求書発行（締日処理）',
+  auth_num: 2,
+},{
+  name: 'admin',
+  auth_num: 7,
+},{
+  name: '2 + マスタ管理機能',
+  auth_num: 9,
+}])
 
-# WarehouseFee.create([
-#   {
-#     code: '22',
-#     packaging: 'C/Ｎ　10Kg以上',
-#     handling_fee_rate: '11',
-#     storage_fee_rate: '16',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '1',
-#     packaging: 'C/N　10Kg以下',
-#     handling_fee_rate: '8',
-#     storage_fee_rate: '11',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '2',
-#     packaging: 'C/S ',
-#     handling_fee_rate: '10',
-#     storage_fee_rate: '11',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '3',
-#     packaging: 'C/S  加工油',
-#     handling_fee_rate: '11',
-#     storage_fee_rate: '16',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '4',
-#     packaging: 'B/G ',
-#     handling_fee_rate: '12',
-#     storage_fee_rate: '15',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '5',
-#     packaging: 'D/M ',
-#     handling_fee_rate: '110',
-#     storage_fee_rate: '180',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '6',
-#     packaging: 'F/D ',
-#     handling_fee_rate: '50',
-#     storage_fee_rate: '100',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '7',
-#     packaging: 'F/C  一般',
-#     handling_fee_rate: '205',
-#     storage_fee_rate: '305',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '8',
-#     packaging: 'F/C　保冷品',
-#     handling_fee_rate: '205',
-#     storage_fee_rate: '305',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '9',
-#     packaging: 'CNT  液',
-#     handling_fee_rate: '480',
-#     storage_fee_rate: '880',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '10',
-#     packaging: 'C/S',
-#     handling_fee_rate: '5',
-#     storage_fee_rate: '12',
-#     fee_category: 2,
-#   },
-#   {
-#     code: '11',
-#     packaging: 'C/S',
-#     handling_fee_rate: '5',
-#     storage_fee_rate: '12',
-#     fee_category: 2,
-#   },
-#   {
-#     code: '12',
-#     packaging: 'ポリカン',
-#     handling_fee_rate: '5',
-#     storage_fee_rate: '12',
-#     fee_category: 2,
-#   },
-#   {
-#     code: '13',
-#     packaging: 'ビン(1.8ﾘｯﾄﾙ)',
-#     handling_fee_rate: '5',
-#     storage_fee_rate: '12',
-#     fee_category: 2,
-#   },
-#   {
-#     code: '14',
-#     packaging: 'F/C',
-#     handling_fee_rate: '320',
-#     storage_fee_rate: '300',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '15',
-#     packaging: 'B/G',
-#     handling_fee_rate: '7',
-#     storage_fee_rate: '7',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '16',
-#     packaging: '空F/D',
-#     handling_fee_rate: '20',
-#     storage_fee_rate: '90',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '17',
-#     packaging: '空Ｆ/Ｄ',
-#     handling_fee_rate: '20',
-#     storage_fee_rate: '90',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '18',
-#     packaging: 'B/G',
-#     handling_fee_rate: '12',
-#     storage_fee_rate: '15',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '19',
-#     packaging: 'FD/M',
-#     handling_fee_rate: '50',
-#     storage_fee_rate: '100',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '20',
-#     packaging: '袋',
-#     handling_fee_rate: '5',
-#     storage_fee_rate: '5',
-#     fee_category: 1,
-#   },
-#   {
-#     code: '21',
-#     packaging: 'P/T',
-#     handling_fee_rate: '500',
-#     storage_fee_rate: '700',
-#     fee_category: 1,
-#   },
-# ])
+WarehouseFee.create([
+  {
+    code: '22',
+    packaging: 'C/Ｎ　10Kg以上',
+    handling_fee_rate: '11',
+    storage_fee_rate: '16',
+    fee_category: 1,
+  },
+  {
+    code: '1',
+    packaging: 'C/N　10Kg以下',
+    handling_fee_rate: '8',
+    storage_fee_rate: '11',
+    fee_category: 1,
+  },
+  {
+    code: '2',
+    packaging: 'C/S ',
+    handling_fee_rate: '10',
+    storage_fee_rate: '11',
+    fee_category: 1,
+  },
+  {
+    code: '3',
+    packaging: 'C/S  加工油',
+    handling_fee_rate: '11',
+    storage_fee_rate: '16',
+    fee_category: 1,
+  },
+  {
+    code: '4',
+    packaging: 'B/G ',
+    handling_fee_rate: '12',
+    storage_fee_rate: '15',
+    fee_category: 1,
+  },
+  {
+    code: '5',
+    packaging: 'D/M ',
+    handling_fee_rate: '110',
+    storage_fee_rate: '180',
+    fee_category: 1,
+  },
+  {
+    code: '6',
+    packaging: 'F/D ',
+    handling_fee_rate: '50',
+    storage_fee_rate: '100',
+    fee_category: 1,
+  },
+  {
+    code: '7',
+    packaging: 'F/C  一般',
+    handling_fee_rate: '205',
+    storage_fee_rate: '305',
+    fee_category: 1,
+  },
+  {
+    code: '8',
+    packaging: 'F/C　保冷品',
+    handling_fee_rate: '205',
+    storage_fee_rate: '305',
+    fee_category: 1,
+  },
+  {
+    code: '9',
+    packaging: 'CNT  液',
+    handling_fee_rate: '480',
+    storage_fee_rate: '880',
+    fee_category: 1,
+  },
+  {
+    code: '10',
+    packaging: 'C/S',
+    handling_fee_rate: '5',
+    storage_fee_rate: '12',
+    fee_category: 2,
+  },
+  {
+    code: '11',
+    packaging: 'C/S',
+    handling_fee_rate: '5',
+    storage_fee_rate: '12',
+    fee_category: 2,
+  },
+  {
+    code: '12',
+    packaging: 'ポリカン',
+    handling_fee_rate: '5',
+    storage_fee_rate: '12',
+    fee_category: 2,
+  },
+  {
+    code: '13',
+    packaging: 'ビン(1.8ﾘｯﾄﾙ)',
+    handling_fee_rate: '5',
+    storage_fee_rate: '12',
+    fee_category: 2,
+  },
+  {
+    code: '14',
+    packaging: 'F/C',
+    handling_fee_rate: '320',
+    storage_fee_rate: '300',
+    fee_category: 1,
+  },
+  {
+    code: '15',
+    packaging: 'B/G',
+    handling_fee_rate: '7',
+    storage_fee_rate: '7',
+    fee_category: 1,
+  },
+  {
+    code: '16',
+    packaging: '空F/D',
+    handling_fee_rate: '20',
+    storage_fee_rate: '90',
+    fee_category: 1,
+  },
+  {
+    code: '17',
+    packaging: '空Ｆ/Ｄ',
+    handling_fee_rate: '20',
+    storage_fee_rate: '90',
+    fee_category: 1,
+  },
+  {
+    code: '18',
+    packaging: 'B/G',
+    handling_fee_rate: '12',
+    storage_fee_rate: '15',
+    fee_category: 1,
+  },
+  {
+    code: '19',
+    packaging: 'FD/M',
+    handling_fee_rate: '50',
+    storage_fee_rate: '100',
+    fee_category: 1,
+  },
+  {
+    code: '20',
+    packaging: '袋',
+    handling_fee_rate: '5',
+    storage_fee_rate: '5',
+    fee_category: 1,
+  },
+  {
+    code: '21',
+    packaging: 'P/T',
+    handling_fee_rate: '500',
+    storage_fee_rate: '700',
+    fee_category: 1,
+  },
+])
 
 ResponsibleCategory.create([{
-  name: '本社	
-'
+  name: '本社'
 },{
-  name: '員弁	
-'
+  name: '員弁'
 }])
 
 User.create([{
@@ -376,37 +374,57 @@ ManagementInfo.create([{
 
 WarehouseCategory.create([{
   category: '11',
-  lot: '1',
+  warehouse_id: '1',
   storage_category: '一般'
 },{
   category: '21',
-  lot: '2',
+  warehouse_id: '2',
   storage_category: '員弁一般'
 },{
   category: '22',
-  lot: '2',
+  warehouse_id: '2',
   storage_category: '員弁危険物'
 },{
   category: '31',
-  lot: '3',
+  warehouse_id: '3',
   storage_category: '平古原料'
 },{
   category: '32',
-  lot: '3',
+  warehouse_id: '3',
   storage_category: '平古中間体'
 },{
   category: '41',
-  lot: '4',
+  warehouse_id: '4',
   storage_category: '東員原料'
 },{
   category: '42',
-  lot: '4',
+  warehouse_id: '4',
   storage_category: '東員中間体'
 },{
   category: '51',
-  lot: '5',
+  warehouse_id: '5',
   storage_category: 'その他ドラム倉庫'
 }])
 
-
-
+Warehouse.create([
+  {
+    name: '本社倉庫',
+    responsible_category_id: 1
+  },
+  {
+    name: '員弁倉庫',
+    responsible_category_id: 2
+  },
+  {
+    name: '平古倉庫',
+    responsible_category_id: 1
+  },
+  {
+    name: '東員倉庫',
+    responsible_category_id: 1
+  },
+  {
+    name: 'その他	',
+    responsible_category_id: 1
+  }
+])

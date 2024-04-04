@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_02_034019) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_04_081016) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -155,8 +155,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_02_034019) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "is_billed", limit: 1, default: 0
+    t.bigint "warehouse_category_id"
     t.index ["stock_id"], name: "index_stock_inouts_on_stock_id"
     t.index ["user_id"], name: "index_stock_inouts_on_user_id"
+    t.index ["warehouse_category_id"], name: "index_stock_inouts_on_warehouse_category_id"
   end
 
   create_table "stocks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -191,7 +193,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_02_034019) do
     t.string "name", null: false
     t.string "login_id"
     t.bigint "user_authority_id", default: 1, null: false
-    t.bigint "responsible_category_id", null: false
+    t.bigint "responsible_category_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["login_id"], name: "index_users_on_login_id", unique: true
@@ -202,7 +204,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_02_034019) do
 
   create_table "warehouse_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "category", null: false, comment: "倉庫区分"
-    t.integer "lot", null: false, comment: "倉庫コード"
+    t.integer "warehouse_id", null: false, comment: "倉庫コード"
     t.string "storage_category", null: false, comment: "保管区分"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -223,12 +225,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_02_034019) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "responsible_category_id", null: false
+    t.bigint "responsible_category_id"
     t.index ["name"], name: "index_warehouses_on_name", unique: true
     t.index ["responsible_category_id"], name: "index_warehouses_on_responsible_category_id"
   end
 
   add_foreign_key "products", "warehouses"
+  add_foreign_key "stock_inouts", "warehouse_categories"
   add_foreign_key "users", "responsible_categories"
   add_foreign_key "users", "user_authorities"
   add_foreign_key "warehouses", "responsible_categories"

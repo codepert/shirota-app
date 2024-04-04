@@ -1220,3 +1220,7 @@ video {
   .ant-form-item-explain-error {
   font-size: 10px;
 }
+:where(.css-dev-only-do-not-override-1k979oh).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after {
+  border: none;
+}

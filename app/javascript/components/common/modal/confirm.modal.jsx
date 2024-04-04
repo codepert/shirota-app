@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Modal, Button } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
 
-import $lang from "../../utils/content/jp.json";
-const DeleteModal = ({ isOpen, onDelete, onClose, deletedId }) => {
+import $lang from "../../../utils/content/jp.json";
+const ConfirmModal = ({ isOpen, onConfirm, onClose, message }) => {
   return (
     <Modal
       title={""}
@@ -13,28 +12,29 @@ const DeleteModal = ({ isOpen, onDelete, onClose, deletedId }) => {
       footer={null}
     >
       <br />
-      <p className="" style={{ fontSize: 16, textAlign: "left" }}>
-        {$lang.pages.confirm}
+      <p
+        className=""
+        style={{ fontSize: 16, textAlign: "left", marginTop: 10 }}
+      >
+        {message}
       </p>
       <br />
       <div className="flex flex-row" style={{ marginLeft: 260 }}>
         <div className="items-center">
           <Button
-            onClick={() => onDelete(deletedId)}
+            onClick={onConfirm}
             className="items-center btn-bg-black"
             type="primary"
-            danger
           >
-            <DeleteOutlined />
-            {$lang.buttons.delete}
+            {$lang.yes}
           </Button>
         </div>
         <Button style={{ marginLeft: 10 }} onClick={onClose}>
-          {$lang.buttons.cancel}
+          {$lang.cancel}
         </Button>
       </div>
     </Modal>
   );
 };
 
-export default DeleteModal;
+export default ConfirmModal;

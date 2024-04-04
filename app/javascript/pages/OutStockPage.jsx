@@ -16,6 +16,9 @@ import {
   shipperURL,
   productStockURL,
   saveStockOutUrl,
+  productURL,
+  stockInoutURL,
+  warehouseCategoryURL,
 } from "../utils/constants";
 
 import { Content } from "antd/es/layout/layout";
@@ -23,7 +26,7 @@ import { dateFormat } from "../utils/constants";
 
 import CustomButton from "../components/common/CustomButton";
 import { openNotificationWithIcon } from "../components/common/notification";
-import ConfirmModal from "../components/modal/confirm.modal";
+import ConfirmModal from "../components/common/modal/confirm.modal";
 
 import OutStockTable from "../features/outStock/index.table";
 import { getDateStr, API } from "../utils/helper";
@@ -44,8 +47,12 @@ const OutStockPage = ({ is_edit }) => {
     closingDate: "",
   });
   // ---------product----------
+  const currentDate = dayjs().tz("Asia/Tokyo");
 
-  const [outStockDate, setOutStockDate] = useState("");
+  const [outStockDate, setOutStockDate] = useState(
+    dayjs(currentDate, dateFormat)
+  );
+  const [inStockDate, setInStockDate] = useState("");
 
   // -----------packing---------
   const [packaging, setPackaging] = useState("");
@@ -55,8 +62,6 @@ const OutStockPage = ({ is_edit }) => {
 
   // ----------handlePrice------------
   const [handlePrice, setHandlePrice] = useState("");
-
-  const [inStockDate, setInStockDate] = useState("");
 
   // ---------------outStockAmount---------------
   const [outStockAmount, setOutStockAmount] = useState("");
@@ -71,7 +76,17 @@ const OutStockPage = ({ is_edit }) => {
   const [selectedStockInoutId, setSelectedStockInoutId] = useState("");
   const [stockInoutOptions, setStockInoutOptions] = useState([]);
   const [isModalVisible, setIsConfirmModalVisible] = useState(false);
-
+  const [weight, setWeight] = useState("");
+  const [isConfirmResetModalOpen, setIsConfirmResetModalOpen] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [isFindButtonDisabled, setIsFindButtonDisabled] = useState(false);
+  const [warehouseCategoryOptions, setWarehouseCategoryOptions] = useState([]);
+  const [selectedWarehouseCategory, setSelectedWarehouseCategory] = useState({
+    value: "",
+    label: "",
+  });
+  const [selectedWarehouseCategoryId, setSelectedWarehouseCategoryId] =
+    useState("");
   const initWarehouseFee = () => {
     setPackaging("");
     setStoragePrice("");
@@ -135,11 +150,11 @@ const OutStockPage = ({ is_edit }) => {
         const warehouseFee = res.data.product[0].warehouse_fee;
 
         setPackaging(warehouseFee.packaging);
-        setSearchProductTxt(product.name);
+        setSearchProductTxt(product.code);
+        setProductName(product.name);
         setSelectedProductId(product.id);
         setStoragePrice(warehouseFee.storage_fee_rate);
         setHandlePrice(warehouseFee.handling_fee_rate);
-
         const instocks = res.data.in_stock.map((item, i) => {
           return {
             value: item.id,
@@ -154,6 +169,7 @@ const OutStockPage = ({ is_edit }) => {
 
         setStockInoutOptions(instocks);
         setSelectedStockInoutId(instocks[0].value);
+        setWeight(instocks[0].weight);
       } else {
         openNotificationWithIcon(
           "warning",
@@ -191,6 +207,16 @@ const OutStockPage = ({ is_edit }) => {
       return false;
     }
 
+    if (selectedWarehouseCategoryId == "") {
+      openNotificationWithIcon(
+        "warning",
+        "",
+        $lang.messages.selected_warehouse_category
+      );
+
+      return false;
+    }
+
     return true;
   };
 
@@ -210,10 +236,15 @@ const OutStockPage = ({ is_edit }) => {
       (item) => item.value == selectedShipperId
     )[0];
 
+    const selectedWarehouseCategory = warehouseCategoryOptions.filter(
+      (item) => item.value == selectedWarehouseCategoryId
+    );
+
     const newTableRecordData = {
       //main data
       index: selectedStockInoutArr.length + 1,
-      product_name: searchProductTxt,
+      product_code: searchProductTxt,
+      product_name: productName,
       packaging: packaging,
       lot_number: stockInout.lot_number,
       stock_amount: stockAmount,
@@ -224,6 +255,9 @@ const OutStockPage = ({ is_edit }) => {
       shipper_name: selectedShipper.label,
       inout_on: outStockDateStr,
       in_stock_date: inStockDate,
+
+      warehouse_category_id: selectedWarehouseCategory[0].value,
+      warehouse_category_name: selectedWarehouseCategory[0].label,
       // memory data
       stock_id: stockInout.stock_id,
       stock_inout_id: stockInout.value,
@@ -238,6 +272,7 @@ const OutStockPage = ({ is_edit }) => {
     setPrepareProducts(selectedStockInoutArr);
     initPrepareProductItem();
     setStockAmount(stockAmount - outStockAmount);
+    setIsFindButtonDisabled(true);
   };
 
   const EditPrepareProduct = (rowId) => {
@@ -256,13 +291,18 @@ const OutStockPage = ({ is_edit }) => {
       setSelectedStockInoutId(editData.stock_inout_id);
     }
 
+    if (editData.warehouse_category_id != selectedWarehouseCategoryId) {
+      setSelectedWarehouseCategoryId(editData.warehouse_category_id);
+    }
+
     setPrepareProductItem(editData);
     setEditMode("edit");
   };
 
   const setPrepareProductItem = (editData) => {
     // setStock(editData.stock_amount);
-    setSearchProductTxt(editData.product_name);
+    setSearchProductTxt(editData.product_code);
+    setProductName(editData.product_name);
     setInStockDate(editData.in_stock_date);
     setOutStockAmount(editData.amount);
     // setOutStockDate(moment(new Date(editData.inout_on)));
@@ -294,6 +334,10 @@ const OutStockPage = ({ is_edit }) => {
 
     updateData.amount = outStockAmount;
     updateData.handling_fee_rate = handlePrice;
+    updateData.warehouse_category_id = selectedWarehouseCategoryId;
+    updateData.warehouse_category_name = warehouseCategoryOptions.filter(
+      (item) => item.value == selectedWarehouseCategoryId
+    )[0].label;
     // updateData.outstock_date = dayjs
     //   .tz(new Date(outStockDate), "Asia/Tokyo")
     //   .format(dateFormat);
@@ -346,6 +390,7 @@ const OutStockPage = ({ is_edit }) => {
           "",
           $lang.messages.success_outstock
         );
+        setIsFindButtonDisabled(false);
       })
       .catch((err) => {
         openNotificationWithIcon("error", "", err.messages);
@@ -364,6 +409,85 @@ const OutStockPage = ({ is_edit }) => {
     setIsConfirmModalVisible(false);
   };
 
+  const handleHideConfirmResetModal = () => {
+    setIsConfirmResetModalOpen(false);
+  };
+  const resetPrepareProducts = () => {
+    setPrepareProducts([]);
+    setIsFindButtonDisabled(false);
+  };
+
+  const getOustStockData = () => {
+    const selectedShipper = shipperOptions.filter(
+      (item) => (item.value = selectedShipperId)
+    )[0];
+
+    const selectedWarehouse = warehouseOptions.filter(
+      (item) => (item.value = selectedWarehouseId)
+    )[0];
+
+    const url =
+      stockInoutURL +
+      "?shipper_id=" +
+      selectedShipper.value +
+      "&warehouse_id=" +
+      selectedWarehouse.value +
+      "&inout_on=" +
+      outStockDate.format("YYYY-MM-DD") +
+      "&category=1";
+
+    API.get(url)
+      .then((res) => {
+        console.log(res.data);
+        const stockInout = stockInoutOptions.filter(
+          (item) => item.value == selectedStockInoutId
+        )[0];
+        const outStockDateStr = outStockDate.format("YYYY/MM/DD");
+
+        const data = res.data.map((item, i) => {
+          return {
+            product_code: item.product_code,
+            product_name: item.product_name,
+            packaging: item.product_type,
+            lot_number: item.lot_number,
+            stock_amount: item.stock_amount,
+            amount: item.amount,
+            weight: item.weight,
+            //asset data
+            warehouse_name: selectedWarehouse.value,
+            shipper_name: selectedShipper.label,
+            inout_on: outStockDateStr,
+            in_stock_date: item.in_stock_date,
+            // memory data
+            stock_id: item.stock_id,
+            stock_inout_id: item.id,
+            warehouse_id: selectedWarehouse.value,
+            shipper_id: selectedShipper.value,
+            handling_fee_rate: item.handling_fee_rate,
+            storage_fee_rate: item.storage_fee_rate,
+            category: 1,
+            idx: i,
+          };
+        });
+        setPrepareProducts(data);
+      })
+      .catch((err) => {});
+  };
+
+  const getWarehouseCategory = () => {
+    API.get(warehouseCategoryURL + "?warehouse_id=" + selectedWarehouseId)
+      .then((res) => {
+        const data = res.data.map((item) => {
+          return {
+            value: item.id,
+            label: item.storage_category,
+          };
+        });
+
+        if (data.length > 0) setWarehouseCategoryOptions(data);
+      })
+      .catch((err) => {});
+  };
   useEffect(() => {
     if (warehouseOptions.length == 0) {
       getWarehouses();
@@ -382,6 +506,24 @@ const OutStockPage = ({ is_edit }) => {
       code: shipper.length > 0 ? shipper[0].code : "",
       closingDate: shipper.length > 0 ? shipper[0].closingDate : "",
     });
+
+    if (prepareProducts.length > 0 && editMode == "create") {
+      openNotificationWithIcon(
+        "warning",
+        "",
+        $lang.messages.warning_stock_inout_section_1_change
+      );
+      const selectedShipper = shipperOptions.filter(
+        (item) => (item.value = selectedShipperId)
+      )[0];
+      const oldData = prepareProducts.slice();
+      for (let i = 0; i < oldData.length; i++) {
+        oldData[i].shipper_id = selectedShipper.value;
+        oldData[i].shipper_name = selectedShipper.label;
+      }
+
+      setPrepareProducts(oldData);
+    }
   }, [selectedShipperId]);
 
   useEffect(() => {
@@ -392,8 +534,44 @@ const OutStockPage = ({ is_edit }) => {
 
       setInStockDate(selected.inout_on.replace(/\-/g, "/"));
       setStockAmount(selected.amount);
+      setWeight(selected.weight);
     }
   }, [selectedStockInoutId]);
+
+  useEffect(() => {
+    if (prepareProducts.length > 0 && editMode == "create") {
+      openNotificationWithIcon(
+        "warning",
+        "",
+        $lang.messages.warning_stock_inout_section_1_change
+      );
+      const selectedWarehouse = warehouseOptions.filter(
+        (item) => (item.value = selectedWarehouseId)
+      )[0];
+      const oldData = prepareProducts.slice();
+      for (let i = 0; i < oldData.length; i++) {
+        oldData[i].warehouse_id = selectedWarehouse.value;
+        oldData[i].warehouse_name = selectedWarehouse.label;
+      }
+      setPrepareProducts(oldData);
+    }
+    getWarehouseCategory();
+  }, [selectedWarehouseId]);
+
+  useEffect(() => {
+    if (prepareProducts.length > 0 && editMode == "create") {
+      openNotificationWithIcon(
+        "warning",
+        "",
+        $lang.messages.warning_stock_inout_section_1_change
+      );
+      const oldData = prepareProducts.slice();
+      for (let i = 0; i < prepareProducts.length; i++) {
+        oldData[i].inout_on = outStockDate.format("YYYY-MM-DD");
+      }
+      setPrepareProducts(oldData);
+    }
+  }, [outStockDate]);
 
   return (
     <div>
@@ -402,78 +580,102 @@ const OutStockPage = ({ is_edit }) => {
         className="mx-auto flex flex-col justify-content content-h"
       >
         <Card style={{ width: "100%" }} className="py-2" bordered={false}>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.warehouseName}: </label>
-            </Col>
-            <Col span={6}>
-              <Select
-                placeholder={$lang.warehouseName}
-                style={{ width: 150, marginLeft: 14 }}
-                value={selectedWarehouseId}
-                options={warehouseOptions}
-                onChange={onChangeWarehouse}
-                disabled={editMode == "edit"}
-              />
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.shipperName}:</label>
-            </Col>
-            <Col span={6}>
-              <Select
-                style={{ width: 300, marginLeft: 14 }}
-                onChange={onChangeShipper}
-                options={shipperOptions}
-                value={selectedShipperId}
-                defaultValue={""}
-                placeholder={$lang.shipperName}
-                disabled={editMode == "edit"}
-              />
-              <Row>
-                {shipperOptions.length > 0 && (
-                  <span className="" style={{ marginLeft: 16 }}>
-                    {$lang.shipperName} :&nbsp;&nbsp;
-                    {shipperDisctription.code} &nbsp;/ &nbsp;
-                    {shipperDisctription.closingDate}
-                  </span>
-                )}{" "}
-              </Row>
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.outStockDate}:</label>
-            </Col>
-            <Col span={6}>
-              <div className="ml-2">
-                <DatePicker
+          <div
+            style={{
+              padding: "10px 20px",
+              marginBottom: 20,
+            }}
+          >
+            {" "}
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.warehouseName}: </label>
+              </Col>
+              <Col span={6}>
+                <Select
+                  placeholder={$lang.warehouseName}
                   style={{ width: 150 }}
-                  value={outStockDate}
-                  onChange={(date, dt) => {
-                    if (dt == "") {
-                      setOutStockDate(dayjs(currentDate, dateFormat));
-                    } else {
-                      setOutStockDate(dayjs(date, dateFormat));
-                    }
-                  }}
-                  placeholder={$lang.outStockDate}
-                  className="ml-1"
-                  format={dateFormat}
+                  value={selectedWarehouseId}
+                  options={warehouseOptions}
+                  onChange={onChangeWarehouse}
+                  disabled={editMode == "edit"}
                 />
-              </div>
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col span={1}>
-              <label>{$lang.productName}:</label>
-            </Col>
-            <Col span={16}>
-              <Space.Compact block className="ml-3">
+              </Col>
+            </Row>
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.shipperName}:</label>
+              </Col>
+              <Col span={6}>
+                <Select
+                  style={{ width: 300 }}
+                  onChange={onChangeShipper}
+                  options={shipperOptions}
+                  value={selectedShipperId}
+                  defaultValue={""}
+                  placeholder={$lang.shipperName}
+                  disabled={editMode == "edit"}
+                />
+                <Row>
+                  {shipperOptions.length > 0 && (
+                    <span className="" style={{ marginLeft: 16, fontSize: 12 }}>
+                      {$lang.shipperCode} :&nbsp;&nbsp;
+                      {shipperDisctription.code} &nbsp; &nbsp;
+                      {$lang.closingDate}: {shipperDisctription.closingDate}
+                    </span>
+                  )}{" "}
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={2}>
+                <label>{$lang.outStockDate}:</label>
+              </Col>
+              <Col span={6}>
+                <div>
+                  <DatePicker
+                    style={{ width: 150 }}
+                    value={outStockDate}
+                    onChange={(date, dt) => {
+                      if (dt == "") {
+                        setOutStockDate(dayjs(currentDate, dateFormat));
+                      } else {
+                        setOutStockDate(dayjs(date, dateFormat));
+                      }
+                    }}
+                    placeholder={$lang.outStockDate}
+                    format={dateFormat}
+                  />
+                  <Button
+                    style={{ marginLeft: 10 }}
+                    onClick={() => {
+                      getOustStockData();
+                    }}
+                    disabled={isFindButtonDisabled}
+                    type="primary"
+                  >
+                    {$lang.buttons.find}
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </div>
+          <Divider />
+
+          <div
+            style={{
+              padding: "10px 20px",
+            }}
+          >
+            <Row>
+              {" "}
+              <Col span={2}>
+                <label>{$lang.productCode}:</label>
+              </Col>
+              <Col span={16}>
                 <Input
                   style={{ width: 150 }}
-                  placeholder={$lang.productName}
+                  placeholder={$lang.productCode}
                   value={searchProductTxt}
                   onChange={handleSearchProduct}
                   onPressEnter={(e) => {
@@ -482,70 +684,93 @@ const OutStockPage = ({ is_edit }) => {
                     }
                   }}
                 />
-                <Input
-                  style={{ width: 150 }}
-                  placeholder={$lang.packing}
-                  value={packaging}
-                  disabled
-                />
-                <Input
-                  style={{ width: 100 }}
-                  placeholder={$lang.cargoPrice}
-                  value={handlePrice}
-                  onChange={(e) => {
-                    setHandlePrice(e.target.value);
-                  }}
-                />
-                <Input
-                  style={{ width: 100 }}
-                  placeholder={$lang.storagePrice}
-                  value={storagePrice}
-                  disabled
-                />
-              </Space.Compact>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={1}></Col>
-            <Col span={5} style={{ display: "flex" }}>
-              <Space.Compact block className="ml-3">
-                <Input
-                  style={{ width: 100 }}
-                  placeholder={$lang.inStockDate}
-                  value={inStockDate}
-                  disabled
-                />
-                <Select
-                  placeholder={$lang.lotNumber}
-                  style={{ width: 150 }}
-                  value={selectedStockInoutId}
-                  options={stockInoutOptions}
-                  onChange={(v) => {
-                    setSelectedStockInoutId(v);
-                  }}
-                  disabled={editMode == "edit"}
-                />
-              </Space.Compact>
-              <Space.Compact className="ml-3">
-                <Input
-                  type="number"
-                  style={{ width: 100 }}
-                  placeholder={$lang.stockAmount}
-                  value={stockAmount}
-                  disabled
-                />
-                <Input
-                  style={{ width: 100 }}
-                  type="number"
-                  placeholder={$lang.outStockAmount}
-                  value={outStockAmount}
-                  onChange={(e) => {
-                    setOutStockAmount(e.target.value);
-                  }}
-                />
-              </Space.Compact>
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+            <Row className="my-2">
+              <Col span={2}>
+                <label>{$lang.productName}:</label>
+              </Col>
+              <Col span={16}>
+                <Space block>
+                  <Input
+                    style={{ width: 250 }}
+                    placeholder={$lang.productName}
+                    value={productName}
+                  />
+                  <Input
+                    style={{ width: 150 }}
+                    placeholder={$lang.packing}
+                    value={packaging}
+                    disabled
+                  />
+                  <Input
+                    style={{ width: 100 }}
+                    placeholder={$lang.weight}
+                    value={weight}
+                    disabled
+                  />
+                  <Input
+                    style={{ width: 100 }}
+                    placeholder={$lang.cargoPrice}
+                    value={handlePrice}
+                    onChange={(e) => {
+                      setHandlePrice(e.target.value);
+                    }}
+                  />
+                </Space>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={2}></Col>
+              <Col span={5} style={{ display: "flex" }}>
+                <Space.Compact block>
+                  <Select
+                    placeholder={$lang.lotNumber}
+                    style={{ width: 150 }}
+                    value={selectedStockInoutId}
+                    options={stockInoutOptions}
+                    onChange={(v) => {
+                      setSelectedStockInoutId(v);
+                    }}
+                    disabled={editMode == "edit"}
+                  />
+                  <Input
+                    style={{ width: 100 }}
+                    placeholder={$lang.inStockDate}
+                    value={inStockDate}
+                    disabled
+                  />
+                  <Select
+                    placeholder={$lang.storageDivision}
+                    style={{ width: 150 }}
+                    value={selectedWarehouseCategoryId}
+                    options={warehouseCategoryOptions}
+                    onChange={(val, options) => {
+                      setSelectedWarehouseCategoryId(val);
+                    }}
+                  />
+                </Space.Compact>
+                <Space.Compact className="ml-3">
+                  <Input
+                    type="number"
+                    style={{ width: 100 }}
+                    placeholder={$lang.stockAmount}
+                    value={stockAmount}
+                    disabled
+                  />
+                  <Input
+                    style={{ width: 100 }}
+                    type="number"
+                    placeholder={$lang.outStockAmount}
+                    value={outStockAmount}
+                    onChange={(e) => {
+                      setOutStockAmount(e.target.value);
+                    }}
+                  />
+                </Space.Compact>
+              </Col>
+            </Row>
+          </div>
           <Divider />
           <Row>
             <Col span={1}></Col>
@@ -588,15 +813,41 @@ const OutStockPage = ({ is_edit }) => {
             pagination={false}
             is_edit={is_edit}
           />
-          <div
-            style={{
-              justifyContent: "flex-end",
-              display: "flex",
-              marginTop: 15,
-            }}
-          >
-            {is_edit === 1 ? (
-              <>
+
+          {is_edit === 1 ? (
+            <Row
+              style={{
+                justifyContent: "space-between",
+                display: "flex",
+                marginTop: 15,
+              }}
+            >
+              <Col>
+                <Button
+                  onClick={() => {
+                    if (prepareProducts.length > 0)
+                      setIsConfirmResetModalOpen(true);
+                  }}
+                  style={{
+                    marginRight: 10,
+                  }}
+                  danger
+                >
+                  {$lang.buttons.reset}
+                </Button>
+                <ConfirmModal
+                  isOpen={isConfirmResetModalOpen}
+                  onConfirm={() => {
+                    handleHideConfirmResetModal();
+                    resetPrepareProducts();
+                  }}
+                  onClose={handleHideConfirmResetModal}
+                  message={
+                    $lang.messages.warning_reset_prepare_inout_stock_list
+                  }
+                />
+              </Col>
+              <Col>
                 <Button onClick={setIsConfirmModalVisible} type="primary">
                   {$lang.confirmDeparture}
                 </Button>
@@ -609,11 +860,11 @@ const OutStockPage = ({ is_edit }) => {
                   onClose={handleHideConfirmModal}
                   message={$lang.messages.confirm_outstock}
                 />
-              </>
-            ) : (
-              <></>
-            )}
-          </div>
+              </Col>
+            </Row>
+          ) : (
+            <></>
+          )}
         </Card>
       </Content>
     </div>

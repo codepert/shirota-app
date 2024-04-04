@@ -36,6 +36,6 @@ class Api::V1::ShippersController < Api::V1::BaseController
   end
   private
   def create_or_update_params
-    params.permit(:name, :code, :post_code, :main_address, :sub_address, :tel, :closing_date)
+    params.permit(:name, :code, :post_code, :main_address, :sub_address, :tel, :closing_date, :responsible_category_id)
   end
 end

@@ -390,7 +390,9 @@ const InStockPage = ({ is_edit }) => {
   };
 
   const getProduct = () => {
-    API.get(`${productDetailURL}?q=${searchProductTxt}`).then((res) => {
+    API.get(
+      `${productDetailURL}?q=${searchProductTxt}&warehouse_id=${selectedWarehouse.value}`
+    ).then((res) => {
       if (res.data.length > 0) {
         const warehouseFee = res.data[0].warehouse_fee;
         setProductName(res.data[0].name);
@@ -399,12 +401,20 @@ const InStockPage = ({ is_edit }) => {
         setSelectedProductId(res.data[0].id);
         setStoragePrice(warehouseFee.storage_fee_rate);
         setHandlePrice(warehouseFee.handling_fee_rate);
+        setWeight(res.data[0].weight);
       } else {
         openNotificationWithIcon(
           "warning",
           "",
-          $lang.messages.not_register_product
+          $lang.messages.not_register_product_or_responsibe_warehouse
         );
+        setProductName("");
+        setPackaging("");
+        setSearchProductTxt("");
+        setSelectedProductId("");
+        setStoragePrice("");
+        setHandlePrice("");
+        setWeight("");
       }
     });
   };
@@ -684,6 +694,7 @@ const InStockPage = ({ is_edit }) => {
                       style={{ width: 120 }}
                       placeholder={$lang.weight + "(kg)"}
                       value={weight}
+                      disabled
                       onChange={(e) => {
                         setWeight(e.target.value);
                       }}

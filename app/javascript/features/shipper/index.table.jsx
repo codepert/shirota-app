@@ -7,13 +7,7 @@ import $lang from "../../utils/content/jp.json";
 const ShipperTable = ({ data, editRow, deleteRow, isEdit }) => {
   const tableColumns = [
     {
-      title: `${$lang.no}`,
-      dataIndex: "key",
-      align: "center",
-      width: "8%",
-    },
-    {
-      title: `${$lang.code}`,
+      title: `${$lang.shipperCode}`,
       key: "code",
       dataIndex: "code",
       align: "center",

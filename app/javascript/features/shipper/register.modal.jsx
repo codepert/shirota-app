@@ -1,16 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Modal, Input, Button, Select } from "antd";
 import $lang from "../../utils/content/jp.json";
+import { responsibleCategoryURL } from "../../utils/constants";
+import { API } from "../../utils/helper";
 
 const ShipperRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
   const [form] = Form.useForm();
 
+  const [responsibleCategoryOptions, setResponsibleCategoryOptions] = useState(
+    []
+  );
   useEffect(() => {
     if (initialValues) {
       form.setFieldsValue(initialValues);
     }
   }, [initialValues]);
 
+  const getResponsibleCategoryOptions = () => {
+    API.get(responsibleCategoryURL).then((res) => {
+      let index = 1;
+
+      setResponsibleCategoryOptions(
+        res.data.map((item) => {
+          return {
+            key: index++,
+            value: item.id,
+            label: item.name,
+          };
+        })
+      );
+    });
+  };
   const handleSave = () => {
     form
       .validateFields()
@@ -21,7 +41,9 @@ const ShipperRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
         console.log("Validate Failed:", info);
       });
   };
-
+  useEffect(() => {
+    getResponsibleCategoryOptions();
+  }, []);
   return (
     <Modal
       title={$lang.shipperMaster}
@@ -119,21 +141,21 @@ const ShipperRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
                 value: 20,
                 label: "20",
               },
-              {
-                key: 28,
-                value: 28,
-                label: "28",
-              },
-              {
-                key: 29,
-                value: 29,
-                label: "29",
-              },
-              {
-                key: 30,
-                value: 30,
-                label: "30",
-              },
+              // {
+              //   key: 28,
+              //   value: 28,
+              //   label: "28",
+              // },
+              // {
+              //   key: 29,
+              //   value: 29,
+              //   label: "29",
+              // },
+              // {
+              //   key: 30,
+              //   value: 30,
+              //   label: "30",
+              // },
               {
                 key: 31,
                 value: 31,
@@ -142,6 +164,21 @@ const ShipperRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
             ]}
           />
         </Form.Item>
+
+        {responsibleCategoryOptions.length > 0 && (
+          <Form.Item
+            name="responsible_category_id"
+            label={$lang.responsibleCategory}
+            rules={[
+              {
+                required: true,
+                message: $lang.messages.select_responsible_category,
+              },
+            ]}
+          >
+            <Select options={responsibleCategoryOptions} allowClear />
+          </Form.Item>
+        )}
         <div style={{ textAlign: "right" }}>
           <Button
             onClick={handleSave}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_04_081016) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_04_213529) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_04_081016) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "warehouse_id", default: 1, null: false
+    t.integer "weight", default: 0, null: false
     t.index ["code"], name: "index_products_on_code"
     t.index ["name"], name: "index_products_on_name"
     t.index ["specification"], name: "index_products_on_specification"
@@ -138,8 +139,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_04_081016) do
     t.integer "closing_date", null: false, comment: "締日"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "responsible_category_id"
     t.index ["code"], name: "index_shippers_on_code", unique: true
     t.index ["name"], name: "index_shippers_on_name", unique: true
+    t.index ["responsible_category_id"], name: "index_shippers_on_responsible_category_id"
   end
 
   create_table "stock_inouts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -231,6 +234,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_04_081016) do
   end
 
   add_foreign_key "products", "warehouses"
+  add_foreign_key "shippers", "responsible_categories"
   add_foreign_key "stock_inouts", "warehouse_categories"
   add_foreign_key "users", "responsible_categories"
   add_foreign_key "users", "user_authorities"

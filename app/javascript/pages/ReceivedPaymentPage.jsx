@@ -8,9 +8,7 @@ import {
   DatePicker,
   Divider,
   Button,
-  notification,
   Card,
-  Pagination,
   Row,
   Col,
 } from "antd";
@@ -234,7 +232,11 @@ const ReceivedPaymentPage = ({ is_edit }) => {
         document.body.removeChild(link);
 
         setTimeout(() => {
-          openNotificationWithIcon("success", "", $lang.messages.success);
+          openNotificationWithIcon(
+            "success",
+            "",
+            $lang.messages.success_export_data
+          );
         }, 1000);
       })
       .catch((err) => {
@@ -377,6 +379,7 @@ const ReceivedPaymentPage = ({ is_edit }) => {
                   className="btn-bg-black"
                   style={{ marginLeft: 70 }}
                   onClick={getReceivePayment}
+                  type="primary"
                 >
                   {$lang.buttons.search}
                 </Button>

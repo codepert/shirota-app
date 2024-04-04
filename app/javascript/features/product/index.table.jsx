@@ -42,9 +42,21 @@ const ProductTable = ({
       align: "left",
     },
     {
+      title: `${$lang.handlingFee}`,
+      dataIndex: "handling_fee_rate",
+      key: "handling_fee_rate",
+      align: "left",
+    },
+    {
       title: `${$lang.storageFee}`,
       dataIndex: "storage_fee_rate",
       key: "storage_fee_rate",
+      align: "left",
+    },
+    {
+      title: `${$lang.weight}`,
+      dataIndex: "weight",
+      key: "weight",
       align: "left",
     },
     {

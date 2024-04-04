@@ -176,8 +176,17 @@ const OutStockPage = ({ is_edit }) => {
         openNotificationWithIcon(
           "warning",
           "",
-          $lang.messages.not_register_or_in_stock
+          $lang.messages.not_instock_product_or_responsibe_warehouse
         );
+        setPackaging("");
+        setSearchProductTxt("");
+        setProductName("");
+        setSelectedProductId("");
+        setStoragePrice("");
+        setHandlePrice("");
+        setSelectedWarehouseCategoryId("");
+        setStockInoutOptions("");
+        setWeight("");
       }
     });
   };

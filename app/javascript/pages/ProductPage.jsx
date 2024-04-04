@@ -51,6 +51,7 @@ const ProductPage = ({ is_edit }) => {
           specification: item.specification,
           warehouse_fee_id: feeData.id,
           warehouse_id: item.warehouse_id,
+          weight: item.weight,
         };
       });
       setTotal(res.headers["x-total-count"]);

@@ -90,6 +90,8 @@
     "select_warehouse_fee": " 単価区分を選択してください。",
     "not_register_or_in_stock": "この品名が登録されていないか、入荷されていません。",
     "not_register_product": "この品名が登録されていません。",
+    "not_register_product_or_responsibe_warehouse": "この品名は登録されていないか、対象倉庫の商品名ではありません。",
+    "not_instock_product_or_responsibe_warehouse": "この品名は入荷されていないか、対象倉庫の商品名ではありません。",
     "confirm_instock": "本当に入庫しますか？",
     "confirm_outstock": "本当に出庫しますか？",
     "empty_out_stock_data": "出庫するデータがありません。",

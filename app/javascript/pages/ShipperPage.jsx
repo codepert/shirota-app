@@ -36,7 +36,6 @@ const ShipperList = ({ is_edit }) => {
   };
 
   const handleRegister = (data, form) => {
-    console.log("register data", data);
     if (typeof data.id == "undefined") {
       createShipper(data, form);
     } else {

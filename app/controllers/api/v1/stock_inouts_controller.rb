@@ -181,7 +181,7 @@ class Api::V1::StockInoutsController < Api::V1::BaseController
       count:            prepare_bill_amount_cnt,
     }, status: :ok
   end
-  def stock_in_csv_export
+  def export_stock_in_csv
     data = params.require(:data)
     csv_data = CSV.generate(encoding: 'Shift_JIS') do |csv|
       csv << ["品名", "荷姿", "ロット番号", "重量", "数量"]

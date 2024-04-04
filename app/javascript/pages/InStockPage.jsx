@@ -259,7 +259,7 @@ const InStockPage = ({ is_edit }) => {
           openNotificationWithIcon(
             "warning",
             "",
-            $lang.messages.alreayResigered
+            $lang.messages.exist_stock_with_equal_lot_number
           );
           return;
         }
@@ -651,48 +651,61 @@ const InStockPage = ({ is_edit }) => {
               </Col>
             </Row>
             <Row className="my-2">
-              <Col span={2}>
-                <label>{$lang.productName}:</label>
-              </Col>
+              <Col span={2}></Col>
               <Col span={10}>
                 <Space className="">
-                  <Input
-                    style={{ width: 150 }}
-                    placeholder={$lang.productName}
-                    value={productName}
-                  />
-                  <Input
-                    style={{ width: 150 }}
-                    placeholder={$lang.packing}
-                    value={packaging}
-                    disabled
-                  />
-                  <Input
-                    type="number"
-                    min={0}
-                    style={{ width: 120 }}
-                    placeholder={$lang.weight + "(kg)"}
-                    value={weight}
-                    onChange={(e) => {
-                      setWeight(e.target.value);
-                    }}
-                  />
-                  <Input
-                    style={{ width: 100 }}
-                    placeholder={$lang.cargoPrice}
-                    value={handlePrice}
-                    onChange={(e) => {
-                      setHandlePrice(e.target.value);
-                    }}
-                  />
-                  <Input
-                    style={{ width: 100 }}
-                    placeholder={$lang.storagePrice}
-                    value={storagePrice}
-                    onChange={(e) => {
-                      setStoragePrice(e.target.value);
-                    }}
-                  />
+                  <Space direction="vertical">
+                    <div>{$lang.productName}</div>
+                    <Input
+                      style={{ width: 250 }}
+                      placeholder={$lang.productName}
+                      value={productName}
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.packaging}</div>
+                    <Input
+                      style={{ width: 150 }}
+                      placeholder={$lang.packing}
+                      value={packaging}
+                      disabled
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.weight}</div>
+                    <Input
+                      type="number"
+                      min={0}
+                      style={{ width: 120 }}
+                      placeholder={$lang.weight + "(kg)"}
+                      value={weight}
+                      onChange={(e) => {
+                        setWeight(e.target.value);
+                      }}
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.handlingFeeUnitPrice}</div>
+                    <Input
+                      style={{ width: 100 }}
+                      placeholder={$lang.cargoPrice}
+                      value={handlePrice}
+                      onChange={(e) => {
+                        setHandlePrice(e.target.value);
+                      }}
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.storageFeeUnitPrice}</div>
+                    <Input
+                      style={{ width: 100 }}
+                      placeholder={$lang.storagePrice}
+                      value={storagePrice}
+                      onChange={(e) => {
+                        setStoragePrice(e.target.value);
+                      }}
+                    />
+                  </Space>
                 </Space>
               </Col>
             </Row>
@@ -700,73 +713,85 @@ const InStockPage = ({ is_edit }) => {
               <Col span={2}></Col>
               <Col span={16}>
                 <Space.Compact block>
-                  <Select
-                    placeholder={$lang.storageDivision}
-                    style={{ width: 150 }}
-                    value={selectedWarehouseCategory}
-                    options={warehouseCategoryOptions}
-                    onChange={(val, options) => {
-                      setSelectedWarehouseCategory({
-                        value: val,
-                        label: options.label,
-                      });
-                    }}
-                  />
-                  <Input
-                    style={{ width: 200 }}
-                    placeholder={$lang.lotNumber}
-                    value={lotNumber}
-                    onChange={(e) => {
-                      setLotNumber(e.target.value);
-                    }}
-                  />
-                  <Input
-                    type="number"
-                    style={{ width: 100 }}
-                    placeholder={$lang.instockAmount}
-                    value={amount}
-                    min={0}
-                    onChange={(e) => {
-                      setStock(e.target.value);
-                    }}
-                  />
+                  <Space direction="vertical">
+                    <div>{$lang.storageDivision}</div>
+                    <Select
+                      placeholder={$lang.storageDivision}
+                      style={{ width: 150 }}
+                      value={selectedWarehouseCategory}
+                      options={warehouseCategoryOptions}
+                      onChange={(val, options) => {
+                        setSelectedWarehouseCategory({
+                          value: val,
+                          label: options.label,
+                        });
+                      }}
+                    />
+                  </Space>
+                  <Space direction="vertical" style={{ marginLeft: 10 }}>
+                    <div>{$lang.lotNumber}</div>
+                    <Input
+                      style={{ width: 150 }}
+                      placeholder={$lang.lotNumber}
+                      value={lotNumber}
+                      onChange={(e) => {
+                        setLotNumber(e.target.value);
+                      }}
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.instockAmount}</div>
+                    <Input
+                      type="number"
+                      style={{ width: 100 }}
+                      placeholder={$lang.instockAmount}
+                      value={amount}
+                      min={0}
+                      onChange={(e) => {
+                        setStock(e.target.value);
+                      }}
+                    />
+                  </Space>
+                  {is_edit === 1 ? (
+                    <Col span={6} style={{ marginTop: 30, marginLeft: 30 }}>
+                      <Button
+                        onClick={doPrepareProducts}
+                        className="px-5 ml-2 btn-bg-black"
+                        title={$lang.buttons.add}
+                        hidden={editMode == "edit"}
+                        type="primary"
+                      >
+                        {$lang.buttons.add}
+                      </Button>
+                      <Button
+                        onClick={updatePrepareProduct}
+                        className="px-5 ml-2 btn-bg-black"
+                        title={$lang.buttons.change}
+                        hidden={editMode != "edit"}
+                        type="primary"
+                      >
+                        {$lang.buttons.change}
+                      </Button>
+                      <Button
+                        onClick={cancelEdit}
+                        className="px-5 ml-2 default"
+                        title={$lang.buttons.cancel}
+                        hidden={editMode != "edit"}
+                      >
+                        {$lang.buttons.cancel}
+                      </Button>
+                    </Col>
+                  ) : (
+                    <></>
+                  )}
                 </Space.Compact>
               </Col>
-            </Row>
-            <Divider />
-            <Row>
-              <Col span={2}></Col>
-              {is_edit === 1 ? (
-                <Col span={6}>
-                  <CustomButton
-                    onClick={doPrepareProducts}
-                    className="px-5 ml-2 btn-bg-black"
-                    title={$lang.buttons.add}
-                    htmlType="submit"
-                    visability={editMode != "edit"}
-                  />
-                  <CustomButton
-                    onClick={updatePrepareProduct}
-                    className="px-5 ml-2 btn-bg-black"
-                    title={$lang.buttons.change}
-                    visability={editMode == "edit"}
-                  />
-                  <CustomButton
-                    onClick={cancelEdit}
-                    className="px-5 ml-2 default"
-                    title={$lang.buttons.cancel}
-                    visability={editMode == "edit"}
-                  />
-                </Col>
-              ) : (
-                <></>
-              )}
             </Row>
           </div>
         </Card>
         <Card
-          style={{ width: "100%", marginTop: 10, marginBottom: 20 }}
-          className="py-4 my-2"
+          style={{ width: "100%", marginTop: 20, marginBottom: 10 }}
+          className="py-4 "
           bordered={false}
         >
           <InStockTable

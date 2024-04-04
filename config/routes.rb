@@ -31,7 +31,7 @@ Rails.application.routes.draw do
       get "inventory" => "stock_inouts#inventory"
       get "check_stock_in" => "stock_inouts#check_stock_in"
       post "stock_in" => "stock_inouts#stock_in"
-      post "stock_in_csv_export" => "stock_inouts#export_stock_in_csv"
+      post "export_stock_in_csv" => "stock_inouts#export_stock_in_csv"
       post "stock_out" => "stock_inouts#stock_out"
       get "uncalc_bills" => "stock_inouts#uncalc_bills"
       get "export_stock_csv" => "stock_inouts#export_stock_csv"

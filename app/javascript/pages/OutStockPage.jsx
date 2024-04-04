@@ -13,10 +13,11 @@ import {
 } from "antd";
 import {
   warehouseURL,
+  responsibleWarehouseURL,
   shipperURL,
   productStockURL,
   saveStockOutUrl,
-  productURL,
+  exportCSVDataUrl,
   stockInoutURL,
   warehouseCategoryURL,
 } from "../utils/constants";
@@ -100,7 +101,7 @@ const OutStockPage = ({ is_edit }) => {
   };
 
   const getWarehouses = () => {
-    API.get(warehouseURL)
+    API.get(responsibleWarehouseURL)
       .then((res) => {
         const warehouses = res.data.map((item) => {
           return {
@@ -164,11 +165,12 @@ const OutStockPage = ({ is_edit }) => {
             amount: item.amount,
             weight: item.weight,
             lot_number: item.lot_number,
+            warehouse_category_id: item.warehouse_category_id,
           };
         });
-
+        setSelectedWarehouseCategoryId(instocks[0].warehouse_category_id);
         setStockInoutOptions(instocks);
-        setSelectedStockInoutId(instocks[0].value);
+        // setSelectedStockInoutId(instocks[0].value);
         setWeight(instocks[0].weight);
       } else {
         openNotificationWithIcon(
@@ -278,7 +280,7 @@ const OutStockPage = ({ is_edit }) => {
   const EditPrepareProduct = (rowId) => {
     const oldData = prepareProducts.slice();
     const editData = oldData.filter((item, i) => i == rowId)[0];
-
+    console.log("oldData", editData);
     if (editData.warehouse_id != selectedWarehouseId) {
       setSelectedWarehouseId(editData.warehouse_id);
     }
@@ -311,7 +313,8 @@ const OutStockPage = ({ is_edit }) => {
     setHandlePrice(editData.handling_fee_rate);
     setStoragePrice(editData.storage_fee_rate);
 
-    setStockAmount(stockAmount * 1 + editData.amount * 1);
+    // setStockAmount(stockAmount * 1 + editData.amount * 1);
+    setStockAmount(editData.stock_amount);
 
     setStockInoutOptions([
       {
@@ -319,7 +322,7 @@ const OutStockPage = ({ is_edit }) => {
         label: editData.lot_number,
         stock_id: editData.stock_id,
         inout_on: editData.inout_on,
-        amount: editData.amount,
+        amount: editData.stock_amount,
         weight: editData.weight,
         lot_number: editData.lot_number,
       },
@@ -417,7 +420,7 @@ const OutStockPage = ({ is_edit }) => {
     setIsFindButtonDisabled(false);
   };
 
-  const getOustStockData = () => {
+  const getOutStockData = () => {
     const selectedShipper = shipperOptions.filter(
       (item) => (item.value = selectedShipperId)
     )[0];
@@ -443,7 +446,6 @@ const OutStockPage = ({ is_edit }) => {
           (item) => item.value == selectedStockInoutId
         )[0];
         const outStockDateStr = outStockDate.format("YYYY/MM/DD");
-
         const data = res.data.map((item, i) => {
           return {
             product_code: item.product_code,
@@ -454,7 +456,7 @@ const OutStockPage = ({ is_edit }) => {
             amount: item.amount,
             weight: item.weight,
             //asset data
-            warehouse_name: selectedWarehouse.value,
+            warehouse_name: selectedWarehouse.label,
             shipper_name: selectedShipper.label,
             inout_on: outStockDateStr,
             in_stock_date: item.in_stock_date,
@@ -465,10 +467,15 @@ const OutStockPage = ({ is_edit }) => {
             shipper_id: selectedShipper.value,
             handling_fee_rate: item.handling_fee_rate,
             storage_fee_rate: item.storage_fee_rate,
+            warehouse_category_id: item.warehouse_category_id,
+            warehouse_category_name: item.warehouse_category_name,
             category: 1,
             idx: i,
           };
         });
+
+        if (data.length > 0) setIsFindButtonDisabled(true);
+
         setPrepareProducts(data);
       })
       .catch((err) => {});
@@ -488,6 +495,50 @@ const OutStockPage = ({ is_edit }) => {
       })
       .catch((err) => {});
   };
+
+  const getCSVData = () => {
+    return prepareProducts.map((item) => {
+      return {
+        product_name: item.product_name,
+        product_type: item.product_type,
+        lot_number: item.lot_number,
+        weight: item.weight,
+        amount: item.amount,
+      };
+    });
+  };
+
+  const exportDataAndDownloadCVS = async () => {
+    const csvData = getCSVData();
+    if (csvData.length == 0) {
+      openNotificationWithIcon("warning", "", $lang.messages.empty_export_data);
+      return;
+    }
+
+    API.post(exportCSVDataUrl, { data: csvData })
+      .then((response) => {
+        const timestamp = Date.now();
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "出庫_" + timestamp + ".csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setTimeout(() => {
+          openNotificationWithIcon(
+            "success",
+            "",
+            $lang.messages.success_export_data
+          );
+        }, 1000);
+      })
+      .catch((err) => {
+        openNotificationWithIcon("error", "", err.messages);
+      });
+  };
+
   useEffect(() => {
     if (warehouseOptions.length == 0) {
       getWarehouses();
@@ -573,6 +624,12 @@ const OutStockPage = ({ is_edit }) => {
     }
   }, [outStockDate]);
 
+  useEffect(() => {
+    if (stockInoutOptions.length > 0) {
+      setSelectedStockInoutId(stockInoutOptions[0].value);
+    }
+  }, [stockInoutOptions]);
+
   return (
     <div>
       <Content
@@ -618,7 +675,7 @@ const OutStockPage = ({ is_edit }) => {
                 />
                 <Row>
                   {shipperOptions.length > 0 && (
-                    <span className="" style={{ marginLeft: 16, fontSize: 12 }}>
+                    <span className="" style={{ fontSize: 12 }}>
                       {$lang.shipperCode} :&nbsp;&nbsp;
                       {shipperDisctription.code} &nbsp; &nbsp;
                       {$lang.closingDate}: {shipperDisctription.closingDate}
@@ -649,7 +706,7 @@ const OutStockPage = ({ is_edit }) => {
                   <Button
                     style={{ marginLeft: 10 }}
                     onClick={() => {
-                      getOustStockData();
+                      getOutStockData();
                     }}
                     disabled={isFindButtonDisabled}
                     type="primary"
@@ -687,119 +744,144 @@ const OutStockPage = ({ is_edit }) => {
               </Col>
             </Row>
             <Row className="my-2">
-              <Col span={2}>
-                <label>{$lang.productName}:</label>
-              </Col>
+              <Col span={2}></Col>
               <Col span={16}>
                 <Space block>
-                  <Input
-                    style={{ width: 250 }}
-                    placeholder={$lang.productName}
-                    value={productName}
-                  />
-                  <Input
-                    style={{ width: 150 }}
-                    placeholder={$lang.packing}
-                    value={packaging}
-                    disabled
-                  />
-                  <Input
-                    style={{ width: 100 }}
-                    placeholder={$lang.weight}
-                    value={weight}
-                    disabled
-                  />
-                  <Input
-                    style={{ width: 100 }}
-                    placeholder={$lang.cargoPrice}
-                    value={handlePrice}
-                    onChange={(e) => {
-                      setHandlePrice(e.target.value);
-                    }}
-                  />
+                  <Space direction="vertical">
+                    <div>{$lang.productName}</div>
+                    <Input
+                      style={{ width: 250 }}
+                      placeholder={$lang.productName}
+                      value={productName}
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.packing}</div>
+                    <Input
+                      style={{ width: 150 }}
+                      placeholder={$lang.packing}
+                      value={packaging}
+                      disabled
+                    />
+                  </Space>
+
+                  <Space direction="vertical">
+                    <div>{$lang.weight}</div>
+                    <Input
+                      style={{ width: 100 }}
+                      placeholder={$lang.weight}
+                      value={weight}
+                      disabled
+                    />
+                  </Space>
+
+                  <Space direction="vertical">
+                    <div>{$lang.cargoPrice}</div>
+                    <Input
+                      style={{ width: 100 }}
+                      placeholder={$lang.cargoPrice}
+                      value={handlePrice}
+                      onChange={(e) => {
+                        setHandlePrice(e.target.value);
+                      }}
+                    />
+                  </Space>
                 </Space>
               </Col>
             </Row>
             <Row>
               <Col span={2}></Col>
-              <Col span={5} style={{ display: "flex" }}>
+              <Col span={16} style={{ display: "flex" }}>
                 <Space.Compact block>
-                  <Select
-                    placeholder={$lang.lotNumber}
-                    style={{ width: 150 }}
-                    value={selectedStockInoutId}
-                    options={stockInoutOptions}
-                    onChange={(v) => {
-                      setSelectedStockInoutId(v);
-                    }}
-                    disabled={editMode == "edit"}
-                  />
-                  <Input
-                    style={{ width: 100 }}
-                    placeholder={$lang.inStockDate}
-                    value={inStockDate}
-                    disabled
-                  />
-                  <Select
-                    placeholder={$lang.storageDivision}
-                    style={{ width: 150 }}
-                    value={selectedWarehouseCategoryId}
-                    options={warehouseCategoryOptions}
-                    onChange={(val, options) => {
-                      setSelectedWarehouseCategoryId(val);
-                    }}
-                  />
+                  <Space direction="vertical">
+                    <div>{$lang.lotNumber}</div>
+                    <Select
+                      placeholder={$lang.lotNumber}
+                      style={{ width: 150 }}
+                      value={selectedStockInoutId}
+                      options={stockInoutOptions}
+                      onChange={(v) => {
+                        setSelectedStockInoutId(v);
+                      }}
+                      disabled={editMode == "edit"}
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.inStockDate}</div>
+                    <Input
+                      style={{ width: 150 }}
+                      placeholder={$lang.inStockDate}
+                      value={inStockDate}
+                      disabled
+                    />
+                  </Space>
+                  <Space direction="vertical">
+                    <div>{$lang.storageDivision}</div>
+                    <Select
+                      placeholder={$lang.storageDivision}
+                      style={{ width: 150 }}
+                      value={selectedWarehouseCategoryId}
+                      options={warehouseCategoryOptions}
+                      onChange={(val, options) => {
+                        setSelectedWarehouseCategoryId(val);
+                      }}
+                    />
+                  </Space>
+                  <Space direction="vertical" style={{ marginLeft: 10 }}>
+                    <div>{$lang.stockAmount}</div>
+                    <Input
+                      type="number"
+                      style={{ width: 100 }}
+                      placeholder={$lang.stockAmount}
+                      value={stockAmount}
+                      disabled
+                    />
+                  </Space>
+                  <Space direction="vertical" style={{ marginLeft: 10 }}>
+                    <div>{$lang.outStockAmount}</div>
+                    <Input
+                      style={{ width: 100 }}
+                      type="number"
+                      placeholder={$lang.outStockAmount}
+                      value={outStockAmount}
+                      onChange={(e) => {
+                        setOutStockAmount(e.target.value);
+                      }}
+                    />
+                  </Space>
                 </Space.Compact>
-                <Space.Compact className="ml-3">
-                  <Input
-                    type="number"
-                    style={{ width: 100 }}
-                    placeholder={$lang.stockAmount}
-                    value={stockAmount}
-                    disabled
-                  />
-                  <Input
-                    style={{ width: 100 }}
-                    type="number"
-                    placeholder={$lang.outStockAmount}
-                    value={outStockAmount}
-                    onChange={(e) => {
-                      setOutStockAmount(e.target.value);
-                    }}
-                  />
-                </Space.Compact>
+                {is_edit === 1 ? (
+                  <Col span={6} style={{ marginTop: 30, marginLeft: 20 }}>
+                    <Button
+                      onClick={doPrepareProducts}
+                      className="px-5 ml-2 btn-bg-black"
+                      type="primary"
+                      hidden={editMode == "edit"}
+                    >
+                      {$lang.buttons.add}
+                    </Button>
+                    <Button
+                      onClick={updatePrepareProduct}
+                      className="px-5 ml-2 btn-bg-black"
+                      hidden={editMode != "edit"}
+                      type="primary"
+                    >
+                      {$lang.buttons.change}
+                    </Button>
+                    <Button
+                      onClick={cancelEditProduct}
+                      className="px-5 ml-2 default"
+                      hidden={editMode != "edit"}
+                    >
+                      {$lang.buttons.cancel}
+                    </Button>
+                  </Col>
+                ) : (
+                  <></>
+                )}
               </Col>
             </Row>
           </div>
-          <Divider />
-          <Row>
-            <Col span={1}></Col>
-            {is_edit === 1 ? (
-              <Col span={6}>
-                <CustomButton
-                  onClick={doPrepareProducts}
-                  className="px-5 ml-2 btn-bg-black"
-                  title={$lang.buttons.add}
-                  htmlType="submit"
-                  visability={editMode != "edit"}
-                />
-                <CustomButton
-                  onClick={updatePrepareProduct}
-                  className="px-5 ml-2 btn-bg-black"
-                  title={$lang.buttons.change}
-                  visability={editMode == "edit"}
-                />
-                <CustomButton
-                  onClick={cancelEditProduct}
-                  className="px-5 ml-2 default"
-                  title={$lang.buttons.cancel}
-                  visability={editMode == "edit"}
-                />
-              </Col>
-            ) : (
-              <></>
-            )}
-          </Row>
         </Card>
         <Card
           style={{ width: "100%", marginTop: 20, marginBottom: 20 }}
@@ -848,6 +930,14 @@ const OutStockPage = ({ is_edit }) => {
                 />
               </Col>
               <Col>
+                <Button
+                  onClick={exportDataAndDownloadCVS}
+                  style={{
+                    marginRight: 10,
+                  }}
+                >
+                  {$lang.buttons.csvExchange}
+                </Button>
                 <Button onClick={setIsConfirmModalVisible} type="primary">
                   {$lang.confirmDeparture}
                 </Button>

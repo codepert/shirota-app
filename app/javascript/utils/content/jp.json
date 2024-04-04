@@ -133,7 +133,9 @@
     "success_outstock": "データを正確に出庫しました",
     "warning_reset_prepare_inout_stock_list": "入庫確定が行われていないデータは保存されませんのでご注意ください。",
     "warning_stock_inout_section_1_change": "取扱倉庫・荷主・入庫日を変更する場合、入庫確定してないデータは保存されませんのでご注意ください。",
-    "exist_stock_with_equal_lot_number": "すでに同じロットが登録されています。"
+    "exist_stock_with_equal_lot_number": "すでに同じロットが登録されています。",
+    "empty_export_data": "出力するデータがありません。",
+    "success_export_data": "データが正常に出力されました。"
   },
   "popConfirmType": {
     "success": "success",

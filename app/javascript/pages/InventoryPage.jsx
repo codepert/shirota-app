@@ -19,6 +19,7 @@ import { openNotificationWithIcon } from "../components/common/notification";
 
 import {
   warehouseURL,
+  responsibleWarehouseURL,
   shipperURL,
   inventoryURL,
   exportInventoryPdfDataUrl,
@@ -104,7 +105,7 @@ const InventoryPage = ({ is_edit }) => {
 
   //  -------Get warehouse names--------
   const getWarehouses = () => {
-    API.get(warehouseURL).then((res) => {
+    API.get(responsibleWarehouseURL).then((res) => {
       const warehouses = res.data.map((item) => {
         return {
           value: item.id,

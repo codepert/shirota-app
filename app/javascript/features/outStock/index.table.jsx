@@ -20,9 +20,9 @@ const OutStockTable = ({ data, editRow, deleteRow, is_edit }) => {
       width: "35%",
       render: (_, record) => (
         <>
-          <p className="text-xs">{record.product_name}</p>
+          <p className="">{record.product_name}</p>
           <p>
-            <span className="text-xs text-blue">{record.warehouse_name}</span>
+            <span className="text-blue">{record.warehouse_name}</span>
             <span className="px-5 text-xs text-blue">|</span>
             <span className="text-xs text-blue">
               {record.shipper_name} ({record.warehouse_category_name})

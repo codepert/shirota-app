@@ -19,7 +19,7 @@ const IncomeTable = ({ data, editRow, deleteRow, is_edit }) => {
       width: "35%",
       render: (_, record) => (
         <>
-          <p className="text-xs">{record.product_name}</p>
+          <p className="">{record.product_name}</p>
           <p>
             <span className="text-xs text-blue">{record.shipper_name}</span>{" "}
             <span className="px-5 text-xs text-blue">|</span>

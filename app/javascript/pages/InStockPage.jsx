@@ -18,6 +18,7 @@ import InStockTable from "../features/inStock/index.table";
 import { openNotificationWithIcon } from "../components/common/notification";
 import {
   warehouseURL,
+  responsibleWarehouseURL,
   shipperURL,
   productDetailURL,
   saveStockInUrl,
@@ -146,7 +147,7 @@ const InStockPage = ({ is_edit }) => {
 
   //  -------Get warehouse names--------
   const getWarehouses = () => {
-    API.get(warehouseURL).then((res) => {
+    API.get(responsibleWarehouseURL).then((res) => {
       const warehouses = res.data.map((item) => {
         return {
           value: item.id,
@@ -357,7 +358,7 @@ const InStockPage = ({ is_edit }) => {
   const exportDataAndDownloadCVS = async () => {
     const csvData = getCSVData();
     if (csvData.length == 0) {
-      openNotificationWithIcon("warning", "", "empty data to export");
+      openNotificationWithIcon("warning", "", $lang.messages.empty_export_data);
       return;
     }
 
@@ -373,7 +374,11 @@ const InStockPage = ({ is_edit }) => {
         document.body.removeChild(link);
 
         setTimeout(() => {
-          openNotificationWithIcon("success", "", $lang.messages.success);
+          openNotificationWithIcon(
+            "success",
+            "",
+            $lang.messages.success_export_data
+          );
         }, 1000);
       })
       .catch((err) => {

@@ -49,19 +49,20 @@ class Api::V1::ProductsController < Api::V1::BaseController
     q = params[:q]
     shipper_id = params[:shipper_id]
     warehouse_id = params[:warehouse_id]
+    category = params[:category]
 
     product = Product.joins(:stock)
                     .where(
                       "(code LIKE :q OR name LIKE :q) AND shipper_id = :shipper_id AND stocks.warehouse_id = :warehouse_id",
                       q: "%#{params[:q]}%",
-                      shipper_id: params[:shipper_id],
-                      warehouse_id: params[:warehouse_id]
+                      shipper_id: shipper_id,
+                      warehouse_id: warehouse_id
                     )
                     
                     
 
     if product.present?
-      in_stock = StockInout.with_lot_num_amount_for_product(product[0].id)
+      in_stock = StockInout.with_lot_num_amount_for_product(product[0].id, shipper_id, warehouse_id)
 
       render json: {
         product: ProductSerializer.new(product),

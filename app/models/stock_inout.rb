@@ -1,7 +1,7 @@
 class StockInout < ApplicationRecord
   belongs_to :stock
 
-  scope :with_lot_num_amount_for_product, -> (product_id) {
+  scope :with_lot_num_amount_for_product, -> (product_id, shipper_id, warehouse_id) {
     sql = <<~SQL
               SELECT
                 MIN(stock_inouts.id) as id,
@@ -11,12 +11,13 @@ class StockInout < ApplicationRecord
                 MIN(inout_on) AS inout_on,
                 (
                 SUM( CASE WHEN category = 0 THEN amount ELSE 0 END ) - SUM( CASE WHEN category = 1 THEN amount ELSE 0 END )) AS amount ,
-                MIN(weight) AS weight, category
+                MIN(weight) AS weight, category,
+                MIN(warehouse_category_id) as warehouse_category_id
               FROM
                 stock_inouts 
                 JOIN stocks on stocks.id = stock_inouts.stock_id
                 JOIN products on products.id = stocks.product_id
-                WHERE product_id = #{product_id} AND category = 0
+                WHERE product_id = #{product_id} AND category = 0 AND shipper_id='#{shipper_id}' AND stocks.warehouse_id='#{warehouse_id}'
               GROUP BY stock_id, lot_number 
     SQL
     puts sql
@@ -155,11 +156,14 @@ class StockInout < ApplicationRecord
             stock_inouts.storage_fee_rate,
             stock_inouts.handling_fee_rate,
             warehouse_fees.packaging as product_type,
-            category
+            stock_inouts.category,
+            stock_inouts.warehouse_category_id,
+            warehouse_categories.storage_category as warehouse_category_name
       FROM stock_inouts
       JOIN stocks on stocks.id = stock_inouts.stock_id
       JOIN products ON products.id = stocks.product_id
       JOIN warehouse_fees ON warehouse_fees.id = products.warehouse_fee_id
+      JOIN warehouse_categories ON warehouse_categories.id = stock_inouts.warehouse_category_id
       LEFT JOIN (
         SELECT 
           MIN(inout_on) as in_stock_date,
@@ -169,7 +173,7 @@ class StockInout < ApplicationRecord
         WHERE inout_on = '#{inout_on}' AND is_billed = '0'
         GROUP BY stock_id
       ) stock_amount ON stock_amount.stock_id = stock_inouts.stock_id
-      WHERE inout_on ='#{inout_on}' AND shipper_id='#{shipper_id}' AND stocks.warehouse_id='#{warehouse_id}' AND is_billed='0' AND category = 1
+      WHERE inout_on ='#{inout_on}' AND shipper_id='#{shipper_id}' AND stocks.warehouse_id='#{warehouse_id}' AND is_billed='0' AND stock_inouts.category = 1
     SQL
     puts query
     find_by_sql(query)

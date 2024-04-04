@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post "set_authority_pages"  => "authority_pages#create_or_update"
       resources :pages
       resources :warehouses
+      get "responsible_warehouses"  => "warehouses#responsible_get"
       resources :warehouse_fees
       resources :shippers
       resources :products

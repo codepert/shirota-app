@@ -42,5 +42,6 @@ export const responsibleCategoryURL = baseUrl + "api/v1/responsible_category";
 export const exportStockInoutPdfURL = baseUrl + "api/v1/export_stock_inout_pdf";
 export const stockInoutURL = baseUrl + "api/v1/stock_inouts";
 export const warehouseCategoryURL = baseUrl + "api/v1/warehouse_categories";
-
+export const responsibleWarehouseURL =
+  baseUrl + "api/v1/responsible_warehouses";
 export const dateFormat = "YYYY/MM/DD";

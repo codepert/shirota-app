@@ -37,6 +37,12 @@ class Api::V1::WarehousesController < Api::V1::BaseController
       }, status: :unprocessable_entity
     end
   end
+
+  def responsible_get
+    warehouses = Warehouse.where(responsible_category_id: current_user.responsible_category_id)
+    render json: WarehouseSerializer.new(warehouses).serialize
+  end
+  private
   def create_or_update_params
     params.permit(:name, :responsible_category_id)
   end

@@ -1,3 +1,21 @@
+<%
+  def format_number_manual_insertion(x)
+    if x.is_a?(String)
+      return x  # Return the string as is
+    elsif x.is_a?(Integer) || x.is_a?(Float)
+      x = x.to_i.to_s
+    else
+      return "0"
+    end
+
+    return 0 if x.nil? || x.empty? || x !~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
+
+    parts = x.split(".")
+    parts[0] = parts[0].gsub(/(\d)(?=(\d{3})+(?!\d))/, "\\1,")
+
+    return parts.join(".")
+  end
+%>
 <html><meta charset="UTF-8">
   <head></head>
   <body>
@@ -13,7 +31,7 @@
         <div style="text-align:center;margin-top:10px;margin-bottom:20px;width:30%;maring:20px auto;font-size:10px">
           <h1 style="margin-bottom:0;font-family:'MizukiMinchoU';letter-spacing:2px;font-weight:500">御 請 求 書</h1>
           <p style="margin-top:5px;margin-bottom:5px;border-bottom: 1px solid red;width:140px; margin-left:auto;margin-right:auto">
-            <span style="letter-spacing: 2px">発行日</span><span style="font-family:'Arial Narrow'"><%= @billed_year %></span> 年 <span style="font-family:'Arial Narrow'"><%= @billed_month %></span> 月 <span style="font-family: 'Arial Narrow'"><%= @billed_day%></span> 日
+            <span style="letter-spacing: 2px">発行日 </span><span style="font-family:'Arial Narrow'"><%= @billed_year %></span> 年 <span style="font-family:'Arial Narrow'"><%= @billed_month %></span> 月 <span style="font-family: 'Arial Narrow'"><%= @billed_day%></span> 日
           </p>  
           <p style="margin-top:10px;margin-bottom:5px;font-family: 'Arial Narrow';letter-spacing:2px"><span style="color: #090d7e">自</span> <%= @from_date.to_s[0,2] %> <span style="color: #090d7e">年</span> <%= @from_date.to_s[3,2] %> <span style="color: #090d7e">月</span>  <%= @from_date.to_s[6,2] %> <span  style="color: #090d7e"> 日</span></p>
           <p style="margin-top:0;margin-bottm:5px;border-bottom: 1px solid red;width: 135px;margin:auto;letter-spacing:2px;font-family: 'Arial Narrow';letter-spacing:2px"><span style="color: #090d7e">至</span> <%= @to_date.to_s[0,2] %> <span style="color: #090d7e">年</span> <%= @to_date.to_s[3,2] %> <span style="color: #090d7e">月</span>  <%= @to_date.to_s[6,2] %> <span  style="color: #090d7e"> 日</span> </p>
@@ -34,19 +52,19 @@
       <div style="margin-top:5px;display:flex;width:96%;font-size:10px">
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">前回御請求額	</div>
-          <div style="text-align:center;height:30px;padding-top:10px">￥ <span style="font-family: 'Arial Narrow"><%= @last_amount %></span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥ <span style="font-family: 'Arial Narrow"><%= format_number_manual_insertion(@last_amount) %></span></div>
         </div>
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">御入金額	</div>
-          <div style="text-align:center;height:30px;padding-top:10px">￥ <span style="font-family: 'Arial Narrow"><%= @deposit_amount %></span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥ <span style="font-family: 'Arial Narrow"><%= format_number_manual_insertion(@deposit_amount) %></span></div>
         </div>
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">当月荷役料</div>
-          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @handling_cost %></span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= format_number_manual_insertion(@handling_cost) %></span></div>
         </div>
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">当月保管料</div>
-          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @storage_cost %></span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= format_number_manual_insertion(@storage_cost) %></span></div>
         </div>
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px"></div>
@@ -54,15 +72,15 @@
         </div>
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">税抜合計額<br><span>(税率10%対象)</span></div>
-          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @sum_amount %></span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= format_number_manual_insertion(@sum_amount) %></span></div>
         </div>
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 0 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">消費税額<br><span>(税率10%対象)</span></div>
-          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @tax %></span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= format_number_manual_insertion(@tax) %></span></div>
         </div>
         <div style="width:12%;border-style:solid;border-color: red;border-width:1px 1px 1px 1px">
           <div style="border-bottom:1px solid red;height:40px;text-align:center;padding-top:20px">今回御請求額</div>
-          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= @current_amount %></span></div>
+          <div style="text-align:center;height:30px;padding-top:10px">￥<span style="font-family: 'Arial Narrow"><%= format_number_manual_insertion(@current_amount) %></span></div>
         </div>
       </div>
       <div style="float:right;margin-top: 10px;padding-right:55px;font-size:10px">上記の 通りご請求申し上げます。</div>

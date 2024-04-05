@@ -400,8 +400,11 @@ const BillingProcessPage = ({ is_edit }) => {
     )
       .then((res) => {
         setIsBillExportSpinLoading(false);
-        const fileName = processRangeDates[0].format("YY-MM-DD") + "~";
-        processRangeDates[1].format("YY-MM-DD") + "_請求一覧.pdf";
+        const fileName =
+          processRangeDates[0].format("YY-MM-DD") +
+          "~" +
+          processRangeDates[1].format("YY-MM-DD") +
+          "_請求一覧.pdf";
         downloadPDF(res, fileName);
       })
       .catch((err) => {

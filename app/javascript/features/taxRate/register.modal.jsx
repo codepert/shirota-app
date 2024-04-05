@@ -1,13 +1,8 @@
 import React, { useEffect } from "react";
-import { Form, Modal, Input, Button, Select } from "antd";
+import { Form, Modal, Input, Button, DatePicker } from "antd";
 import $lang from "../../utils/content/jp.json";
 
-const WarehouseFeeRegisterModal = ({
-  isOpen,
-  onClose,
-  onSave,
-  initialValues,
-}) => {
+const TaxRateRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -29,7 +24,7 @@ const WarehouseFeeRegisterModal = ({
 
   return (
     <Modal
-      title={$lang.warehouseFeeRegister}
+      title={$lang.tax_master}
       open={isOpen}
       onCancel={onClose}
       footer={null}
@@ -44,8 +39,8 @@ const WarehouseFeeRegisterModal = ({
           <Input type="hidden" />
         </Form.Item>
         <Form.Item
-          label={$lang.packing}
-          name={"packaging"}
+          label={$lang.tax_date}
+          name={"ab_date"}
           rules={[
             {
               required: true,
@@ -53,71 +48,42 @@ const WarehouseFeeRegisterModal = ({
             },
           ]}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={$lang.code}
-          name={"code"}
-          rules={[
-            {
-              required: true,
-              message: `${$lang.tableCommon.warning}`,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={$lang.handlingFeeUnitPrice}
-          name={"handling_fee_rate"}
-          rules={[
-            {
-              required: true,
-              message: `${$lang.tableCommon.warning}`,
-            },
-          ]}
-        >
-          <Input type="number" />
-        </Form.Item>
-        <Form.Item
-          label={$lang.storageFeeUnitPrice}
-          name={"storage_fee_rate"}
-          rules={[
-            {
-              required: true,
-              message: `${$lang.tableCommon.warning}`,
-            },
-          ]}
-        >
-          <Input type="number" />
-        </Form.Item>
-        <Form.Item
-          label={$lang.billingClass}
-          name={"fee_category"}
-          rules={[
-            {
-              required: true,
-              message: `${$lang.tableCommon.warning}`,
-            },
-          ]}
-          initialValue={$lang.fullTimeRequest}
-        >
-          <Select
-            options={[
-              {
-                value: 1,
-                label: $lang.fullTimeRequest,
-              },
-              {
-                value: 2,
-                label: $lang.firstBilling,
-              },
-            ]}
-            allowClear
+          <DatePicker
+            style={{ width: "100%" }}
+            placeholder={$lang.depositDate}
+            format={"YYYY/MM/DD"}
           />
         </Form.Item>
+        <Form.Item
+          label={$lang.tax_type}
+          name={"tax_type"}
+          rules={[
+            {
+              required: true,
+              message: `${$lang.tableCommon.warning}`,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label={$lang.tax_rate}
+          name={"tax_rate"}
+          rules={[
+            {
+              required: true,
+              message: `${$lang.tableCommon.warning}`,
+            },
+          ]}
+        >
+          <Input type="number" />
+        </Form.Item>
         <div style={{ textAlign: "right" }}>
-          <Button onClick={handleSave} style={{ marginRight: 10 }}>
+          <Button
+            onClick={handleSave}
+            style={{ marginRight: 10 }}
+            type="primary"
+          >
             {" "}
             {$lang.newResiger}
           </Button>
@@ -129,4 +95,4 @@ const WarehouseFeeRegisterModal = ({
     </Modal>
   );
 };
-export default WarehouseFeeRegisterModal;
+export default TaxRateRegisterModal;

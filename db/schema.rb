@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_04_213529) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_04_233352) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -174,6 +174,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_04_213529) do
     t.index ["product_id"], name: "index_stocks_on_product_id"
     t.index ["shipper_id"], name: "index_stocks_on_shipper_id"
     t.index ["warehouse_id"], name: "index_stocks_on_warehouse_id"
+  end
+
+  create_table "tax_rates", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.date "ab_date", null: false
+    t.string "type"
+    t.integer "rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_authorities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

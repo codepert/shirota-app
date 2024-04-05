@@ -6,7 +6,7 @@ import LocalPaginationTable from "../../components/table/local.pagination.table"
 
 import $lang from "../../utils/content/jp.json";
 
-const WarehouseFeeTable = ({ data, editRow, deleteRow, isEdit }) => {
+const TaxRateTable = ({ data, editRow, deleteRow, isEdit }) => {
   const tableColumns = [
     {
       title: "No",
@@ -15,39 +15,20 @@ const WarehouseFeeTable = ({ data, editRow, deleteRow, isEdit }) => {
       width: "8%",
     },
     {
-      title: `${$lang.packing}`,
-      key: "packaging",
-      dataIndex: "packaging",
-      align: "center",
-      render: (text, record) => {
-        return (
-          <div>
-            {record.packaging.slice(0, 18)}
-            {text.length >= 18 ? "..." : ""}
-          </div>
-        );
-      },
+      title: `${$lang.tax_date}`,
+      dataIndex: "ab_date",
+      key: "ab_date",
+      render: (val) => (val != undefined ? val.replace(/\-/g, "/") : ""),
     },
     {
-      title: `${$lang.handlingFeeUnitPrice}`,
-      dataIndex: "handling_fee_rate",
-      key: "handling_fee_rate",
-      align: "center",
+      title: `${$lang.tax_type}`,
+      dataIndex: "tax_type",
+      key: "tax_type",
     },
     {
-      title: `${$lang.storageFeeUnitPrice}`,
-      dataIndex: "storage_fee_rate",
-      key: "storage_fee_rate",
-      align: "center",
-    },
-    {
-      title: $lang.billingClass,
-      dataIndex: "fee_category",
-      key: "fee_category",
-      align: "center",
-      render: (text) => {
-        return text == 1 ? $lang.fullTimeRequest : $lang.firstBilling;
-      },
+      title: $lang.tax_rate,
+      dataIndex: "tax_rate",
+      key: "tax_rate",
     },
     isEdit === 1 ? (
       {
@@ -96,4 +77,4 @@ const WarehouseFeeTable = ({ data, editRow, deleteRow, isEdit }) => {
   return <LocalPaginationTable dataSource={data} columns={tableColumns} />;
 };
 
-export default WarehouseFeeTable;
+export default TaxRateTable;

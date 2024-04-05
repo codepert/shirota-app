@@ -72,6 +72,11 @@ Page.create!([
     path: "#/bill",
   },
   {
+    name: "税率マスタ",
+    path: "/tax_rate",
+    parent_id: 14
+  },
+  {
     name: "管理マスタ",
     path: "/manage_master",
     parent_id: 15
@@ -348,6 +353,11 @@ AuthorityPage.create([{
 },{
   user_authority_id: 3,
   page_id: 17,
+  is_read: 1,
+  is_edit: 1
+},{
+  user_authority_id: 3,
+  page_id: 18,
   is_read: 1,
   is_edit: 1
 }])

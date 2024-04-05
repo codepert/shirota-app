@@ -1,3 +1,21 @@
+<%
+  def format_number_manual_insertion(x)
+    if x.is_a?(String)
+      return x  # Return the string as is
+    elsif x.is_a?(Integer) || x.is_a?(Float)
+      x = x.to_i.to_s
+    else
+      return "0"
+    end
+
+    return 0 if x.nil? || x.empty? || x !~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
+
+    parts = x.split(".")
+    parts[0] = parts[0].gsub(/(\d)(?=(\d{3})+(?!\d))/, "\\1,")
+
+    return parts.join(".")
+  end
+%>
 <html>
   <meta charset="UTF-8">
   <body>
@@ -35,8 +53,8 @@
         </div></div>
         <div>
         <div>
-          <table style="font-size:8px;color:#090d7e ">
-            <thead>
+          <table style="font-size:8px">
+            <thead style="color:#090d7e ">
               <tr >
                 <td></td>
                 <td></td>
@@ -69,7 +87,7 @@
             </thead>
             <tbody>
               <%@bill_amounts.each do |record|%>
-                <tr style="vertical-align:top;font-size:8px;">
+                <tr style="vertical-align:top;font-size:8px;font-family:'Arial Narrow';">
                   <td align="top"><div style="border: 1px solid #bbbaba;"><%= record.product_code %></div></td>
                   <td><div style="border: 1px solid #bbbaba;"><%= record.lot_number %></div></td>
                   <td  colspan="2">
@@ -78,92 +96,92 @@
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_instock_amount%>
+                      <%= format_number_manual_insertion(record.first_half_instock_amount)%>
                     </div>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_outstock_amount%>
+                      <%= format_number_manual_insertion(record.first_half_outstock_amount)%>
                     </div>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_instock_amount+record.previous_stock_amount%>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_instock_amount%>
-                    </div>
-                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_outstock_amount%>
-                    </div>
-                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_instock_amount+record.previous_stock_amount%>
+                      <%= format_number_manual_insertion(record.first_half_instock_amount+record.previous_stock_amount)%>
                     </div>
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.mid_instock_amount%>
+                      <%=format_number_manual_insertion(record.first_half_instock_amount)%>
                     </div>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.mid_outstock_amount%>
+                      <%=format_number_manual_insertion(record.first_half_outstock_amount)%>
                     </div>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount%>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.second_half_instock_amount%>
-                    </div>
-                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.second_half_outstock_amount%>
-                    </div>
-                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount%>
+                      <%=format_number_manual_insertion(record.first_half_instock_amount+record.previous_stock_amount)%>
                     </div>
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount-record.second_half_outstock_amount%>
+                      <%=format_number_manual_insertion(record.mid_instock_amount)%>
+                    </div>
+                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
+                      <%=format_number_manual_insertion(record.mid_outstock_amount)%>
+                    </div>
+                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
+                      <%=format_number_manual_insertion(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)%>
                     </div>
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=(record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)%>
+                      <%=format_number_manual_insertion(record.second_half_instock_amount)%>
+                    </div>
+                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
+                      <%=format_number_manual_insertion(record.second_half_outstock_amount)%>
+                    </div>
+                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
+                      <%=format_number_manual_insertion(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)%>
                     </div>
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      ￥<%=record.storage_fee_rate%>
+                      <%=format_number_manual_insertion(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount-record.second_half_outstock_amount)%>
                     </div>
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      ￥<%=record.storage_fee_rate*((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount))%>
+                      <%=format_number_manual_insertion((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount))%>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
+                      ￥<%=format_number_manual_insertion(record.storage_fee_rate)%>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="border: 1px solid #bbbaba;margin-bottom:1px">
+                      ￥<%=format_number_manual_insertion(record.storage_fee_rate*((record.first_half_instock_amount+record.previous_stock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount-record.first_half_outstock_amount)+(record.previous_stock_amount+record.first_half_instock_amount+record.mid_instock_amount+record.second_half_instock_amount-record.first_half_outstock_amount-record.mid_outstock_amount)))%>
                     </div>
                   </td>
                   <td>
                     
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount%>
+                      <%=format_number_manual_insertion(record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)%>
                     </div>
                     
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      <%=record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount%>
+                      <%=format_number_manual_insertion(record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)%>
                     </div>
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      ￥<%=record.instock_handle_fee_rate%>
+                      ￥<%=format_number_manual_insertion(record.instock_handle_fee_rate)%>
                     </div>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      ￥<%=record.outstock_handle_fee_rate%>
+                      ￥<%=format_number_manual_insertion(record.outstock_handle_fee_rate)%>
                     </div>
                   </td>
                   <td>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      ￥<%=(record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)*record.instock_handle_fee_rate%>
+                      ￥<%=format_number_manual_insertion((record.first_half_instock_amount+record.second_half_instock_amount+record.mid_instock_amount)*record.instock_handle_fee_rate)%>
                     </div>
                     <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                      ￥<%=(record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)*record.outstock_handle_fee_rate%>
+                      ￥<%=format_number_manual_insertion((record.first_half_outstock_amount+record.second_half_outstock_amount+record.mid_outstock_amount)*record.outstock_handle_fee_rate)%>
                     </div>
                   </td>
                 </tr>
@@ -189,47 +207,47 @@
                   <span style="font-style:'italic';color:#090d7e;float:right">*合計*</span>
                 </td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:first_stock_amount]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:first_stock_amount])%>
                   </div>
                 </td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:mid_stock_amount]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:mid_stock_amount])%>
                   </div>
                 </td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:second_stock_amount]%>
-                  </div>
-                </td>
-                <td></td>
-                <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_stock]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:second_stock_amount])%>
                   </div>
                 </td>
                 <td></td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_handle_fee]%>
-                  </div>
-                </td>
-                <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_in_stock_amount]%>
-                  </div>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_out_stock_amount]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_stock])%>
                   </div>
                 </td>
                 <td></td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_in_stock_fee]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_handle_fee])%>
                   </div>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_out_stock_fee]%>
+                </td>
+                <td>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_in_stock_amount])%>
+                  </div>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_out_stock_amount])%>
+                  </div>
+                </td>
+                <td></td>
+                <td>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_in_stock_fee])%>
+                  </div>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_out_stock_fee])%>
                   </div>
                 </td>
               </tr>
@@ -237,47 +255,47 @@
                 <td colspan="5">
                   <span style="font-style:'italic';color:#090d7e;float:right">*頁計*</span></td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:first_stock_amount]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:first_stock_amount])%>
                   </div>
                 </td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:mid_stock_amount]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:mid_stock_amount])%>
                   </div>
                 </td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:second_stock_amount]%>
-                  </div>
-                </td>
-                <td></td>
-                <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_stock]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:second_stock_amount])%>
                   </div>
                 </td>
                 <td></td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_handle_fee]%>
-                  </div>
-                </td>
-                <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_in_stock_amount]%>
-                  </div>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_out_stock_amount]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_stock])%>
                   </div>
                 </td>
                 <td></td>
                 <td>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_in_stock_fee]%>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_handle_fee])%>
                   </div>
-                  <div style="border: 1px solid #bbbaba;margin-bottom:1px">
-                    ￥<%=@bill_amounts_sum[:total_out_stock_fee]%>
+                </td>
+                <td>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_in_stock_amount])%>
+                  </div>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_out_stock_amount])%>
+                  </div>
+                </td>
+                <td></td>
+                <td>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_in_stock_fee])%>
+                  </div>
+                  <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
+                    ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_out_stock_fee])%>
                   </div>
                 </td>
               </tr>

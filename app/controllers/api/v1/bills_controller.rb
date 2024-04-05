@@ -9,7 +9,7 @@ class Api::V1::BillsController < Api::V1::BaseController
   
   include PdfRender
   include ActionController::MimeResponds # API モードで respond_to を使うために必要
-  include ApplicationHelper
+
   def index
     from_date = params[:from_date]
     to_date = params[:to_date]
@@ -21,7 +21,7 @@ class Api::V1::BillsController < Api::V1::BaseController
         duration_from:  from_date,
         duration_to:    to_date
       )
-    
+    tax_rate = TaxRate.order(id: :desc).limit(1)
     @bill = search.result.paginate(pagination_params)
 
     render json: BillsSerializer.new(@bill)
@@ -149,14 +149,14 @@ class Api::V1::BillsController < Api::V1::BaseController
     controller.instance_variable_set(:@company_bank, manangementInfo.bank)
     controller.instance_variable_set(:@company_bank_number, manangementInfo.bank_number)
     controller.instance_variable_set(:@register_number, manangementInfo.register_number)
-    controller.instance_variable_set(:@deposit_amount, format_number_manual_insertion(bill.deposit_amount.to_i))
+    controller.instance_variable_set(:@deposit_amount, bill.deposit_amount.to_i)
     controller.instance_variable_set(:@invoice_number, manangementInfo.invoice_number)
-    controller.instance_variable_set(:@last_amount, format_number_manual_insertion(bill.last_amount.to_i))
-    controller.instance_variable_set(:@handling_cost, format_number_manual_insertion(bill.handling_cost.to_i))
-    controller.instance_variable_set(:@storage_cost, format_number_manual_insertion(bill.storage_cost.to_i))
-    controller.instance_variable_set(:@sum_amount, format_number_manual_insertion(sum_amount.to_i))
-    controller.instance_variable_set(:@tax, format_number_manual_insertion(bill.tax.to_i))
-    controller.instance_variable_set(:@current_amount, format_number_manual_insertion(bill.current_amount.to_i))
+    controller.instance_variable_set(:@last_amount, bill.last_amount)
+    controller.instance_variable_set(:@handling_cost, bill.handling_cost)
+    controller.instance_variable_set(:@storage_cost, bill.storage_cost)
+    controller.instance_variable_set(:@sum_amount, sum_amount)
+    controller.instance_variable_set(:@tax, bill.tax)
+    controller.instance_variable_set(:@current_amount, bill.current_amount)
 
     html = controller.render_to_string(template: 'templates/bill_report', layout: nil)
     pdf = Grover.new(html).to_pdf
@@ -177,6 +177,7 @@ class Api::V1::BillsController < Api::V1::BaseController
     end
 
     bill_amounts = BillAmount.with_product(bill_id)
+
     shipper = Shipper.find(bill.shipper_id)
     manangement_info = ManagementInfo.all.first
     bill_amounts_sum = compute_shipper_bills_sum(bill_amounts)
@@ -193,11 +194,6 @@ class Api::V1::BillsController < Api::V1::BaseController
     pdf = Grover.new(html).to_pdf
     send_data(pdf, filename: 'sample.pdf', type: 'application/pdf', disposition: 'inline')
 
-    # filename = "template"
-    # doc = Nokogiri::HTML(html)
-    # doc.encoding = 'UTF-8'
-    # pdf = Grover.new(html, format: 'A4').to_pdf
-    # send_data pdf, filename: filename, type: "application/pdf"
   end
   def compute_shipper_bills_sum(bills)
     types = ['first_stock_amount', 'mid_stock_amount', 'second_stock_amount', 'total_stock', 'handle_fee', 'in_stock_amount','out_stock_amount',
@@ -225,15 +221,12 @@ class Api::V1::BillsController < Api::V1::BaseController
                 .select("bills.*, shippers.name as shipper_name, shippers.code as shipper_code")
     total_bills = compute_bills_sum(bills)
 
-    # filename = "template"
-    # doc = Nokogiri::HTML(html)
-    # doc.encoding = 'UTF-8'
-    # pdf = Grover.new(html, format: 'A4').to_pdf
-    # send_data pdf, filename: filename, type: "application/pdf"
+    tax_rate = TaxRate.order(id: :desc).limit(1).first
 
     controller = ActionController::Base.new
     controller.instance_variable_set(:@bills, bills)
     controller.instance_variable_set(:@total_bills, total_bills)
+    controller.instance_variable_set(:@tax_rate, tax_rate.tax_rate)
 
     html = controller.render_to_string(template: 'templates/bills_report', layout: nil)
     pdf = Grover.new(html).to_pdf

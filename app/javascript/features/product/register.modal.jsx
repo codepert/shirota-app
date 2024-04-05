@@ -124,7 +124,7 @@ const ProductRegisterModal = ({ isOpen, onClose, onSave, initialValues }) => {
           label={$lang.weight}
           rules={[{ required: true, message: $lang.tableCommon.warning }]}
         >
-          <Input />
+          <Input type="number" />
         </Form.Item>
         {warehouseOptions.length > 0 && (
           <Form.Item

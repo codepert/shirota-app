@@ -44,4 +44,5 @@ export const stockInoutURL = baseUrl + "api/v1/stock_inouts";
 export const warehouseCategoryURL = baseUrl + "api/v1/warehouse_categories";
 export const responsibleWarehouseURL =
   baseUrl + "api/v1/responsible_warehouses";
+export const taxRateURL = baseUrl + "api/v1/tax_rates";
 export const dateFormat = "YYYY/MM/DD";

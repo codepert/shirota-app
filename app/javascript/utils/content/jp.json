@@ -102,42 +102,46 @@
     "alreayResigered": "これはすでに登録されているデータです。",
     "no_confirm_bill_data": "まだ確定していない資料なので出力できません。",
 
-    "success_register_user": "ユーザーデータが正常に登録されました。",
-    "success_update_user": "ユーザーデータが正常に変更されました。",
-    "success_delete_user": "ユーザーデータが正常に削除されました。",
+    "success_register_user": "ユーザーデータが登録されました。",
+    "success_update_user": "ユーザーデータが変更されました。",
+    "success_delete_user": "ユーザーデータが削除されました。",
 
-    "success_change_user_passowrd": "パスワード正常に変更されました。",
+    "success_change_user_passowrd": "パスワードが変更されました。",
 
     "select_warehouse": "対象倉庫を選択してください。",
     "selected_warehouse_category": "保管区分選択してください。",
 
-    "success_register_warehouse": "倉庫マスターが正常に登録されました。",
-    "success_update_warehouse": "倉庫マスターが正常に変更されました。",
-    "success_delete_warehouse": "倉庫マスターが正常に削除されました。",
+    "success_register_warehouse": "倉庫マスターが登録されました。",
+    "success_update_warehouse": "倉庫マスターが変更されました。",
+    "success_delete_warehouse": "倉庫マスターが削除されました。",
 
-    "success_register_warehouse_fee": "単価区分マスタが正常に登録されました。",
-    "success_update_warehouse_fee": "単価区分マスタが正常に変更されました。",
-    "success_delete_warehouse_fee": "単価区分マスタが正常に削除されました。",
+    "success_register_warehouse_fee": "単価区分マスタが登録されました。",
+    "success_update_warehouse_fee": "単価区分マスタが変更されました。",
+    "success_delete_warehouse_fee": "単価区分マスタが削除されました。",
 
-    "success_register_shipper": "荷主マスタが正常に登録されました。",
-    "success_update_shipper": "荷主マスタが正常に変更されました。",
-    "success_delete_shipper": "荷主マスタが正常に削除されました。",
+    "success_register_shipper": "荷主マスタが登録されました。",
+    "success_update_shipper": "荷主マスタが変更されました。",
+    "success_delete_shipper": "荷主マスタが削除されました。",
 
-    "success_register_product": "品名マスタが正常に登録されました。",
-    "success_update_product": "品名マスタが正常に変更されました。",
-    "success_delete_product": "品名マスタが正常に削除されました。",
+    "success_register_product": "品名マスタが登録されました。",
+    "success_update_product": "品名マスタが変更されました。",
+    "success_delete_product": "品名マスタが削除されました。",
 
-    "success_register_deposit": "入金額が正常に登録されました。",
-    "success_update_deposit": "入金額が正常に変更されました。",
-    "success_delete_deposit": "入金額が正常に削除されました。",
+    "success_register_deposit": "入金額が登録されました。",
+    "success_update_deposit": "入金額が変更されました。",
+    "success_delete_deposit": "入金額が削除されました。",
 
-    "success_instock": "データを正確に入庫しました",
-    "success_outstock": "データを正確に出庫しました",
+    "success_instock": "データを入庫しました",
+    "success_outstock": "データを出庫しました",
     "warning_reset_prepare_inout_stock_list": "入庫確定が行われていないデータは保存されませんのでご注意ください。",
     "warning_stock_inout_section_1_change": "取扱倉庫・荷主・入庫日を変更する場合、入庫確定してないデータは保存されませんのでご注意ください。",
     "exist_stock_with_equal_lot_number": "すでに同じロットが登録されています。",
     "empty_export_data": "出力するデータがありません。",
-    "success_export_data": "データが正常に出力されました。"
+    "success_export_data": "データが正常に出力されました。",
+
+    "success_register_tax_rate": "税率マスタが正常に登録されました。",
+    "success_update_tax_rate": "税率マスタが正常に変更されました。",
+    "success_delete_tax_rate": "税率マスタが正常に削除されました。"
   },
   "popConfirmType": {
     "success": "success",
@@ -244,5 +248,9 @@
   "billingList": "請求リスト",
   "responsibleCategory": "担当区分",
   "handling_warehouse": "取扱倉庫",
-  "storageDivision": "保管区分"
+  "storageDivision": "保管区分",
+  "tax_date": "摘要日",
+  "tax_type": "Type",
+  "tax_rate": "税率",
+  "tax_master": "税率マスタ"
 }

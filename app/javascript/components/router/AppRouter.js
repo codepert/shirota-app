@@ -19,6 +19,7 @@ import InventoryPage from "../../pages/InventoryPage";
 import ReceivedPaymentPage from "../../pages/ReceivedPaymentPage";
 import BillingProcessPage from "../../pages/BillingProcessPage";
 import BillingListPage from "../../pages/BillingListPage";
+import TaxRatePage from "../../pages/TaxRatePage";
 
 import AuthContextProvider from "../../contexts/AuthContextProvider";
 
@@ -85,6 +86,10 @@ export const AppRouter = () => {
           <Route
             path="/bill_process"
             element={<PrivateRoute Component={BillingProcessPage} />}
+          />
+          <Route
+            path="/tax_rate"
+            element={<PrivateRoute Component={TaxRatePage} />}
           />
           <Route path="/*" element={<PrivateRoute Component={NotFonud} />} />
           <Route path="/" element={<LoginPage />} />

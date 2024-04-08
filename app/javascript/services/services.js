@@ -1,6 +1,6 @@
 import { loginURL, logoutURL, signupURL } from "../utils/constants";
 
-import { getAuthUserToken, API, makeURLOptionsWtoken } from "../utils/helper";
+import { getAuthUserToken, API } from "../utils/helper";
 
 // const verifyAuth = async (token = getAuthUserToken()) =>
 //   makeHttpReq(verifyAuthURL, makeURLOptionsWtoken(token));

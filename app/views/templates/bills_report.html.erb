@@ -46,17 +46,17 @@
       >
         <thead>
           <tr style="color: #090d7e;;font-family:'MizukiMinchoU';">
-            <td style="padding: 1px">請求書番号</td>
-            <td style="padding: 1px">荷主コード</td>
-            <td style="padding: 1px">荷主名</td>
-            <td style="padding: 1px">前回請求額</td>
-            <td style="padding: 1px">入金額</td>
-            <td style="padding: 1px">荷役料</td>
-            <td style="padding: 1px">保管料</td>
-            <td style="padding: 1px">値引</td>
-            <td style="padding: 1px">税抜き合計</td>
-            <td style="padding: 1px">消費額</td>
-            <td style="padding: 1px" width="8%">今回請求額</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">請求書番号</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">荷主コード</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">荷主名</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">前回請求額</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">入金額</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">荷役料</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">保管料</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">値引</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">税抜き合計</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e">消費額</td>
+            <td style="padding: 1px;border-bottom:1px solid #090d7e" width="8%">今回請求額</td>
           </tr>
         </thead>
         <tbody>
@@ -110,23 +110,23 @@
             <td></td>
           </tr>
           <tr style="font-size: 10px; border-top:2px solid #eee">
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'"></td>
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'"></td>
-            <td style="width: 20%; padding-top: 20px;text-align: left;color:#090d7e">
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow'"></td>
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow'"></td>
+            <td style="width: 20%; padding-top: 5px;text-align: left;color:#090d7e;border-top:1px solid #ddd">
               合計
             </td>
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'">￥ <%= format_number_manual_insertion(@total_bills[:last_amount]) %></td>
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'">￥ <%= format_number_manual_insertion(@total_bills[:deposit_amount]) %></td>
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'">￥ <%= format_number_manual_insertion(@total_bills[:handling_cost]) %></td>
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'">￥ <%= format_number_manual_insertion(@total_bills[:storage_cost]) %></td>
-            <td style="padding: 1pxpadding-top: 20px;"></td>
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'">
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow';border-top:1px solid #ddd">￥ <%= format_number_manual_insertion(@total_bills[:last_amount]) %></td>
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow';border-top:1px solid #ddd">￥ <%= format_number_manual_insertion(@total_bills[:deposit_amount]) %></td>
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow';border-top:1px solid #ddd">￥ <%= format_number_manual_insertion(@total_bills[:handling_cost]) %></td>
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow';border-top:1px solid #ddd">￥ <%= format_number_manual_insertion(@total_bills[:storage_cost]) %></td>
+            <td style="padding: 1pxpadding-top: 5px;;border-top:1px solid #ddd"></td>
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow';border-top:1px solid #ddd">
               ￥ <%= format_number_manual_insertion(@total_bills[:handling_cost]*1 + @total_bills[:storage_cost]*1) %>
             </td>
-            <td style="padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'">
+            <td style="padding: 1px;padding-top: 5px;font-family: 'Arial Narrow';border-top:1px solid #ddd">
               ￥ <%= format_number_manual_insertion((@total_bills[:handling_cost]*1 + @total_bills[:storage_cost]*1)/@tax_rate) %>
             </td>
-            <td style="width: 7%; padding: 1px;padding-top: 20px;font-family: 'Arial Narrow'">
+            <td style="width: 7%; padding: 1px;padding-top: 5px;font-family: 'Arial Narrow';border-top:1px solid #ddd">
               ￥ <%= format_number_manual_insertion(@total_bills[:current_amount]) %>
             </td>
           </tr>

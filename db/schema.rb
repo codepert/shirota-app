@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_04_233352) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_05_114813) do
   create_table "authority_pages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_authority_id", null: false
     t.bigint "page_id", null: false
@@ -178,8 +178,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_04_233352) do
 
   create_table "tax_rates", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "ab_date", null: false
-    t.string "type"
-    t.integer "rate"
+    t.string "tax_type"
+    t.integer "tax_rate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -190,6 +190,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_04_233352) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["auth_num"], name: "index_user_authorities_on_auth_num", unique: true
+  end
+
+  create_table "user_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "login_id", null: false
+    t.string "access_origin", null: false
+    t.string "status", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

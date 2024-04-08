@@ -53,7 +53,7 @@
         </div></div>
         <div>
         <div>
-          <table style="font-size:8px">
+          <table style="font-size:8px;border-spacing: 0;">
             <thead style="color:#090d7e ">
               <tr >
                 <td></td>
@@ -69,20 +69,20 @@
                 <td colspan="3">*----------------保管料----------------*</td>
               </tr>
               <tr style="font-size:8px;">
-                <td style="font-style:italic;" width="6%">ロット番号</td>
-                <td style="font-style:italic" width="6%">品名コード</td>
-                <td style="font-style:italic" width="6%" colspan="2">品名,規格荷姿</td>
-                <td style="font-style:italic" width="6%">前期繰起 </td>
-                <td style="font-style:italic" width="6%">上期入庫<br>上期出庫<br>上期積数 </td>
-                <td style="font-style:italic" width="6%">中期入庫<br>中期出庫<br>中期積数 </td>
-                <td style="font-style:italic" width="6%">下期入庫<br> 下期出庫<br>  下期積数 </td>
-                <td style="font-style:italic" width="6%">当期残高</td>
-                <td style="font-style:italic" width="6%">総残高</td>
-                <td style="font-style:italic" width="6%">単価</td>
-                <td style="font-style:italic" width="6%">金額</td>
-                <td style="font-style:italic" width="6%">入庫数<br>出庫数 </td>
-                <td style="font-style:italic" width="6%">単価<br>単価</td>
-                <td style="font-style:italic" width="6%">入庫料<br>出庫料</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">ロット番号</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">品名コード</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%" colspan="2">品名,規格荷姿</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">前期繰起 </td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">上期入庫<br>上期出庫<br>上期積数 </td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">中期入庫<br>中期出庫<br>中期積数 </td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">下期入庫<br> 下期出庫<br>  下期積数 </td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">当期残高</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">総残高</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">単価</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">金額</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">入庫数<br>出庫数 </td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">単価<br>単価</td>
+                <td style="font-style:italic;border-bottom:1px solid #090d7e" width="6%">入庫料<br>出庫料</td>
               </tr>
             </thead>
             <tbody>
@@ -186,54 +186,38 @@
                   </td>
                 </tr>
               <% end %>
-               <tr style="height:2px:background-color:#ddd;border:2px solid #ddd">
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%" colspan="2"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-                <td style="font-style:italic" width="6%"></td>
-              </tr>
               <tr style="vertical-align:top;font-size: 8px">
-                <td colspan="5">
+                <td colspan="5" style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <span style="font-style:'italic';color:#090d7e;float:right">*合計*</span>
                 </td>
-                <td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:first_stock_amount])%>
                   </div>
                 </td>
-                <td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:mid_stock_amount])%>
                   </div>
                 </td>
-                <td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:second_stock_amount])%>
                   </div>
                 </td>
-                <td></td>
-                <td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd"></td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_stock])%>
                   </div>
                 </td>
-                <td></td>
-                <td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd"></td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_handle_fee])%>
                   </div>
                 </td>
-                <td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_in_stock_amount])%>
                   </div>
@@ -241,8 +225,8 @@
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_out_stock_amount])%>
                   </div>
                 </td>
-                <td></td>
-                <td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd"></td>
+                <td style="border-bottom:1px solid #ddd;border-top:1px solid #ddd">
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">
                     ￥<%=format_number_manual_insertion(@bill_amounts_sum[:total_in_stock_fee])%>
                   </div>
@@ -252,7 +236,7 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="5">
+                <td colspan="5" >
                   <span style="font-style:'italic';color:#090d7e;float:right">*頁計*</span></td>
                 <td>
                   <div style="border: 1px solid #bbbaba;margin-bottom:1px;font-family:'Arial Narrow';">

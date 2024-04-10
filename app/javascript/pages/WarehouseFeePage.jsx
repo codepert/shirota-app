@@ -3,15 +3,14 @@ import { warehouseFeeURL } from "../utils/constants";
 
 import { Layout, Button, Card, Flex } from "antd";
 
-import TaxRateRegisterModal from "../features/taxRate/register.modal";
-import WarehouseFeeTable from "../features/taxRate/index.table";
+import WarehouseFeeRegisterModal from "../features/warehouseFee/register.modal";
+import WarehouseFeeTable from "../features/warehouseFee/index.table";
 
 import DeleteModal from "../components/common/modal/delete.modal";
 import { openNotificationWithIcon } from "../components/common/notification";
 
 import $lang from "../utils/content/jp.json";
 import { API } from "../utils/helper";
-import TaxRateTable from "../features/taxRate/index.table";
 
 const { Content } = Layout;
 
@@ -160,13 +159,13 @@ const WarehouseFeePage = ({ is_edit }) => {
             <></>
           )}
         </Flex>
-        <TaxRateTable
+        <WarehouseFeeTable
           editRow={editRow}
           deleteRow={deleteRow}
           data={allData}
           isEdit={is_edit}
         />
-        <TaxRateRegisterModal
+        <WarehouseFeeRegisterModal
           isOpen={isModalVisible}
           onClose={handleHideModal}
           onSave={handleRegister}

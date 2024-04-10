@@ -37,20 +37,20 @@ export const API = axios.create({
   },
 });
 
-API.interceptors.request.use((config) => {
-  const token = getAuthUserToken();
-  if (token) {
-    config.headers["Authorization"] = ` ${token}`;
-  }
+// API.interceptors.request.use((config) => {
+//   const token = getAuthUserToken();
+//   if (token) {
+//     config.headers["Authorization"] = ` ${token}`;
+//   }
 
-  return config;
-});
+//   return config;
+// });
 
 API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.status === 401) {
-      clearStorage();
+      // clearStorage();
     }
     throw error;
   }

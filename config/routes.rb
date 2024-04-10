@@ -47,6 +47,7 @@ Rails.application.routes.draw do
       resources :responsible_category, only: %i[index]
       resources :warehouse_categories
       resources :tax_rates
+      resources :management_infos
       # resources :bill_amounts
     end
   end

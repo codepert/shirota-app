@@ -1,4 +1,4 @@
-const baseUrl = "http://127.0.0.1:3000/";
+// const baseUrl = "http://127.0.0.1:3000/";
 // const baseUrl = "http://160.16.75.49/";
 
 export const loginURL = baseUrl + "login";
@@ -45,4 +45,6 @@ export const warehouseCategoryURL = baseUrl + "api/v1/warehouse_categories";
 export const responsibleWarehouseURL =
   baseUrl + "api/v1/responsible_warehouses";
 export const taxRateURL = baseUrl + "api/v1/tax_rates";
+export const manageInfoURL = baseUrl + "api/v1/management_infos";
+
 export const dateFormat = "YYYY/MM/DD";

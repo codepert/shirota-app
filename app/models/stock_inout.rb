@@ -7,11 +7,11 @@ class StockInout < ApplicationRecord
                 MIN(stock_inouts.id) as id,
                 stock_id,
                 lot_number,
-                MIN(weight) as weight,
+                MIN(stock_inouts.weight) as weight,
                 MIN(inout_on) AS inout_on,
                 (
                 SUM( CASE WHEN category = 0 THEN amount ELSE 0 END ) - SUM( CASE WHEN category = 1 THEN amount ELSE 0 END )) AS amount ,
-                MIN(weight) AS weight, category,
+                category,
                 MIN(warehouse_category_id) as warehouse_category_id
               FROM
                 stock_inouts 

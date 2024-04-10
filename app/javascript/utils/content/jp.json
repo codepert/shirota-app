@@ -141,7 +141,10 @@
 
     "success_register_tax_rate": "税率マスタが正常に登録されました。",
     "success_update_tax_rate": "税率マスタが正常に変更されました。",
-    "success_delete_tax_rate": "税率マスタが正常に削除されました。"
+    "success_delete_tax_rate": "税率マスタが正常に削除されました。",
+
+    "success_register_manage_info": "管理マスタが正常に登録されました。",
+    "success_update_manage_info": "管理マスタが正常に変更されました。"
   },
   "popConfirmType": {
     "success": "success",
@@ -252,5 +255,16 @@
   "tax_date": "摘要日",
   "tax_type": "Type",
   "tax_rate": "税率",
-  "tax_master": "税率マスタ"
+  "tax_master": "税率マスタ",
+  "companyName": "社名",
+  "representative": "代表者",
+  "telephoneNumber": "電話番号",
+  "faxNumber": "FAX番号",
+  "firstDate": "期首年月日",
+  "lastDate": "期末年月日",
+  "processYear": "処理年",
+  "processMonth": "処理月",
+  "location": "設置場所",
+  "invoiceNumber": "請求書番号",
+  "registrationNumber": "登録番号"
 }

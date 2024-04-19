@@ -46,15 +46,15 @@ export const API = axios.create({
 //   return config;
 // });
 
-API.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error?.response?.status === 401) {
-      // clearStorage();
-    }
-    throw error;
-  }
-);
+// API.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error?.response?.status === 401) {
+//       // clearStorage();
+//     }
+//     throw error;
+//   }
+// );
 
 // export const makeHttpReq = async (options = {}) => {
 //   const apiClient = axios.create({ baseURL: "/" });
